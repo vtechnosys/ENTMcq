@@ -42,7 +42,7 @@ function Quiz()
                   else{
                     alert("Subject failed");
                   }
-                  fetchSubjects();
+                  fetchQuiz();
                 })
         }
         else{
@@ -50,6 +50,44 @@ function Quiz()
           setError(true);
         }
         
+      }
+      else{
+        const subData = {
+          sid:sid,
+          quiz_name:quiz_name,
+          mode:mode,
+          difficulty:difficulty,
+          subject:subject,
+          no_of_question:noofq,
+          time_mode:timemode,
+          time_type:timetype,
+          total_sec:totalsec
+          
+        };
+        alert(sid);
+        axios.put('https://entmcq.vertextechnosys.com/api/quiz/'+sid,subData)
+              .then((res) =>{
+                console.log(res);
+                //alert("Subject added successfully");
+                const data = res.data;
+                if(data[0].status=="success"){
+                  alert("Quiz Updated successfully");
+                  setSid('');
+                  setQuizname('');
+                  setMode('');
+                  setDifficulty('');
+                  setSubject('');
+                  setNoofquestion('');
+                  setTimemode('');
+                  setTimetype('');
+                  setTotalsec('');
+                }
+                  
+                else{
+                  alert("Quiz failed");
+                }
+                fetchQuiz();
+              })
       }
     }
     function validate()
@@ -63,7 +101,7 @@ function Quiz()
       return true;
     }
 
-    function fetchSubjects()
+    function fetchQuiz()
     {
       axios.get('https://entmcq.vertextechnosys.com/api/quiz')
             .then((res)=>{
@@ -79,7 +117,15 @@ function Quiz()
             .then((res)=>{
               const data = res.data;
               console.log(data);
-              
+              setSid(data.id);
+              setQuizname(data.quiz_name);
+              setDifficulty(data.difficulty);
+              setMode(data.mode);
+              setSubject(data.subjects);
+              setNoofquestion(data.no_of_questions);
+              setTimemode(data.time_mode);
+              setTimetype(data.time_type);
+              setTotalsec(data.total_secs);
               //setQuiz(data);
             })
     }
@@ -92,19 +138,19 @@ function Quiz()
               //alert("Subject added successfully");
               const data = res.data;
               if(data[0].status=="success"){
-                alert("Subject Deleted successfully");
+                alert("Quiz Deleted successfully");
                 
               }
                 
               else{
-                alert("Subject Delete failed");
+                alert("Quiz Delete failed");
               }
-              fetchSubjects();
+              fetchQuiz();
             })
     }
 
     useEffect(()=>{
-      fetchSubjects()
+      fetchQuiz()
     },[])
         
     return (

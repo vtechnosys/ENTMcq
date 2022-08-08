@@ -256,49 +256,10 @@ function Payment ()  {
 
               <div class="row">
                 
-                <div class="col-md-5">
-                  <div class="card mb-4">
-                    <h5 class="card-header">Add Payment</h5>
-                    <div class="card-body demo-vertical-spacing demo-only-element">
-                        <div>
-                          <input type="hidden" value={pid} />
-                            <label for="defaultFormControlInput" class="form-label">Sub Id</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="defaultFormControlInput"
-                              placeholder="Sub Id"
-                              aria-describedby="defaultFormControlHelp"
-                              value={sid}
-                              onChange={sid => setSid(sid.target.value)}
-                            />
-                            
-                          </div>
-                          <div>
-                          
-                            <label for="defaultFormControlInput" class="form-label">Payment Mode</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="defaultFormControlInput"
-                              placeholder="Payment Mode"
-                              aria-describedby="defaultFormControlHelp"
-                              value={pmode}
-                              onChange={pmode => setPmode(pmode.target.value)}
-                            />
-                            
-                          </div>
-                          
-
-                      <div class="mb-3">
-                        <button class="btn btn-primary d-grid w-100" type="submit" style={{backgroundColor: '#188ccc'}} onClick={storeSubject}>Store</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                
 
                 
-                <div class="col-md-7">
+                <div class="col-md-12">
                   <div class="card mb-4">
                     <h5 class="card-header">Payment List</h5>
                 <div class="card-body">
@@ -307,7 +268,7 @@ function Payment ()  {
                       <thead>
                         <tr>
                           <th>ID</th>
-                          <th>Sub Id</th>
+                          <th>Subscription Id</th>
                           <th>Payment Mode</th>
                           <th>Status</th>
                           <th>Actions</th>
@@ -341,8 +302,8 @@ function Payment ()  {
                                       <i class="bx bx-dots-vertical-rounded"></i>
                                     </button>
                                     <div class="dropdown-menu">
-                                    <button class="dropdown-item" onClick={()=>editOption(obj.id)}
-                                        ><i class="bx bx-edit-alt me-1"></i> Edit</button>
+                                    {/* <button class="dropdown-item" onClick={()=>editOption(obj.id)}
+                                        ><i class="bx bx-edit-alt me-1"></i> Edit</button> */}
                                       <button class="dropdown-item" onClick={()=>deleteOption(obj.id)}
                                         ><i class="bx bx-trash me-1"></i> Delete</button>
                                     </div>

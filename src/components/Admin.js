@@ -27,9 +27,9 @@ function Admin(){
                   //alert("Subject added successfully");
                   const data = res.data;
                   if(data[0].status=="success")
-                    alert("admin added successfully");
+                    alert("Admin added successfully");
                   else{
-                    alert("admin failed");
+                    alert("Admin failed");
                   }
                   fetchAdmins();
                 })
@@ -54,7 +54,7 @@ function Admin(){
                 //alert("Subject added successfully");
                 const data = res.data;
                 if(data[0].status=="success"){
-                  alert("Payment Updated successfully");
+                  alert("Admin Updated successfully");
                   setSid('');
                   setName('');
                   setEmail('');
@@ -62,7 +62,7 @@ function Admin(){
                 }
                   
                 else{
-                  alert("Payment failed");
+                  alert("Admin failed");
                 }
                 fetchAdmins();
               })

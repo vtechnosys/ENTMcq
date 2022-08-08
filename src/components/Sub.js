@@ -82,18 +82,19 @@ function Sub() {
       }
       function deleteOption(id)
       {
+       // alert(id);
         axios.delete('https://entmcq.vertextechnosys.com/api/subscription/'+id)
               .then((res) =>{
                 console.log(res);
                 //alert("Subject added successfully");
                 const data = res.data;
                 if(data[0].status=="success"){
-                  alert("Subject Deleted successfully");
+                  alert("Subscription Deleted successfully");
                   
                 }
                   
                 else{
-                  alert("Subject Delete failed");
+                  alert("Subscription Delete failed");
                 }
                 fetchSubjects();
               })
@@ -238,7 +239,7 @@ function Sub() {
 
               <div class="row">
                 
-                <div class="col-md-5">
+                {/* <div class="col-md-5">
                   <div class="card mb-4">
                     <h5 class="card-header">Add Subscription</h5>
                     <div class="card-body demo-vertical-spacing demo-only-element">
@@ -320,10 +321,10 @@ function Sub() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 
-                <div class="col-md-7">
+                <div class="col-md-12">
                   <div class="card mb-4">
                     <h5 class="card-header">Subscription List</h5>
                 <div class="card-body">
@@ -332,9 +333,11 @@ function Sub() {
                       <thead>
                         <tr>
                           <th>ID</th>
-                          <th>User Id</th>
-                          <th>Package Id</th>
-                          
+                          <th>User Name</th>
+                          <th>Package Name</th>
+                          <th>Start Date</th>
+                          <th>End Date</th>
+                          <th>Code</th>
                           <th>Actions</th>
                         </tr>
                       </thead>
@@ -344,11 +347,13 @@ function Sub() {
                             return(
                               <tr>
                                 <td>
-                                  {obj.id}
+                                  {obj.sid}
                                 </td>
-                                <td>{obj.uid}</td>
-                                <td>{obj.pid}</td>
-                                
+                                <td>{obj.name}</td>
+                                <td>{obj.package_name}</td>
+                                <td>{obj.sub_date}</td>
+                                <td>{obj.sub_edate}</td>
+                                <td>{obj.sub_code}</td>
                                 <td>
                                   <div class="dropdown">
                                     <button
@@ -359,9 +364,9 @@ function Sub() {
                                       <i class="bx bx-dots-vertical-rounded"></i>
                                     </button>
                                     <div class="dropdown-menu">
-                                    <button class="dropdown-item" onClick={()=>editOption(obj.id)}
-                                        ><i class="bx bx-edit-alt me-1"></i> Edit</button>
-                                      <button class="dropdown-item" onClick={()=>deleteOption(obj.id)}
+                                    {/* {/* <button class="dropdown-item" onClick={()=>editOption(obj.id)}
+                                        ><i class="bx bx-edit-alt me-1"></i> Edit</button> */}
+                                      <button class="dropdown-item" onClick={()=>deleteOption(obj.sid)}
                                         ><i class="bx bx-trash me-1"></i> Delete</button>
                                     </div>
                                   </div>
