@@ -115,13 +115,13 @@ function Header()
               </a>
             </li>
             <li className="menu-item">
-              <a href="#" className="menu-link menu-toggle">
+              <a href="/service" className="menu-link menu-toggle">
                 <i className="menu-icon tf-icons bx bx-cube-alt"></i>
                 <div data-i18n="Misc">Services</div>
               </a>
             </li>
             <li className="menu-item">
-                <a href="#" className="menu-link menu-toggle">
+                <a href="/package" className="menu-link menu-toggle">
                   <i className="menu-icon tf-icons bx bx-cube-alt"></i>
                   <div data-i18n="Misc">Packages</div>
                 </a>

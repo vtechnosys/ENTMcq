@@ -9,7 +9,8 @@ import Sub from './components/Sub';
 import Quiz from './components/Quiz';
 import Doctor from './components/Doctor';
 import User from './components/User';
-
+import Service from './components/Service';
+import Package from './components/Package';
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
 
 function App() {
@@ -27,7 +28,8 @@ function App() {
           <Route path='/quiz' element={<Quiz/>}/>
           <Route path='/doctor' element={<Doctor/>}/>
           <Route path='/user' element={<User/>}/>
-          
+          <Route path='/service' element={<Service/>}/>
+          <Route path='/package' element={<Package/>}/>
         </Routes>
         
       </BrowserRouter>

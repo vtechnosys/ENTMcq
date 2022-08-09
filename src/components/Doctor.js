@@ -5,13 +5,14 @@ import React,{useState, useEffect} from 'react';
 function Doctor()
 {
     const [doctor,setDoctor]=useState([])
+    const [subject,setSubject]=useState([])
     const [sid,setSid] = useState('')
     const [name, setName] = useState('')
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
-    const [regdate,setRegdate]=useState('')
     const [subid,setSubid]=useState('')
     const [error,setError] = useState(false);
+    const [status,setSubStatus] = useState('success');
     
     function storedoctor()
     {
@@ -19,12 +20,11 @@ function Doctor()
       {
         if(validate())
         {
-          //alert("valid")
+          //alert(subid);
           const subData = {
             name:name,
             email:email,
             password:password,
-            register_date:regdate,
             subid:subid,
           };
           axios.post('https://entmcq.vertextechnosys.com/api/doctor',subData)
@@ -32,9 +32,9 @@ function Doctor()
                   console.log(res);
                   //alert("Subject added successfully");
                   const data = res.data;
-                  if(data[0].status=="success")
+                  if(data[0].status=="success"){
                     alert("Doctor added successfully");
-                  else{
+                  }else{
                     alert("Doctor failed");
                   }
                   fetchDoctors();
@@ -52,7 +52,6 @@ function Doctor()
           name:name,
           email:email,
           password:password,
-          register_date:regdate,
           subid:subid,
           
         };
@@ -66,7 +65,6 @@ function Doctor()
                   setName('');
                   setEmail('');
                   setPassword('');
-                  setRegdate('');
                   setSubid('')
                 }
                   
@@ -94,6 +92,14 @@ function Doctor()
             .then((res)=>{
               const data = res.data;
               setDoctor(data);
+            })
+    }
+    function fetchSubject()
+    {
+      axios.get('https://entmcq.vertextechnosys.com/api/subject')
+            .then((res)=>{
+              const data = res.data;
+              setSubject(data);
             })
     }
 
@@ -135,6 +141,9 @@ function Doctor()
 
     useEffect(()=>{
       fetchDoctors()
+    },[])
+    useEffect(()=>{
+      fetchSubject()
     },[])
     
     
@@ -325,15 +334,22 @@ return (
                       <div>
                       
                         <label for="defaultFormControlInput" class="form-label">Subject Id</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="defaultFormControlInput"
-                          placeholder="Subject Id"
-                          aria-describedby="defaultFormControlHelp"
-                          value={subid}
+                        <select
+                          class="form-select" 
+                          id="exampleFormControlSelect1" 
+                          aria-label="Default select example"
                           onChange={subid => setSubid(subid.target.value)}
-                        />
+                        >
+                        <option value="">Select Subject Name</option>
+                        {
+                          subject.map((obj)=>{
+                          return (
+                            <option value={obj.id}>{obj.name}</option>
+                            )
+                          })
+                        }
+                        
+                        </select>
                         
                       </div>
                       
