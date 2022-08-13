@@ -13,7 +13,7 @@ function Subjects()
 
     function storeSubject()
     {
-      if(sid === '')
+      if(sid === '' || sname === '' || description === '')
       {
         if(validate())
         {
@@ -277,7 +277,7 @@ function Subjects()
                               type="text"
                               class="form-control"
                               id="defaultFormControlInput"
-                              placeholder="John Doe"
+                              placeholder=""
                               aria-describedby="defaultFormControlHelp"
                               value={sname}
                               onChange={sname => setSname(sname.target.value)}
@@ -285,8 +285,8 @@ function Subjects()
                             
                           </div>
                           <div>
-                            <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" onChange={desc => setDescription(desc.target.value)} >{description}</textarea>
+                            <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" onChange={desc => setDescription(desc.target.value)} value={description} >{description}</textarea>
                             
                           </div>
 
@@ -308,7 +308,7 @@ function Subjects()
                 
                 <div class="col-md-7">
                   <div class="card mb-4">
-                    <h5 class="card-header">Doctors List</h5>
+                    <h5 class="card-header">Subject List</h5>
                 <div class="card-body">
                   <div class="table-responsive text-nowrap">
                     <table class="table table-bordered">

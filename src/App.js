@@ -11,6 +11,8 @@ import Doctor from './components/Doctor';
 import User from './components/User';
 import Service from './components/Service';
 import Package from './components/Package';
+import Quizanswer from './components/Table_quiz_answers';
+import Quizdetails from './components/Quiz_details';
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
 
 function App() {
@@ -30,6 +32,8 @@ function App() {
           <Route path='/user' element={<User/>}/>
           <Route path='/service' element={<Service/>}/>
           <Route path='/package' element={<Package/>}/>
+          <Route path='/quizanswer' element={<Quizanswer/>}/>
+          <Route path='/quiz_details' element={<Quizdetails/>}/>
         </Routes>
         
       </BrowserRouter>

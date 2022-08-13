@@ -11,7 +11,7 @@ function Admin(){
   const [error,setError] = useState(false);
   function storeAdmin()
     {
-      if(name === '')
+      if(name === '' || email === '' || password === '')
       {
         if(validate())
         {
@@ -70,10 +70,12 @@ function Admin(){
     }   
     function validate()
     {
-      if(!sid){
+      if(!name){
         return false;
       }
-      else if(!name){
+      else if(!email){
+        return false;
+      }else if(!password){
         return false;
       }
       return true;

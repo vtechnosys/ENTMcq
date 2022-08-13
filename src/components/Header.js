@@ -126,18 +126,8 @@ function Header()
                   <div data-i18n="Misc">Packages</div>
                 </a>
             </li>
-            <li className="menu-item">
-              <a href="/subscription" className="menu-link menu-toggle">
-              <i className="menu-icon tf-icons bx bx-cube-alt"></i>
-                <div data-i18n="Authentications">Subscriptions</div>
-              </a>
-            </li>
-            <li className="menu-item">
-              <a href="/payments" className="menu-link menu-toggle">
-              <i className="menu-icon tf-icons bx bx-cube-alt"></i>
-                <div data-i18n="Authentications">Payment</div>
-              </a>
-            </li>
+            
+          
             <li className="menu-item">
               <a href="/quiz" className="menu-link menu-toggle">
               <i className="menu-icon tf-icons bx bx-cube-alt"></i>
@@ -145,7 +135,7 @@ function Header()
               </a>
             </li>
             <li className="menu-item">
-              <a href="#" className="menu-link menu-toggle">
+              <a href="/quizanswer" className="menu-link menu-toggle">
               <i className="menu-icon tf-icons bx bx-cube-alt"></i>
                 <div data-i18n="Authentications">Quiz Qnswer</div>
               </a>
@@ -160,7 +150,7 @@ function Header()
             </li>
             
             <li className="menu-item">
-              <a href="#" className="menu-link menu-toggle">
+              <a href="/quiz_details" className="menu-link menu-toggle">
                 <i className="menu-icon tf-icons bx bx-box"></i>
                 <div data-i18n="User interface">Quiz Details</div>
               </a>
@@ -289,7 +279,7 @@ function Header()
             <li className="menu-header small text-uppercase"><span className="menu-header-text">Subscription Details</span></li>
             
             <li className="menu-item">
-              <a href="#;" className="menu-link menu-toggle">
+              <a href="/subscription" className="menu-link menu-toggle">
                 <i className="menu-icon tf-icons bx bx-detail"></i>
                 <div data-i18n="Form Elements">Subscriptions</div>
               </a>
@@ -307,7 +297,7 @@ function Header()
               </ul>
             </li>
             <li className="menu-item">
-              <a href="#;" className="menu-link menu-toggle">
+              <a href="/payments" className="menu-link menu-toggle">
                 <i className="menu-icon tf-icons bx bx-detail"></i>
                 <div data-i18n="Form Layouts">Payments Details</div>
               </a>

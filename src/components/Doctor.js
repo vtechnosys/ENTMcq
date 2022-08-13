@@ -4,19 +4,19 @@ import React,{useState, useEffect} from 'react';
 
 function Doctor()
 {
-    const [doctor,setDoctor]=useState([])
-    const [subject,setSubject]=useState([])
-    const [sid,setSid] = useState('')
-    const [name, setName] = useState('')
-    const [email,setEmail] = useState('')
-    const [password,setPassword] = useState('')
-    const [subid,setSubid]=useState('')
+    const [doctor,setDoctor]=useState([]);
+    const [subject,setSubject]=useState([]);
+    const [sid,setSid] = useState('');
+    const [name, setName] = useState('');
+    const [email,setEmail] = useState('');
+    const [password,setPassword] = useState('');
+    const [subid,setSubid]=useState('');
     const [error,setError] = useState(false);
-    const [status,setSubStatus] = useState('success');
     
-    function storedoctor()
+    
+    function storeDoctor()
     {
-      if(sid === '')
+      if(sid==='' || name === '' || email === '' || password === '' || subid === '')
       {
         if(validate())
         {
@@ -77,10 +77,17 @@ function Doctor()
     }
     function validate()
     {
+     
       if(!name){
         return false;
       }
       else if(!email){
+        return false;
+      }else if(!password)
+      {
+        return false;
+      }else if(!subid)
+      {
         return false;
       }
       return true;
@@ -92,7 +99,7 @@ function Doctor()
             .then((res)=>{
               const data = res.data;
               setDoctor(data);
-            })
+            });
     }
     function fetchSubject()
     {
@@ -333,12 +340,13 @@ return (
                       
                       <div>
                       
-                        <label for="defaultFormControlInput" class="form-label">Subject Id</label>
+                        <label for="defaultFormControlInput" class="form-label">Subject Name</label>
                         <select
                           class="form-select" 
                           id="exampleFormControlSelect1" 
                           aria-label="Default select example"
                           onChange={subid => setSubid(subid.target.value)}
+                          value={subid}
                         >
                         <option value="">Select Subject Name</option>
                         {
@@ -354,7 +362,7 @@ return (
                       </div>
                       
                   <div class="mb-3">
-                    <button class="btn btn-primary d-grid w-100" type="button" style={{backgroundColor: '#188ccc'}} onClick={storedoctor}>Store</button>
+                    <button class="btn btn-primary d-grid w-100" type="button" style={{backgroundColor: '#188ccc'}} onClick={storeDoctor}>Store</button>
                     
                   </div>
                 </div>

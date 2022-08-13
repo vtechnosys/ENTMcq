@@ -1,24 +1,192 @@
 import React,{useState, useEffect} from 'react';
 import Header from './Header';
 import axios from 'axios';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+
 function Package(){
     const [error,setError] = useState(false);
-    const [service,setService]=useState([])
+    const [subject,setSubjects]=useState([]);
+    const [service,setServices]=useState([]);
+    const [packages,setPackage]=useState([]);
+    const [service_include,setService]=useState('');
+    const [package_name,setPackagename]=useState('');
+    const [pricing,setPrice]=useState('');
+    const [discount,setDiscount]=useState('');
+    const [subjects,setSubject]=useState('');
+    const [serid,setSerid] = useState('');
+
+    const [userinfo, setUserInfo] = useState({
+      services: [],
+      response: [],
+    });
+    const [userinfo1, setUserInfo1] = useState({
+      subjects: [],
+      response: [],
+    });
+
+    const handleChange = (e) => {
+      // Destructuring
+      const { value, checked } = e.target;
+      const { services } = userinfo;
+        
+      console.log(`${value} is ${checked}`);
+       
+      // Case 1 : The user checks the box
+      if (checked) {
+        setUserInfo({
+          services: [...services, value],
+          response: [...services, value],
+        });
+      }
+    
+      // Case 2  : The user unchecks the box
+      else {
+        setUserInfo({
+          services: services.filter((e) => e !== value),
+          response: services.filter((e) => e !== value),
+        });
+      }
+    };
+    const handleChangesubject = (e) => {
+      // Destructuring
+      const { value, checked } = e.target;
+      const { subjects } = userinfo1;
+        
+      console.log(`${value} is ${checked}`);
+       
+      // Case 1 : The user checks the box
+      if (checked) {
+        setUserInfo1({
+          subjects: [...subjects, value],
+          response: [...subjects, value],
+        });
+      }
+    
+      // Case 2  : The user unchecks the box
+      else {
+        setUserInfo1({
+          subjects: subjects.filter((e) => e !== value),
+          response: subjects.filter((e) => e !== value),
+        });
+      }
+    };
+    const ft=userinfo.response;
     function storeSubject()
     {
+      if(package_name === '' || service_include === '' || pricing === '' || discount === '' || subjects === '')
+      {
+        if(validate())
+        {
+          //alert("valid")
+          const subData = {
+            package_name:package_name,
+            service_include:ft,
+            pricing:pricing,
+            discount:discount,
+            subjects:userinfo1.response
+          };
+          console.log(subData);
+          
+          axios.post('https://entmcq.vertextechnosys.com/api/package',subData)
+                .then((res) =>{
+                  console.log(res);
+                  //alert("Subject added successfully");
+                  const data = res.data;
+                  if(data[0].status=="success")
+                    alert("Package added successfully");
+                  else{
+                    alert("Package failed");
+                  }
+                  featchSubject();
+                })
+        }
+        else{
+          //alert("somefields are empty");
+          setError(true);
+        }
         
+      }
+    }
+    function editOption(id)
+    {
+      setSerid(id)
+      //alert(id);
+      axios.get('https://entmcq.vertextechnosys.com/api/package/'+id)
+            .then((res)=>{
+              const data = res.data;
+              console.log(data);
+              setPackagename(data.package_name);
+              setServices(data.userinfo.response);
+              setPrice(data.pricing);
+              setDiscount(data.discount);
+              setSubjects(data.subjects);
+              //setSubjects(data);
+            })
+    }
+    function validate()
+    {
+      if(!package_name){
+        return false;
+      }
+      else if(!pricing){
+        return false;
+      }
+      return true;
+    }
+    function featchPackage()
+    {
+        axios.get('https://entmcq.vertextechnosys.com/api/package')
+        .then((res)=>{
+          const data = res.data;
+          setPackage(data);
+        })
     }
     function featchService()
     {
         axios.get('https://entmcq.vertextechnosys.com/api/service')
         .then((res)=>{
           const data = res.data;
-          setService(data);
+          setServices(data);
         })
     }
+    function featchSubject()
+    {
+        axios.get('https://entmcq.vertextechnosys.com/api/subject')
+        .then((res)=>{
+          const data = res.data;
+          setSubjects(data);
+        })
+    }
+    
+    function deleteOption(id)
+    {
+      //alert(id);
+      axios.delete('https://entmcq.vertextechnosys.com/api/package/'+id)
+      .then((res)=>{
+        const data = res.data;
+        if(data[0].status=="success"){
+          alert("Package Deleted successfully");
+          
+        }
+          
+        else{
+          alert("package Delete failed");
+        }
+        featchPackage();
+      })
+    }
+    
     useEffect(()=>{
         featchService()
       },[])
+    useEffect(()=>{
+      featchSubject()
+    },[])
+    useEffect(()=>{
+      featchPackage()
+    },[])
     return (
         <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
@@ -163,55 +331,77 @@ function Package(){
                         
                           
                           <div>
-                          <input type="hidden" value={serid} />
+                          <input type="hidden" value="" />
                             <label for="defaultFormControlInput" class="form-label">Package Name</label>
                             <input
                               type="text"
                               class="form-control"
                               id="defaultFormControlInput"
-                              placeholder="John Doe"
+                              placeholder=""
                               aria-describedby="defaultFormControlHelp"
-                              value=""
+                              value={package_name}
                               onChange={packagename => setPackagename(packagename.target.value)}
                             />
                           </div>
                           
+                          
                           <div>
-                            <label for="defaultFormControlInput" class="form-label">Service Name</label>
-                            <select
+                          
+                            <label for="defaultFormControlInput" class="form-label">Pricing</label>
+                            <input
                               type="text"
                               class="form-control"
                               id="defaultFormControlInput"
-                              placeholder="John Doe"
+                              placeholder=""
                               aria-describedby="defaultFormControlHelp"
-                             
-                            >
+                              value={pricing}
+                              onChange={pricing => setPrice(pricing.target.value)}
+                            />
+                          </div>
+                          <div>
+                          
+                            <label for="defaultFormControlInput" class="form-label">Discount</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="defaultFormControlInput"
+                              placeholder=""
+                              aria-describedby="defaultFormControlHelp"
+                              value={discount}
+                              onChange={discount => setDiscount(discount.target.value)}
+                            />
+                          </div>
+                          <div>
+                            <label for="defaultFormControlInput" class="form-label">Service Name</label>
+                            <FormGroup>
+                            
                             {
-                                service.map((obj)=>{
+                              service.map((obj)=>{
                                     return(
-                            <option>{obj.service_name}</option>
+                                      <FormControlLabel control={<Checkbox/>} label={obj.service_name} value={obj.id}  name="services" id="flexCheckDefault" onChange={handleChange}/>
                                     )
                                 })
                             }
-                            </select>
+                            </FormGroup>
                             
                           </div>
-                          <div>
                           
-                            <label for="defaultFormControlInput" class="form-label">Package Name</label>
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="defaultFormControlInput"
-                              placeholder="John Doe"
-                              aria-describedby="defaultFormControlHelp"
-                              value=""
-                              onChange={packagename => setPackagename(packagename.target.value)}
-                            />
+                          <div>
+                            <label for="defaultFormControlInput" class="form-label">Subject Name</label>
+                            <FormGroup>
+                            {
+                              subject.map((obj)=>{
+                                    return(
+                                      <FormControlLabel control={<Checkbox/>} label={obj.name} value={obj.id}  name="subjects" id="flexCheckDefault1" onChange={handleChangesubject}/>
+                                    )
+                                })
+                            }
+                            </FormGroup>
+                            
                           </div>
-
+                          
                       <div class="mb-3">
-                        <button class="btn btn-primary d-grid w-100" type="submit" style={{backgroundColor: '#188ccc'}} onClick={storeSubject}>Store</button>
+                        <button class="btn btn-primary d-grid w-100" type="button" style={{backgroundColor: '#188ccc'}} onClick={storeSubject}>Store</button>
                       </div>
                     </div>
                   </div>
@@ -227,37 +417,48 @@ function Package(){
                       <thead>
                         <tr>
                           <th>ID</th>
-                          <th>Service Name</th>
-                          <th>Description</th>
-                          <th>Status</th>
+                          <th>Package Name</th>
+                          <th>Price</th>
+                          <th>Discount</th>
+                          
                           <th>Actions</th>
                         </tr>
                       </thead>
                       <tbody>
                        
-                          
+                          {
+                            packages.map((obj)=>{
+                              return (
+
+                              
                               <tr>
                                 <td>
-                                 1
+                                 {obj.id}
                                 </td>
-                                <td>1</td>
-                                <td>1</td>
-                                <td>                               
-                                  <div class="dropdown">
-                                    <button
-                                      type="button"
-                                      class="btn p-0 dropdown-toggle hide-arrow"
-                                      data-bs-toggle="dropdown"
-                                    >
-                                      <i class="bx bx-dots-vertical-rounded"></i>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                     
-                                    </div>
-                                  </div>
-                                </td>
+                                <td>{obj.package_name}</td>
+                                <td>{obj.pricing}</td>
+                                <td>{obj.discount}</td>
+                                <td>
+                              <div class="dropdown">
+                                <button
+                                  type="button"
+                                  class="btn p-0 dropdown-toggle hide-arrow"
+                                  data-bs-toggle="dropdown"
+                                >
+                                  <i class="bx bx-dots-vertical-rounded"></i>
+                                </button>
+                                <div class="dropdown-menu">
+                                <button class="dropdown-item" onClick={()=>editOption(obj.id)}
+                                    ><i class="bx bx-edit-alt me-1"></i> Edit</button>
+                                  <button class="dropdown-item" onClick={()=>deleteOption(obj.id)}
+                                    ><i class="bx bx-trash me-1"></i> Delete</button>
+                                </div>
+                              </div>
+                            </td>
                               </tr>
-                           
+                              )
+                            })
+                          }
                         
                         
                       </tbody>
