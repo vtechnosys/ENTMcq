@@ -2,6 +2,12 @@ import React from "react";
 import Header from "./Header";
 function Home()
 {
+    function AddLibrary(urlOfTheLibrary) {
+      const script = document.createElement('script');
+      script.src = urlOfTheLibrary;
+      script.async = true;
+      document.body.appendChild(script);
+    }
     return(
         <React.Fragment>
 
@@ -665,6 +671,7 @@ function Home()
 
       <div className="layout-overlay layout-menu-toggle"></div>
     </div>
+    {AddLibrary("assets/js/dashboards-analytics.js")}
     </React.Fragment>
     )
 }
