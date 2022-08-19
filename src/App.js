@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import Home from './components/Home';
 import Admin from './components/Admin';
@@ -13,6 +12,7 @@ import Service from './components/Service';
 import Package from './components/Package';
 import Quizanswer from './components/Table_quiz_answers';
 import Quizdetails from './components/Quiz_details';
+import Login from './components/Loginform';
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
 
 function App() {
@@ -21,7 +21,8 @@ function App() {
       <BrowserRouter>
          
         <Routes>
-          <Route path="/" element={<Home/>}/>
+          <Route path="/" element={<Login/>}/>
+          <Route path="/home" element={<Home/>}/>
           <Route path='/admins' element={<Admin/>}/>
           <Route path='/subjects' element={<Subjects/>}/>
           <Route path='/questions' element={<Questions/>}/>

@@ -316,7 +316,7 @@ function Header()
             </li>
             
             <li className="menu-item">
-              <a href="tables-basic.html" className="menu-link">
+              <a href="" className="menu-link">
                 <i className="menu-icon tf-icons bx bx-table"></i>
                 <div data-i18n="Tables">Expired Subscriptions</div>
               </a>
@@ -325,7 +325,7 @@ function Header()
             <li className="menu-header small text-uppercase"><span className="menu-header-text">Misc</span></li>
             <li className="menu-item">
               <a
-                href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
+                href=""
                 target="_blank"
                 className="menu-link"
               >

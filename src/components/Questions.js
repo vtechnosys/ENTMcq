@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo }  from 'react';
+import React, { useState, useRef, useMemo,useEffect }  from 'react';
 import Header from "./Header";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -6,13 +6,23 @@ import JoditEditor from "jodit-react";
 import { Editor } from 'react-draft-wysiwyg';
 import { EditorState} from 'draft-js';
 import 'draft-js/dist/Draft.css';
+import axios from "axios";
+
 
 
 function Questions(){
     const [value, setValue] = useState('');
-
+    const [answer_option,setAnsweroption]=useState('');
+    const [status,setStatus]=useState('');
+    const [doctor_id,setDoctorname]=useState('');
+    const [sub_id,setSubjectname]=useState('');
+    const [doctor,setDoctor]=useState([]);
+    const [subject,setSubject]=useState([]);
+    const [qmode,setQmode]=useState('');
+    const [explanation,setExplain]=useState('');
+    const [error,setError] = useState(false);
     const editor = useRef(null)
-	const [content, setContent] = useState('')
+	const [title, setContent] = useState('')
     const placeholder="Start typing..."
 	const config = useMemo(()=>({
 		readonly: false, // all options from https://xdsoft.net/jodit/doc/,
@@ -45,11 +55,77 @@ function Questions(){
       }
     );
   }
+  function storeQuestion()
+  {
+        alert(sub_id);
+          const subData = {
+            title:title,
+            answer_option:answer_option,
+            explanation:explanation,
+            doctor_id:doctor_id,
+            qmode:qmode,
+            sub_id:sub_id
+          };
+          axios.post('https://entmcq.vertextechnosys.com/api/question',subData)
+                .then((res) =>{
+                  console.log(res);
+                  //alert("Subject added successfully");
+                  const data = res.data;
+                  if(data[0].status=="success")
+                    alert("Question added successfully");
+                  else{
+                    alert("Question failed");
+                  }
+                  //fetchSubjects();
+                })
+        }
+       
+        
+     
+ 
+  function fetchDoctors()
+    {
+      axios.get('https://entmcq.vertextechnosys.com/api/doctor')
+            .then((res)=>{
+              const data = res.data;
+              setDoctor(data);
+            });
+    }
+    function fetchSubjects()
+    {
+      axios.get('https://entmcq.vertextechnosys.com/api/subject')
+            .then((res)=>{
+              const data = res.data;
+              setSubject(data);
+            });
+    }
+    useEffect(()=>{
+      fetchDoctors()
+    },[])
+    useEffect(()=>{
+      fetchSubjects()
+    },[])
     return(
         <div className="layout-wrapper layout-content-navbar">
       <div className="layout-container">
 
-        <Header/>
+      <Header/>
+          {error && (<div
+            class="bs-toast toast toast-placement-ex m-2 show bg-warning top-0 end-0 fade show"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+            data-delay="2000"
+            
+          >
+            <div class="toast-header">
+              <i class="bx bx-bell me-2"></i>
+              <div class="me-auto fw-semibold">Alert</div>
+              {/* <small>11 mins ago</small> */}
+              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" onClick={()=>{setError(false)}}></button>
+            </div>
+            <div class="toast-body">somefields are empty</div>
+          </div>)}
         <div className="layout-page">
 
           <nav
@@ -76,7 +152,8 @@ function Questions(){
               </div>
 
               <ul className="navbar-nav flex-row align-items-center ms-auto">
-                <li className="nav-item lh-1 me-3">
+                
+                {/* <li className="nav-item lh-1 me-3">
                   <a
                     className="github-button"
                     href="https://github.com/themeselection/sneat-html-admin-template-free"
@@ -86,86 +163,35 @@ function Questions(){
                     aria-label="Star themeselection/sneat-html-admin-template-free on GitHub"
                     >Star</a
                   >
-                </li>
+                </li> */}
 
+                
                 <li className="nav-item navbar-dropdown dropdown-user dropdown">
-                  <a className="nav-link dropdown-toggle hide-arrow" href="#" data-bs-toggle="dropdown">
-                    <div className="avatar avatar-online">
-                      <img src="assets/img/avatars/1.png" alt="" className="w-px-40 h-auto rounded-circle" />
-                    </div>
-                  </a>
-                  <ul className="dropdown-menu dropdown-menu-end">
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        <div className="d-flex">
-                          <div className="flex-shrink-0 me-3">
-                            <div className="avatar avatar-online">
-                              <img src="assets/img/avatars/1.png" alt="" className="w-px-40 h-auto rounded-circle" />
-                            </div>
-                          </div>
-                          <div className="flex-grow-1">
-                            <span className="fw-semibold d-block">John Doe</span>
-                            <small className="text-muted">Admin</small>
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <li>
-                      <div className="dropdown-divider"></div>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        <i className="bx bx-user me-2"></i>
-                        <span className="align-middle">My Profile</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        <i className="bx bx-cog me-2"></i>
-                        <span className="align-middle">Settings</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#">
-                        <span className="d-flex align-items-center align-middle">
-                          <i className="flex-shrink-0 bx bx-credit-card me-2"></i>
-                          <span className="flex-grow-1 align-middle">Billing</span>
-                          <span className="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                        </span>
-                      </a>
-                    </li>
-                    <li>
-                      <div className="dropdown-divider"></div>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="auth-login-basic.html">
-                        <i className="bx bx-power-off me-2"></i>
-                        <span className="align-middle">Log Out</span>
-                      </a>
-                    </li>
-                  </ul>
+                  
+                  <a href="/" class="btn btn-danger">Logout</a>
                 </li>
+                
               </ul>
             </div>
           </nav>
           <div className="content-wrapper">
 
             <div className="container-xxl flex-grow-1 container-p-y">
-              <h4 className="fw-bold py-3 mb-4"><span className="text-muted fw-light">Forms /</span> Input groups</h4>
+              <h4 className="fw-bold py-3 mb-4"><span className="text-muted fw-light"></span> Add Question</h4>
 
               <div className="row">
                 <div className="col-md-9">
                   <div className="card mb-4">
-                    <h5 className="card-header">Add Questions</h5>
+                    {/* <h5 className="card-header">Add Questions</h5> */}
                     <div className="card-body demo-vertical-spacing demo-only-element">
                         <div>
-                            <label htmlFor="exampleFormControlTextarea1" className="form-label">Question</label>
+                            <label htmlFor="exampleFormControlTextarea1" className="form-label">Title</label>
                             <JoditEditor
                                 ref={editor}
-                                value={content}
+                                value={title}
                                 config={config}
                                 tabIndex={1} // tabIndex of textarea
-                                onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+                                onBlur={title => setContent(title)} // preferred to use only this option to update the content for performance reasons
                                 onChange={newContent => {}}
                             />
                           </div>
@@ -175,8 +201,10 @@ function Questions(){
                               type="text"
                               className="form-control"
                               id="defaultFormControlInput"
-                              placeholder="John Doe"
+                              placeholder=""
                               aria-describedby="defaultFormControlHelp"
+                              value={answer_option}
+                              onChange={answer_option=>setAnsweroption(answer_option.target.value)}
                             />
                             
                           </div>
@@ -184,24 +212,56 @@ function Questions(){
                             <label htmlFor="exampleFormControlTextarea1" className="form-label">Exaplaination</label>
                             <JoditEditor
                                 ref={editor}
-                                value={content}
+                                value={explanation}
                                 config={config}
                                 tabIndex={1} // tabIndex of textarea
-                                onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+                                onBlur={explanation => setExplain(explanation)} // preferred to use only this option to update the content for performance reasons
                                 onChange={newContent => {}}
                             />
                           </div>
-
+                          <label for="defaultFormControlInput" class="form-label">Question Mode</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="defaultFormControlInput"
+                              placeholder=""
+                              aria-describedby="defaultFormControlHelp"
+                              value={qmode}
+                              onChange={qmode=>setQmode(qmode.target.value)}
+                            />
                           <div className="mb-3">
-                            <label htmlFor="exampleFormControlSelect1" className="form-label">Status</label>
-                            <select className="form-select" id="exampleFormControlSelect1" aria-label="Default select example">
-                              <option value ="active">Active</option>
-                              <option value="inactive">Inactive</option>
+                            <label htmlFor="exampleFormControlSelect1" className="form-label">Doctor Name</label>
+                            <select className="form-select" id="exampleFormControlSelect1" aria-label="Default select example" value={doctor_id}
+                              onChange={doctor_id=>setDoctorname(doctor_id.target.value)}>
+                            <option value="">Select Doctor Name</option>
+                            {
+                        doctor.map((obj)=>{
+                        return(
+                    
+                              <option value={obj.id}>{obj.name}</option>
+                        )
+                        })
+                            }
+                            </select>
+                          </div>
+                          <div className="mb-3">
+                            <label htmlFor="exampleFormControlSelect1" className="form-label">Subject Name</label>
+                            <select className="form-select" id="exampleFormControlSelect1" aria-label="Default select example" value={sub_id}
+                              onChange={sub_id=>setSubjectname(sub_id.target.value)}>
+                            <option value="">Select Subject Name</option>
+                            {
+                        subject.map((obj)=>{
+                        return(
+                    
+                              <option value={obj.id}>{obj.name}</option>
+                        )
+                        })
+                            }
                             </select>
                           </div>
 
                       <div className="mb-3">
-                        <button className="btn btn-primary d-grid w-100" type="submit" style={{backgroundColor: "#188ccc"}}>Sign in</button>
+                      <button class="btn btn-primary d-grid w-100" type="button" style={{backgroundColor: '#188ccc'}} onClick={storeQuestion}>Store</button>
                       </div>
                     </div>
                   </div>
