@@ -17,10 +17,14 @@ function storeQuestion(){
             console.log(res);
             //alert("Subject added successfully");
             const data = res.data;
-            if(data[0].status=="success")
+            if(data[0].status==="success" && data[0].type==="admin")
             {
-                alert("Login Success");
+                alert("Admin Login Success");
                 window.location.href='/home';
+            }else if(data[0].status==="success" && data[0].type==='doctor')
+            {
+                alert("Doctor Login Success");
+                window.location.href='/doctorhome';
             }
             else{
                 alert("Login failed");

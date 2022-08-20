@@ -13,7 +13,10 @@ import Package from './components/Package';
 import Quizanswer from './components/Table_quiz_answers';
 import Quizdetails from './components/Quiz_details';
 import Login from './components/Loginform';
+import Doctorhome from './components/Doctorhome';
+import doctorquestions from './components/Doctorquestion';
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
+import Doctorquestion from './components/Doctorquestion';
 
 function App() {
   return (
@@ -23,6 +26,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Login/>}/>
           <Route path="/home" element={<Home/>}/>
+          <Route path="/doctorhome" element={<Doctorhome/>}/>
           <Route path='/admins' element={<Admin/>}/>
           <Route path='/subjects' element={<Subjects/>}/>
           <Route path='/questions' element={<Questions/>}/>
@@ -35,6 +39,7 @@ function App() {
           <Route path='/package' element={<Package/>}/>
           <Route path='/quizanswer' element={<Quizanswer/>}/>
           <Route path='/quiz_details' element={<Quizdetails/>}/>
+          <Route path='/doctorquestions' element={<Doctorquestion/>}/>
         </Routes>
         
       </BrowserRouter>
