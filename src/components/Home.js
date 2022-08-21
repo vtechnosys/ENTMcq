@@ -1,5 +1,6 @@
 import React from "react";
 import Header from "./Header";
+import Headerpanel from "./Headerpanel";
 function Home()
 {
     return(
@@ -15,54 +16,7 @@ function Home()
         <div className="layout-page">
           
 
-          <nav
-            className="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
-            id="layout-navbar"
-          >
-            <div className="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-              <a className="nav-item nav-link px-0 me-xl-4" href="#">
-                <i className="bx bx-menu bx-sm"></i>
-              </a>
-            </div>
-
-            <div className="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
-              
-              <div className="navbar-nav align-items-center">
-                <div className="nav-item d-flex align-items-center">
-                  <i className="bx bx-search fs-4 lh-0"></i>
-                  <input
-                    type="text"
-                    className="form-control border-0 shadow-none"
-                    placeholder="Search..."
-                    aria-label="Search..."
-                  />
-                </div>
-              </div>
-              
-
-              <ul className="navbar-nav flex-row align-items-center ms-auto">
-                
-                {/* <li className="nav-item lh-1 me-3">
-                  <a
-                    className="github-button"
-                    href="https://github.com/themeselection/sneat-html-admin-template-free"
-                    data-icon="octicon-star"
-                    data-size="large"
-                    data-show-count="true"
-                    aria-label="Star themeselection/sneat-html-admin-template-free on GitHub"
-                    >Star</a
-                  >
-                </li> */}
-
-                
-                <li className="nav-item navbar-dropdown dropdown-user dropdown">
-                  
-                  <a href="/" class="btn btn-danger">Logout</a>
-                </li>
-                
-              </ul>
-            </div>
-          </nav>
+          <Headerpanel/>
 
           
           <div className="content-wrapper">

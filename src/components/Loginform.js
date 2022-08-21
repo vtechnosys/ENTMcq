@@ -1,10 +1,10 @@
-import React, { useState}  from 'react';
+import { useState, useEffect } from "react";
 import ent from './ent.png';
 import './Loginform.css';
 import axios from "axios";
 
 function LoginForm(){
-    
+  
 const[username,setUsername]=useState('');
 const[password,setPassword]=useState('');
 function storeQuestion(){
@@ -17,14 +17,25 @@ function storeQuestion(){
             console.log(res);
             //alert("Subject added successfully");
             const data = res.data;
+            const type=data[0].type;
             if(data[0].status==="success" && data[0].type==="admin")
             {
+              
+                // storing input name
+                localStorage.setItem("type", JSON.stringify(type));
+                //alert(name);
+             
                 alert("Admin Login Success");
                 window.location.href='/home';
             }else if(data[0].status==="success" && data[0].type==='doctor')
             {
+              
+                // storing input name
+                localStorage.setItem("type", JSON.stringify(type));
+                //alert(name);
+             
                 alert("Doctor Login Success");
-                window.location.href='/doctorhome';
+                window.location.href='/home';
             }
             else{
                 alert("Login failed");

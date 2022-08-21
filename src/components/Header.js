@@ -1,9 +1,29 @@
-import React from "react";
+import { useState,useEffect } from "react";
 
 function Header()
 {
+
+  
+  const [type, setType] = useState(() => {
+    // getting stored value
+    const saved = localStorage.getItem("type");
+    const initialValue = JSON.parse(saved);
+    return initialValue || "";
+    
+  });
+  function islog(){
+    if(type === "")
+    {
+      
+      window.location.href='/';
+    }
+  }
+  useEffect(()=>{
+    islog()
+  },[])
     return(
-        <aside id="layout-menu" className="layout-menu menu-vertical menu bg-menu-theme">
+      
+          <aside id="layout-menu" className="layout-menu menu-vertical menu bg-menu-theme">
           <div className="app-brand demo">
             <a href="index.html" className="app-brand-link">
                 <img src="assets/img/icons/ent.png" className="app-brand-logo demo" style={{height:50,width:70}}/>
@@ -16,8 +36,8 @@ function Header()
           </div>
 
           <div className="menu-inner-shadow"></div>
-
-          <ul className="menu-inner py-1">
+          {type === "admin" ?
+          (<ul className="menu-inner py-1">
            
             <li className="menu-item active">
               <a href="/" className="menu-link">
@@ -334,7 +354,52 @@ function Header()
               </a>
             </li>
             
-          </ul>
+          </ul>)
+          :( <ul className="menu-inner py-1">
+         
+         <li className="menu-item active">
+           <a href="/" className="menu-link">
+             <i className="menu-icon tf-icons bx bx-home-circle"></i>
+             <div data-i18n="Analytics">Dashboard</div>
+           </a>
+         </li>
+
+        
+         <li className="menu-item">
+           <a href="/questions" className="menu-link menu-toggle">
+           <i className="menu-icon tf-icons bx bx-cube-alt"></i>
+             <div data-i18n="Authentications">Questions</div>
+           </a>
+           {/* <ul className="menu-sub">
+             <li className="menu-item">
+               <a href="auth-login-basic.html" className="menu-link" target="_blank">
+                 <div data-i18n="Basic">Login</div>
+               </a>
+             </li>
+             <li className="menu-item">
+               <a href="auth-register-basic.html" className="menu-link" target="_blank">
+                 <div data-i18n="Basic">Register</div>
+               </a>
+             </li>
+             <li className="menu-item">
+               <a href="auth-forgot-password-basic.html" className="menu-link" target="_blank">
+                 <div data-i18n="Basic">Forgot Password</div>
+               </a>
+             </li>
+           </ul> */}
+         </li>
+         <li className="menu-item">
+           <a href="#" className="menu-link menu-toggle">
+           <i className="menu-icon tf-icons bx bx-cube-alt"></i>
+             <div data-i18n="Authentications">Answer</div>
+           </a>
+         </li>
+        
+         
+         
+         
+       </ul>)
+          }
         </aside>
     )
 }
