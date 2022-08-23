@@ -4,57 +4,30 @@ function Header()
 {
 
 
-   // Set timeout values
+   /* Time Out Code Start Here */
    const timeout = 30 * 1000
    const promptTimeout = 1000 * 30
- 
-   // Modal open state
    const [open, setOpen] = useState(false)
- 
-   // Time before idle
    const [remaining, setRemaining] = useState(0)
- 
    const onPrompt = () => {
-     // onPrompt will be called after the timeout value is reached
-     // In this case 30 minutes. Here you can open your prompt. 
-     // All events are disabled while the prompt is active. 
-     // If the user wishes to stay active, call the `reset()` method.
-     // You can get the remaining prompt time with the `getRemainingTime()` method,
-     setOpen(true)
      setRemaining(promptTimeout)
    }
-   
-   const onIdle = () => {
-     // onIdle will be called after the promptTimeout is reached.
-     // In this case 30 seconds. Here you can close your prompt and 
-     // perform what ever idle action you want such as log out your user.
-     // Events will be rebound as long as `stopOnMount` is not set.
+  const onIdle = () => {
      setOpen(false)
      setRemaining(0)
      window.location.href='/';
-   }
-   
-   const onActive = () => {
-     // onActive will only be called if `reset()` is called while `isPrompted()` 
-     // is true. Here you will also want to close your modal and perform
-     // any active actions. 
+  }
+  const onActive = () => {
      setOpen(false)
      setRemaining(0)
    }
- 
-   const { getRemainingTime, isPrompted, activate } = useIdleTimer({
+  const { getRemainingTime, isPrompted, activate } = useIdleTimer({
      timeout,
      promptTimeout,
      onPrompt,
      onIdle,
      onActive
    })
- 
-  //  const handleStillHere = () => {
-  //    setOpen(false)
-  //    activate()
-  //  }
- 
    useEffect(() => {
      const interval = setInterval(() => {
        if (isPrompted()) {
@@ -66,7 +39,7 @@ function Header()
      }
    }, [getRemainingTime, isPrompted])
 
-  
+   /* Time Out Code End Here */
   const [type, setType] = useState(() => {
     // getting stored value
     const saved = localStorage.getItem("type");

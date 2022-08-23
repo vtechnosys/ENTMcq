@@ -13,7 +13,7 @@ import Package from './components/Package';
 import Quizanswer from './components/Table_quiz_answers';
 import Quizdetails from './components/Quiz_details';
 import Login from './components/Loginform';
-
+import Validation from './components/Formvalidation';
 
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
 
@@ -39,7 +39,7 @@ function App() {
           <Route path='/package' element={<Package/>}/>
           <Route path='/quizanswer' element={<Quizanswer/>}/>
           <Route path='/quiz_details' element={<Quizdetails/>}/>
-        
+          <Route path='/validation' element={<Validation/>}/>
         </Routes>
         
       </BrowserRouter>
