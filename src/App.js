@@ -1,4 +1,5 @@
 import './App.css';
+
 import Home from './components/Home';
 import Admin from './components/Admin';
 import Subjects from './components/Subjects';
@@ -14,9 +15,9 @@ import Quizanswer from './components/Table_quiz_answers';
 import Quizdetails from './components/Quiz_details';
 import Login from './components/Loginform';
 import Validation from './components/Formvalidation';
-
+import Category from './components/Category';
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
-
+import QuestionBank from './components/Questionbank';
 
 function App() {
   return (
@@ -40,6 +41,8 @@ function App() {
           <Route path='/quizanswer' element={<Quizanswer/>}/>
           <Route path='/quiz_details' element={<Quizdetails/>}/>
           <Route path='/validation' element={<Validation/>}/>
+          <Route path='/category' element={<Category/>}/>
+          <Route path='/question_bank' element={<QuestionBank/>}/>
         </Routes>
         
       </BrowserRouter>

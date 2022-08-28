@@ -15,7 +15,7 @@ function Header()
   const onIdle = () => {
      setOpen(false)
      setRemaining(0)
-     window.location.href='/';
+     //window.location.href='/';
   }
   const onActive = () => {
      setOpen(false)
@@ -195,6 +195,18 @@ function Header()
               <a href="/quizanswer" className="menu-link menu-toggle">
               <i className="menu-icon tf-icons bx bx-cube-alt"></i>
                 <div data-i18n="Authentications">Quiz Qnswer</div>
+              </a>
+            </li>
+            <li className="menu-item">
+              <a href="/category" className="menu-link menu-toggle">
+              <i className="menu-icon tf-icons bx bx-cube-alt"></i>
+                <div data-i18n="Authentications">Category</div>
+              </a>
+            </li>
+            <li className="menu-item">
+              <a href="/question_bank" className="menu-link menu-toggle">
+              <i className="menu-icon tf-icons bx bx-cube-alt"></i>
+                <div data-i18n="Authentications">Question Bank</div>
               </a>
             </li>
             <li className="menu-header small text-uppercase"><span className="menu-header-text">Quizs/Users</span></li>
