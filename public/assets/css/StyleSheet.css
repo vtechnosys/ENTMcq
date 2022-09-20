@@ -1,0 +1,415 @@
+body{
+    font-family: 'Inter', sans-serif;
+}
+:root{
+    --main-color:rgb(105, 35, 208);
+    --main-light-color:rgb(239, 229, 255);
+    --main-dark-color:rgb(72, 5, 172);
+    --orange-color:rgb(255, 123, 71);
+}
+.text-main{
+    color: var(--main-color);
+}
+.btn-main,
+.bg-main{
+    background-color: var(--main-color);
+    color: #fff;
+}
+.btn-main:hover{
+    background-color: var(--main-dark-color);
+    color: #fff;
+}
+.bg-main-light{
+    background-color: var(--main-light-color);
+}
+.bg-main-dark{
+    background-color: var(--main-dark-color);
+}
+.text-main-light{
+    color: var(--main-light-color);
+}
+.text-main-dark{
+    color: var(--main-dark-color);
+}
+.bg-orange{
+    background-color: var(--orange-color);
+}
+#home-banner{
+    background-image: url(../images/bg-header.jpg);
+    height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+#home-banner .navbar .navbar-brand{
+    text-align: center;
+}
+#home-banner .navbar-toggler{
+    font-size: 1rem;
+    padding: 5px;
+    box-shadow: none;
+}
+#home-banner .navbar .navbar-brand img{
+    width: 70px;
+}
+#home-banner .navbar .navbar-brand p{
+    font-size: 0.7rem;
+    margin-bottom: 0;
+}
+#home-banner .navbar .nav-link{
+    font-size: 0.85rem;
+    padding: 10px 20px !important;
+    font-weight: 600;
+    color: #666;
+    margin-inline: 5px;
+}
+#home-banner .navbar .register:hover,
+#home-banner .navbar .login{
+    background-color: var(--main-color);
+    color: #fff;
+    border-radius: 30px;
+    border: solid 2px var(--main-color);
+}
+#home-banner .navbar .register{
+    color: var(--main-color);
+    background-color:transparent;
+    border: solid 2px var(--main-color);
+    border-radius: 30px;
+}
+#home-banner .navbar .input-group{
+    border:1px solid #ced4da;
+    border-radius: 50px;
+    background-color: #fff;
+}
+#home-banner .navbar .input-group .input-group-text{
+    background-color: #fff;
+    font-size: 0.85rem;
+    border: none;
+    border-radius: 50px;
+}
+#home-banner .navbar .input-group .form-control{
+    box-shadow: none;
+    font-size: 0.85rem;
+    border: none;
+    border-radius: 50px;
+}
+#home-banner h1{
+    font-weight:900;
+    font-size: 3.3rem;
+    line-height: 4.5rem;
+    margin-bottom: 3rem;
+}
+#home-banner a.btn{
+    margin-bottom: 3rem;
+}
+#home-banner a.btn:hover{
+    background-color: var(--orange-color);
+    color: #fff;
+}
+#features{
+    margin-top: -70px;
+    margin-bottom: 4rem;
+}
+#features .card{
+    border-radius: 0;
+    border: none;
+    transition: all 1s ease-in-out;
+}
+#features .card:hover{
+    background-color: var(--main-color);
+    transition: all 1s ease-in-out;
+}
+#features .card:hover i,
+#features .card:hover h4,
+#features .card:hover p{
+    color: #fff;
+}
+#features .card-body{
+    padding: 50px;
+}
+#features .card-body i{
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--main-color);
+    margin-bottom: 0.5rem;
+}
+#features .card-body h4{
+    font-weight: 700;
+}
+#features .card-body p{
+    font-weight: 700;
+    font-weight: 0.85rem;
+    margin-bottom: 0;
+    color: #757575;
+}
+.section-heading{
+    margin-bottom: 2rem;
+}
+.section-heading h3{
+    font-weight: 700;
+    font-size: 2.2rem;
+}
+#categories{
+    margin-bottom: 4rem;
+}
+#categories .card{
+    border: none;
+    border-radius: 0;
+}
+#categories .card-body{
+    text-align: center;
+    padding: 35px;
+}
+#categories .card img{
+    width: 50px;
+    margin: 0 auto;
+    margin-bottom: 1rem;
+}
+#categories .card p{
+    margin-bottom: 0rem;
+}
+#search-box{
+    margin-bottom: 4rem;
+}
+#search-box .btn,
+#search-box .form-select{
+    box-shadow: none;
+    font-size: 0.85rem;
+}
+.static-list{
+    font-size: 0.95rem;
+}
+.static-list li{
+    margin-bottom: 1rem;
+}
+#achievements{
+    margin-bottom: 4rem;
+}
+#achievements img{
+    width: 40px;
+    margin-bottom: 1rem;
+}
+#achievements h2{
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+#achievements p{
+    font-weight: 600;
+    margin-bottom: 0rem;
+    color: #888;
+}
+#subscribe{
+    background-color: var(--main-dark-color);
+    color: #fff;
+}
+#subscribe .input-group{
+    border: none;
+    padding: 5px;
+    background-color: #fff;
+    border-radius: 10px;
+}
+#subscribe .input-group .form-control{
+    border: none;
+    box-shadow: none;
+}
+#subscribe .input-group .btn{
+    border: none;
+    box-shadow: none;
+    border-radius: 10px;
+}
+footer{
+    background-color: var(--main-dark-color);
+    color: #fff;
+    padding-top: 3rem;
+    padding-bottom: 1rem;
+}
+footer h5{
+    margin-bottom: 1rem;
+}
+footer ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 2rem;
+}
+footer ul li{
+    margin-bottom: 0.5rem;
+}
+footer ul li a{
+    color: #ccc;
+    text-decoration: none;
+    font-size: 0.85rem;
+}
+footer ul li a:hover{
+    color: #fff;
+}
+footer ul li a i{
+    margin-right: 10px;
+}
+#footer-bottom{
+    padding-block: 10px;
+    font-size: 0.85rem;
+}
+#footer-bottom a{
+    text-decoration: none;
+    margin-inline:10px ;
+    color: var(--main-color);
+}
+@media screen and (max-width:480px){
+    #home-banner{
+        height: 75vh;
+    }
+    #home-banner h1{
+        font-size: 2rem;
+        text-align: center;
+        line-height: 2.7rem;
+    }  
+    #home-banner a.btn{
+        margin-bottom: 0;
+        text-align: center;
+    } 
+    .navbar .nav-link{
+        margin-bottom: 10px;
+    }
+}
+#breadcrumb,
+#breadcrumb .breadcrumb-item a,
+#breadcrumb .breadcrumb-item{
+    color: #fff;
+    text-decoration: none;
+}
+#aboutus{
+    background-image:linear-gradient(to right, rgb(0, 0, 0,0.75) 0%, rgba(0, 0, 0, 0.75) 100%), url('../images/aboutus-bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: bottom;
+    padding-block:5rem ;
+    color: #fff;
+    margin-bottom: 2rem;
+}
+#main-content p,
+#main-content ul{
+    font-size: 1rem;
+    line-height: 1.7rem;
+}
+#login{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+.form-container .form-label{
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+.form-container .form-select,
+.form-container .form-control,
+.form-container .form-check,
+.form-container a,
+.form-container .btn{
+    font-size: 0.85rem;
+    box-shadow: none;
+}
+.form-container .input-group{
+    border: 1px solid #ced4da;
+    border-radius: 0.375rem;
+}
+.form-container .input-group .form-control{
+    border: none;
+}
+.form-container .input-group .btn{
+    border: none;
+    box-shadow: none;
+    background-color: transparent;
+}
+
+@media all and (min-width: 992px) {
+	.navbar .nav-item .dropdown-menu{ display: none; }
+	.navbar .nav-item:hover .dropdown-menu{ display: block; }
+	.navbar .nav-item .dropdown-menu{ margin-top:0; }
+}
+/*///////////// Dashboard CSS starts here /////////////////*/
+.demo-version p{
+    font-size: 0.85rem;
+}
+.demo-version h5{
+    font-size: 1rem;
+    color: #111;
+}
+.plain-card .card-header{
+    background-color: transparent;
+    font-size: 0.95rem;
+    font-weight: 700;
+    border-bottom: none;
+}
+.plain-card .card-footer{
+    background-color: transparent;
+    font-size: 0.85rem;
+    border-top: none;
+}
+.plain-card .btn{
+    font-size: 0.85rem;
+}
+.quiz-details p{
+    font-weight: 700;
+    margin-bottom: 1px;
+    font-size: 0.85rem;
+}
+.quiz-details small{
+    margin-bottom: 0px;
+    color: #666;
+    font-size: 0.8rem;
+}
+.dashboard-table th,
+.dashboard-table td{
+    font-size: 0.85rem;
+    vertical-align: middle;
+}
+.dashboard-table th{
+    background-color: #eee;
+}
+.quizz-box small{
+    font-size: 0.8rem;
+    background-color: #eee;
+    color: #333;
+    padding: 5px 10px;
+    border-radius:0.375rem;
+}
+.quizz-box h6{
+    color: var(--main-color);
+    margin-block: 1rem;
+}
+.quizz-box h5{
+    margin-bottom: 0;
+}
+.quizz-box p{
+    margin-bottom: 0;
+    font-size: 0.85rem;
+    color: #757575;
+}
+.quizz-box .card-footer{
+    border-top: none;
+    background-color: transparent;
+}
+.quizz-box .card-footer .btn{
+    border:none;
+    font-size: 0.85rem;
+}
+.filterbuttons .btn{
+    box-shadow: none;
+    font-size: 0.85rem;
+}
+.data-container p,
+.data-container ul,
+.data-container ol{
+    font-size: 0.85rem;
+}
+.column-2{
+    columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+  display: block !important;
+  border: none;
+}
+ul.list-group .list-group-item{
+    border: none;
+}

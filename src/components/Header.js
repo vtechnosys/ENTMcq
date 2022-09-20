@@ -142,6 +142,12 @@ function Header()
                 <div data-i18n="Account Settings">Subjects</div>
               </a>
             </li>
+			 <li className="menu-item">
+              <a href="/addquiz" className="menu-link menu-toggle">
+                <i className="menu-icon tf-icons bx bx-dock-top"></i>
+                <div data-i18n="Account Settings">Add Quiz</div>
+              </a>
+            </li>
             <li className="menu-item">
               <a href="/questions" className="menu-link menu-toggle">
               <i className="menu-icon tf-icons bx bx-cube-alt"></i>
@@ -443,6 +449,7 @@ function Header()
              <div data-i18n="Authentications">Answer</div>
            </a>
          </li>
+      
         
          
          

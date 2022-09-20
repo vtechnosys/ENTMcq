@@ -9,6 +9,7 @@ function Package(){
     const [error,setError] = useState(false);
     const [subject,setSubjects]=useState([]);
     const [service,setServices]=useState([]);
+    const [questionbank,setQuestionBank]=useState([]);
     const [packages,setPackage]=useState([]);
     const [service_include,setService]=useState('');
     const [package_name,setPackagename]=useState('');
@@ -16,6 +17,7 @@ function Package(){
     const [discount,setDiscount]=useState('');
     const [subjects,setSubject]=useState('');
     const [serid,setSerid] = useState('');
+    const [questionb,setQuestionb]=useState('');
 
     const [userinfo, setUserInfo] = useState({
       services: [],
@@ -85,7 +87,8 @@ function Package(){
             service_include:ft,
             pricing:pricing,
             discount:discount,
-            subjects:userinfo1.response
+            subjects:userinfo1.response,
+            question_bank_id:questionb
           };
           console.log(subData);
           
@@ -122,6 +125,7 @@ function Package(){
               setPrice(data.pricing);
               setDiscount(data.discount);
               setSubjects(data.subjects);
+              setQuestionb(data.questionb);
               //setSubjects(data);
             })
     }
@@ -149,6 +153,15 @@ function Package(){
         .then((res)=>{
           const data = res.data;
           setServices(data);
+        })
+    }
+
+    function featchQuestionBank()
+    {
+        axios.get('https://entmcq.vertextechnosys.com/api/questionbank')
+        .then((res)=>{
+          const data = res.data;
+          setQuestionBank(data);
         })
     }
     function featchSubject()
@@ -186,6 +199,9 @@ function Package(){
     },[])
     useEffect(()=>{
       featchPackage()
+    },[])
+    useEffect(()=>{
+      featchQuestionBank()
     },[])
     return (
         <div class="layout-wrapper layout-content-navbar">
@@ -299,7 +315,25 @@ function Package(){
                             </FormGroup>
                             
                           </div>
-                          
+                          <div>
+                          <select
+                          class="form-select" 
+                          id="exampleFormControlSelect1" 
+                          aria-label="Default select example"
+                          onChange={questionb => setQuestionb(questionb.target.value)}
+                          value={questionb}
+                        >
+                        <option value="">Select Question Bank Name</option>
+                        {
+                          questionbank.map((obj)=>{
+                          return (
+                            <option value={obj.qid}>{obj.qname}</option>
+                            )
+                          })
+                        }
+                        
+                        </select>
+                        </div>
                       <div class="mb-3">
                         <button class="btn btn-primary d-grid w-100" type="button" style={{backgroundColor: '#188ccc'}} onClick={storeSubject}>Store</button>
                       </div>
@@ -341,7 +375,7 @@ function Package(){
                                 <td>
                               <div class="dropdown">
                                 <button
-                                  type="button"
+                                  
                                   class="btn p-0 dropdown-toggle hide-arrow"
                                   data-bs-toggle="dropdown"
                                 >

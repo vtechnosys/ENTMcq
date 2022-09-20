@@ -18,7 +18,7 @@ import Validation from './components/Formvalidation';
 import Category from './components/Category';
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
 import QuestionBank from './components/Questionbank';
-
+import Addquiz from './components/Addquiz';
 function App() {
   return (
    
@@ -43,6 +43,7 @@ function App() {
           <Route path='/validation' element={<Validation/>}/>
           <Route path='/category' element={<Category/>}/>
           <Route path='/question_bank' element={<QuestionBank/>}/>
+          <Route path='/addquiz' element={<Addquiz/>}/>
         </Routes>
         
       </BrowserRouter>
