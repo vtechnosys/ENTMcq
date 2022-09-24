@@ -1,45 +1,73 @@
-import { useState,useEffect } from "react"
+import React,{useEffect,useState} from "react";
 import { useIdleTimer, workerTimers } from 'react-idle-timer'
+
 function Header()
 {
+  // Set timeout values
+  const timeout = 30 * 1000
+  const promptTimeout = 1000 * 30
 
+  // Modal open state
+  const [open, setOpen] = useState(false)
 
-   /* Time Out Code Start Here */
-   const timeout = 30 * 1000
-   const promptTimeout = 1000 * 30
-   const [open, setOpen] = useState(false)
-   const [remaining, setRemaining] = useState(0)
-   const onPrompt = () => {
-     setRemaining(promptTimeout)
-   }
-  const onIdle = () => {
-     setOpen(false)
-     setRemaining(0)
-     //window.location.href='/';
+  // Time before idle
+  const [remaining, setRemaining] = useState(0)
+
+  const onPrompt = () => {
+    // onPrompt will be called after the timeout value is reached
+    // In this case 30 minutes. Here you can open your prompt. 
+    // All events are disabled while the prompt is active. 
+    // If the user wishes to stay active, call the `reset()` method.
+    // You can get the remaining prompt time with the `getRemainingTime()` method,
+    setOpen(true)
+    setRemaining(promptTimeout)
   }
+  
+  const onIdle = () => {
+    // onIdle will be called after the promptTimeout is reached.
+    // In this case 30 seconds. Here you can close your prompt and 
+    // perform what ever idle action you want such as log out your user.
+    // Events will be rebound as long as `stopOnMount` is not set.
+    setOpen(false)
+    setRemaining(0)
+    // localStorage.removeItem("type");
+    // window.location.href='/login';
+  }
+  
   const onActive = () => {
-     setOpen(false)
-     setRemaining(0)
-   }
-  const { getRemainingTime, isPrompted, activate } = useIdleTimer({
-     timeout,
-     promptTimeout,
-     onPrompt,
-     onIdle,
-     onActive
-   })
-   useEffect(() => {
-     const interval = setInterval(() => {
-       if (isPrompted()) {
-         setRemaining(Math.ceil(getRemainingTime() / 1000))
-       }
-     }, 1000)
-     return () => {
-       clearInterval(interval)
-     }
-   }, [getRemainingTime, isPrompted])
+    // onActive will only be called if `reset()` is called while `isPrompted()` 
+    // is true. Here you will also want to close your modal and perform
+    // any active actions. 
+    setOpen(false)
+    setRemaining(0)
+  }
 
-   /* Time Out Code End Here */
+  const { getRemainingTime, isPrompted, activate } = useIdleTimer({
+    timeout,
+    promptTimeout,
+    onPrompt,
+    onIdle,
+    onActive
+  })
+
+ //  const handleStillHere = () => {
+ //    setOpen(false)
+ //    activate()
+ //  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (isPrompted()) {
+        setRemaining(Math.ceil(getRemainingTime() / 1000))
+      }
+    }, 1000)
+    return () => {
+      clearInterval(interval)
+    }
+  }, [getRemainingTime, isPrompted])
+
+
+
   const [type, setType] = useState(() => {
     // getting stored value
     const saved = localStorage.getItem("type");
@@ -48,10 +76,11 @@ function Header()
     
   });
   function islog(){
-    if(type === "")
+    //alert(type);
+    if(type == "")
     {
       
-      window.location.href='/';
+      window.location.href='/login';
     }
   }
  
@@ -59,12 +88,11 @@ function Header()
     islog()
   },[])
     return(
-      
-          <aside id="layout-menu" className="layout-menu menu-vertical menu bg-menu-theme">
+        <aside id="layout-menu" className="layout-menu menu-vertical menu bg-menu-theme">
           <div className="app-brand demo">
             <a href="index.html" className="app-brand-link">
-                <img src="assets/img/icons/ent.png" className="app-brand-logo demo" style={{height:50,width:70}}/>
-                <span className="app-brand-text demo menu-text fw-bolder ms-2" style={{textTransform: 'capitalize',fontSize:20}}>ENT-MCQ</span>
+                <img src="/assets/img/icons/entmcq.png" className="app-brand-logo demo" style={{height:50,width:70}}/>
+                {/* <span className="app-brand-text demo menu-text fw-bolder ms-2" style={{textTransform: 'capitalize',fontSize:20}}>ENT-MCQ</span> */}
             </a>
 
             <a href="#" className="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -73,8 +101,11 @@ function Header()
           </div>
 
           <div className="menu-inner-shadow"></div>
-          {type === "admin" ?
-          (<ul className="menu-inner py-1">
+
+          
+            {type == "admin" ?
+            (
+            <ul className="menu-inner py-1">
            
             <li className="menu-item active">
               <a href="/" className="menu-link">
@@ -82,140 +113,187 @@ function Header()
                 <div data-i18n="Analytics">Dashboard</div>
               </a>
             </li>
-
-           
             <li className="menu-item">
-              <a href="/admins" className="menu-link menu-toggle">
+              <a href="javascript:void(0);" className="menu-link menu-toggle">
                 <i className="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Layouts">Admin's</div>
               </a>
 
               <ul className="menu-sub">
                 <li className="menu-item">
-                  <a href="layouts-without-menu.html" className="menu-link">
-                    <div data-i18n="Without menu">Without menu</div>
+                  <a href="/admins" className="menu-link">
+                    <div data-i18n="Without menu">View Admins</div>
                   </a>
                 </li>
+
                 <li className="menu-item">
-                  <a href="layouts-without-navbar.html" className="menu-link">
-                    <div data-i18n="Without navbar" >Without navbar</div>
+                  <a href="/addAdmin" className="menu-link">
+                    <div data-i18n="Without menu">Add Admins</div>
                   </a>
                 </li>
-                <li className="menu-item">
-                  <a href="layouts-container.html" className="menu-link">
-                    <div data-i18n="Container">Container</div>
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a href="layouts-fluid.html" className="menu-link">
-                    <div data-i18n="Fluid">Fluid</div>
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a href="layouts-blank.html" className="menu-link">
-                    <div data-i18n="Blank">Blank</div>
-                  </a>
-                </li>
+                
               </ul>
             </li>
+
+            <li className="menu-item">
+              <a href="javascript:void(0);" className="menu-link menu-toggle">
+                <i className="menu-icon tf-icons bx bx-layout"></i>
+                <div data-i18n="Layouts">Doctor's</div>
+              </a>
+
+              <ul className="menu-sub">
+                <li className="menu-item">
+                  <a href="/doctors" className="menu-link">
+                    <div data-i18n="Without menu">View All</div>
+                  </a>
+                </li>
+
+                <li className="menu-item">
+                  <a href="/addDoctor" className="menu-link">
+                    <div data-i18n="Without menu">Add New</div>
+                  </a>
+                </li>
+                
+              </ul>
+            </li>
+            
 
             <li className="menu-header small text-uppercase">
               <span className="menu-header-text">Question Bank</span>
             </li>
-            {/* <li className="menu-item">
-              <a href="/user" className="menu-link menu-toggle">
-                <i className="menu-icon tf-icons bx bx-dock-top"></i>
-                <div data-i18n="Account Settings">User</div>
-              </a>
-              
-            </li> */}
             <li className="menu-item">
-              <a href="/doctor" className="menu-link menu-toggle">
-                <i className="menu-icon tf-icons bx bx-dock-top"></i>
-                <div data-i18n="Account Settings">Doctors</div>
+              <a href="javascript:void(0);" className="menu-link menu-toggle">
+                <i className="menu-icon tf-icons bx bx-layout"></i>
+                <div data-i18n="Layouts">Category</div>
               </a>
-              
-            </li>
-            <li className="menu-item">
-              <a href="/subjects" className="menu-link menu-toggle">
-                <i className="menu-icon tf-icons bx bx-dock-top"></i>
-                <div data-i18n="Account Settings">Subjects</div>
-              </a>
-            </li>
-			 <li className="menu-item">
-              <a href="/addquiz" className="menu-link menu-toggle">
-                <i className="menu-icon tf-icons bx bx-dock-top"></i>
-                <div data-i18n="Account Settings">Add Quiz</div>
-              </a>
-            </li>
-            <li className="menu-item">
-              <a href="/questions" className="menu-link menu-toggle">
-              <i className="menu-icon tf-icons bx bx-cube-alt"></i>
-                <div data-i18n="Authentications">Questions</div>
-              </a>
-              {/* <ul className="menu-sub">
+
+              <ul className="menu-sub">
                 <li className="menu-item">
-                  <a href="auth-login-basic.html" className="menu-link" target="_blank">
-                    <div data-i18n="Basic">Login</div>
+                  <a href="/category" className="menu-link">
+                    <div data-i18n="Without menu">View All</div>
                   </a>
                 </li>
+
                 <li className="menu-item">
-                  <a href="auth-register-basic.html" className="menu-link" target="_blank">
-                    <div data-i18n="Basic">Register</div>
+                  <a href="/addCategory" className="menu-link">
+                    <div data-i18n="Without menu">Add Category</div>
                   </a>
                 </li>
+                
+              </ul>
+            </li>
+            <li className="menu-item">
+              <a href="javascript:void(0);" className="menu-link menu-toggle">
+                <i className="menu-icon tf-icons bx bx-layout"></i>
+                <div data-i18n="Layouts">Question Bank</div>
+              </a>
+
+              <ul className="menu-sub">
                 <li className="menu-item">
-                  <a href="auth-forgot-password-basic.html" className="menu-link" target="_blank">
-                    <div data-i18n="Basic">Forgot Password</div>
+                  <a href="/quetionbank" className="menu-link">
+                    <div data-i18n="Without menu">View All</div>
                   </a>
                 </li>
-              </ul> */}
+
+                <li className="menu-item">
+                  <a href="/addQuetionBank" className="menu-link">
+                    <div data-i18n="Without menu">Add Bank</div>
+                  </a>
+                </li>
+                
+              </ul>
             </li>
             <li className="menu-item">
-              <a href="#" className="menu-link menu-toggle">
-              <i className="menu-icon tf-icons bx bx-cube-alt"></i>
-                <div data-i18n="Authentications">Answer</div>
+              <a href="javascript:void(0);" className="menu-link menu-toggle">
+                <i className="menu-icon tf-icons bx bx-layout"></i>
+                <div data-i18n="Layouts">Subject</div>
               </a>
+
+              <ul className="menu-sub">
+                <li className="menu-item">
+                  <a href="/view_subjects" className="menu-link">
+                    <div data-i18n="Without menu">View Subjects</div>
+                  </a>
+                </li>
+
+                <li className="menu-item">
+                  <a href="/subjects" className="menu-link">
+                    <div data-i18n="Without menu">Add Subjects</div>
+                  </a>
+                </li>
+                
+              </ul>
             </li>
+
             <li className="menu-item">
-              <a href="/service" className="menu-link menu-toggle">
-                <i className="menu-icon tf-icons bx bx-cube-alt"></i>
-                <div data-i18n="Misc">Services</div>
+              <a href="javascript:void(0);" className="menu-link menu-toggle">
+                <i className="menu-icon tf-icons bx bx-layout"></i>
+                <div data-i18n="Layouts">Questions</div>
               </a>
+
+              <ul className="menu-sub">
+                <li className="menu-item">
+                  <a href="/viewQuestions" className="menu-link">
+                    <div data-i18n="Without menu">View All</div>
+                  </a>
+                </li>
+
+                <li className="menu-item">
+                  <a href="/questions" className="menu-link">
+                    <div data-i18n="Without menu">Add Question</div>
+                  </a>
+                </li>
+                
+              </ul>
+
             </li>
             <li className="menu-item">
-                <a href="/package" className="menu-link menu-toggle">
-                  <i className="menu-icon tf-icons bx bx-cube-alt"></i>
-                  <div data-i18n="Misc">Packages</div>
-                </a>
+              <a href="javascript:void(0);" className="menu-link menu-toggle">
+                <i className="menu-icon tf-icons bx bx-layout"></i>
+                <div data-i18n="Layouts">services</div>
+              </a>
+
+              <ul className="menu-sub">
+                <li className="menu-item">
+                  <a href="/services" className="menu-link">
+                    <div data-i18n="Without menu">View All</div>
+                  </a>
+                </li>
+
+                <li className="menu-item">
+                  <a href="/service" className="menu-link">
+                    <div data-i18n="Without menu">Add</div>
+                  </a>
+                </li>
+                
+              </ul>
+
+            </li>
+            <li className="menu-item">
+              <a href="javascript:void(0);" className="menu-link menu-toggle">
+                <i className="menu-icon tf-icons bx bx-layout"></i>
+                <div data-i18n="Layouts">packages</div>
+              </a>
+
+              <ul className="menu-sub">
+                <li className="menu-item">
+                  <a href="/packages" className="menu-link">
+                    <div data-i18n="Without menu">View All</div>
+                  </a>
+                </li>
+
+                <li className="menu-item">
+                  <a href="/package" className="menu-link">
+                    <div data-i18n="Without menu">Add</div>
+                  </a>
+                </li>
+                
+              </ul>
+
             </li>
             
-          
-            <li className="menu-item">
-              <a href="/quiz" className="menu-link menu-toggle">
-              <i className="menu-icon tf-icons bx bx-cube-alt"></i>
-                <div data-i18n="Authentications">Quiz</div>
-              </a>
-            </li>
-            <li className="menu-item">
-              <a href="/quizanswer" className="menu-link menu-toggle">
-              <i className="menu-icon tf-icons bx bx-cube-alt"></i>
-                <div data-i18n="Authentications">Quiz Qnswer</div>
-              </a>
-            </li>
-            <li className="menu-item">
-              <a href="/category" className="menu-link menu-toggle">
-              <i className="menu-icon tf-icons bx bx-cube-alt"></i>
-                <div data-i18n="Authentications">Category</div>
-              </a>
-            </li>
-            <li className="menu-item">
-              <a href="/question_bank" className="menu-link menu-toggle">
-              <i className="menu-icon tf-icons bx bx-cube-alt"></i>
-                <div data-i18n="Authentications">Question Bank</div>
-              </a>
-            </li>
-            <li className="menu-header small text-uppercase"><span className="menu-header-text">Quizs/Users</span></li>
+            
+            <li className="menu-header small text-uppercase"><span className="menu-header-text">Users</span></li>
             
             <li className="menu-item">
               <a href="/user" className="menu-link">
@@ -224,141 +302,15 @@ function Header()
               </a>
             </li>
             
-            <li className="menu-item">
-              <a href="/quiz_details" className="menu-link menu-toggle">
-                <i className="menu-icon tf-icons bx bx-box"></i>
-                <div data-i18n="User interface">Quiz Details</div>
-              </a>
-              <ul className="menu-sub">
-                <li className="menu-item">
-                  <a href="ui-accordion.html" className="menu-link">
-                    <div data-i18n="Accordion">Accordion</div>
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a href="ui-alerts.html" className="menu-link">
-                    <div data-i18n="Alerts">Alerts</div>
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a href="ui-badges.html" className="menu-link">
-                    <div data-i18n="Badges">Badges</div>
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a href="ui-buttons.html" className="menu-link">
-                    <div data-i18n="Buttons">Buttons</div>
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a href="ui-carousel.html" className="menu-link">
-                    <div data-i18n="Carousel">Carousel</div>
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a href="ui-collapse.html" className="menu-link">
-                    <div data-i18n="Collapse">Collapse</div>
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a href="ui-dropdowns.html" className="menu-link">
-                    <div data-i18n="Dropdowns">Dropdowns</div>
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a href="ui-footer.html" className="menu-link">
-                    <div data-i18n="Footer">Footer</div>
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a href="ui-list-groups.html" className="menu-link">
-                    <div data-i18n="List Groups">List groups</div>
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a href="ui-modals.html" className="menu-link">
-                    <div data-i18n="Modals">Modals</div>
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a href="ui-navbar.html" className="menu-link">
-                    <div data-i18n="Navbar">Navbar</div>
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a href="ui-offcanvas.html" className="menu-link">
-                    <div data-i18n="Offcanvas">Offcanvas</div>
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a href="ui-pagination-breadcrumbs.html" className="menu-link">
-                    <div data-i18n="Pagination &amp; Breadcrumbs">Pagination &amp; Breadcrumbs</div>
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a href="ui-progress.html" className="menu-link">
-                    <div data-i18n="Progress">Progress</div>
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a href="ui-spinners.html" className="menu-link">
-                    <div data-i18n="Spinners">Spinners</div>
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a href="ui-tabs-pills.html" className="menu-link">
-                    <div data-i18n="Tabs &amp; Pills">Tabs &amp; Pills</div>
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a href="ui-toasts.html" className="menu-link">
-                    <div data-i18n="Toasts">Toasts</div>
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a href="ui-tooltips-popovers.html" className="menu-link">
-                    <div data-i18n="Tooltips & Popovers">Tooltips &amp; popovers</div>
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a href="ui-typography.html" className="menu-link">
-                    <div data-i18n="Typography">Typography</div>
-                  </a>
-                </li>
-              </ul>
-            </li>
-
+                        
+            <li className="menu-header small text-uppercase"><span className="menu-header-text">Reports</span></li>
             
             <li className="menu-item">
-              <a href="#" className="menu-link menu-toggle">
-                <i className="menu-icon tf-icons bx bx-copy"></i>
-                <div data-i18n="Extended UI">Quiz Performance</div>
-              </a>
-              <ul className="menu-sub">
-                <li className="menu-item">
-                  <a href="extended-ui-perfect-scrollbar.html" className="menu-link">
-                    <div data-i18n="Perfect Scrollbar">Perfect scrollbar</div>
-                  </a>
-                </li>
-                <li className="menu-item">
-                  <a href="extended-ui-text-divider.html" className="menu-link">
-                    <div data-i18n="Text Divider">Text Divider</div>
-                  </a>
-                </li>
-              </ul>
-            </li>
-
-            
-
-            
-            <li className="menu-header small text-uppercase"><span className="menu-header-text">Subscription Details</span></li>
-            
-            <li className="menu-item">
-              <a href="/subscription" className="menu-link menu-toggle">
+              <a href="/subscription" className="menu-link">
                 <i className="menu-icon tf-icons bx bx-detail"></i>
                 <div data-i18n="Form Elements">Subscriptions</div>
               </a>
-              <ul className="menu-sub">
+              {/* <ul className="menu-sub">
                 <li className="menu-item">
                   <a href="forms-basic-inputs.html" className="menu-link">
                     <div data-i18n="Basic Inputs">Basic Inputs</div>
@@ -369,9 +321,9 @@ function Header()
                     <div data-i18n="Input groups">Input groups</div>
                   </a>
                 </li>
-              </ul>
+              </ul> */}
             </li>
-            <li className="menu-item">
+            {/* <li className="menu-item">
               <a href="/payments" className="menu-link menu-toggle">
                 <i className="menu-icon tf-icons bx bx-detail"></i>
                 <div data-i18n="Form Layouts">Payments Details</div>
@@ -391,7 +343,7 @@ function Header()
             </li>
             
             <li className="menu-item">
-              <a href="" className="menu-link">
+              <a href="tables-basic.html" className="menu-link">
                 <i className="menu-icon tf-icons bx bx-table"></i>
                 <div data-i18n="Tables">Expired Subscriptions</div>
               </a>
@@ -400,64 +352,50 @@ function Header()
             <li className="menu-header small text-uppercase"><span className="menu-header-text">Misc</span></li>
             <li className="menu-item">
               <a
-                href=""
+                href="https://github.com/themeselection/sneat-html-admin-template-free/issues"
                 target="_blank"
                 className="menu-link"
               >
               <i className="menu-icon tf-icons bx bx-table"></i>
                 <div data-i18n="Support">Reports</div>
               </a>
+            </li> */}
+            </ul>)
+            :(
+              <ul className="menu-inner py-1">
+           
+            <li className="menu-item active">
+              <a href="/" className="menu-link">
+                <i className="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="Analytics">Dashboard</div>
+              </a>
             </li>
-            
-          </ul>)
-          :( <ul className="menu-inner py-1">
-         
-         <li className="menu-item active">
-           <a href="/" className="menu-link">
-             <i className="menu-icon tf-icons bx bx-home-circle"></i>
-             <div data-i18n="Analytics">Dashboard</div>
-           </a>
-         </li>
+              <li className="menu-item">
+              <a href="javascript:void(0);" className="menu-link menu-toggle">
+                <i className="menu-icon tf-icons bx bx-layout"></i>
+                <div data-i18n="Layouts">Questions</div>
+              </a>
 
-        
-         <li className="menu-item">
-           <a href="/questions" className="menu-link menu-toggle">
-           <i className="menu-icon tf-icons bx bx-cube-alt"></i>
-             <div data-i18n="Authentications">Questions</div>
-           </a>
-           {/* <ul className="menu-sub">
-             <li className="menu-item">
-               <a href="auth-login-basic.html" className="menu-link" target="_blank">
-                 <div data-i18n="Basic">Login</div>
-               </a>
-             </li>
-             <li className="menu-item">
-               <a href="auth-register-basic.html" className="menu-link" target="_blank">
-                 <div data-i18n="Basic">Register</div>
-               </a>
-             </li>
-             <li className="menu-item">
-               <a href="auth-forgot-password-basic.html" className="menu-link" target="_blank">
-                 <div data-i18n="Basic">Forgot Password</div>
-               </a>
-             </li>
-           </ul> */}
-         </li>
-         <li className="menu-item">
-           <a href="#" className="menu-link menu-toggle">
-           <i className="menu-icon tf-icons bx bx-cube-alt"></i>
-             <div data-i18n="Authentications">Answer</div>
-           </a>
-         </li>
-      
-        
-         
-         
-         
-       </ul>)
+              <ul className="menu-sub">
+                <li className="menu-item">
+                  <a href="/viewQuestions" className="menu-link">
+                    <div data-i18n="Without menu">View All</div>
+                  </a>
+                </li>
+
+                <li className="menu-item">
+                  <a href="/questions" className="menu-link">
+                    <div data-i18n="Without menu">Add Question</div>
+                  </a>
+                </li>
+                
+              </ul>
+            </li>
+            </ul>
+            )
           }
+          
         </aside>
-       
     )
 }
 

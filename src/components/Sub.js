@@ -1,7 +1,7 @@
 import Header from './Header';
 import axios from "axios";
-import Headerpanel from "./Headerpanel";
 import React,{useState, useEffect} from 'react';
+import Headerpanel from './Headerpanel';
 function Sub() {
     const [subcription,setSubcription]=useState([])
     const [sid,setSid] = useState('')
@@ -128,6 +128,7 @@ function Sub() {
         <div class="layout-page">
           
         <Headerpanel/>
+
           
 
           
@@ -234,11 +235,8 @@ function Sub() {
                         <tr>
                           <th>ID</th>
                           <th>User Name</th>
-                          <th>Package Name</th>
-                          <th>Start Date</th>
-                          <th>End Date</th>
-                          <th>Code</th>
-                          <th>Actions</th>
+                          <th>QB Name</th>
+                          <th>Type</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -250,27 +248,9 @@ function Sub() {
                                   {obj.sid}
                                 </td>
                                 <td>{obj.name}</td>
-                                <td>{obj.package_name}</td>
+                                <td>{obj.qname}</td>
                                 <td>{obj.sub_date}</td>
-                                <td>{obj.sub_edate}</td>
-                                <td>{obj.sub_code}</td>
-                                <td>
-                                  <div class="dropdown">
-                                    <button
-                                      type="button"
-                                      class="btn p-0 dropdown-toggle hide-arrow"
-                                      data-bs-toggle="dropdown"
-                                    >
-                                      <i class="bx bx-dots-vertical-rounded"></i>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                    {/* {/* <button class="dropdown-item" onClick={()=>editOption(obj.id)}
-                                        ><i class="bx bx-edit-alt me-1"></i> Edit</button> */}
-                                      <button class="dropdown-item" onClick={()=>deleteOption(obj.sid)}
-                                        ><i class="bx bx-trash me-1"></i> Delete</button>
-                                    </div>
-                                  </div>
-                                </td>
+                                
                               </tr>
                             )
                           })

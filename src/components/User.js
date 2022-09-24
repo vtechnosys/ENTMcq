@@ -1,7 +1,7 @@
 import axios from "axios";
 import React,{useState,useEffect} from "react";
 import Header from "./Header";
-import Headerpanel from "./Headerpanel";
+import Headerpanel from './Headerpanel';
 function User () {
     const [name,setName] = useState('')
     const [email,setEmail] = useState('')
@@ -68,7 +68,7 @@ function User () {
         <div class="layout-page">
           
 
-        <Headerpanel/>
+          <Headerpanel/>
 
           
           <div class="content-wrapper">

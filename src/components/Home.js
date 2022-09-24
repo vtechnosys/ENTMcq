@@ -1,8 +1,35 @@
-import React from "react";
+import React, { useState,useEffect } from "react";
 import Header from "./Header";
 import Headerpanel from "./Headerpanel";
+//import { ToastContainer,toast } from "react-toastify/dist/components";
 function Home()
 {
+    const [tst,setTst] = useState(() => {
+      // getting stored value
+      const saved = localStorage.getItem("toast");
+      //const initialValue = JSON.parse(saved);
+      //localStorage.removeItem('toast');
+      console.log(saved);
+      return saved || false;
+      
+    });
+
+    function checkToast()
+    {
+      //const st = localStorage.getItem('toast')
+      localStorage.removeItem('toast');
+      setTst(false);
+      console.log(tst);
+    }
+    function AddLibrary(urlOfTheLibrary) {
+      const script = document.createElement('script');
+      script.src = urlOfTheLibrary;
+      script.async = true;
+      document.body.appendChild(script);
+    }
+    // useEffect(()=>{
+    //   checkToast()
+    // },[]);
     return(
         <React.Fragment>
 
@@ -11,7 +38,22 @@ function Home()
       <div className="layout-container">
         
         <Header/>
-        
+        {tst && (<div
+            class="bs-toast toast toast-placement-ex m-2 show bg-success top-0 end-0 fade show"
+            role="alert"
+            aria-live="assertive"
+            aria-atomic="true"
+            data-delay="2000"
+
+          >
+            <div class="toast-header">
+              <i class="bx bx-bell me-2"></i>
+              <div class="me-auto fw-semibold">Alert</div>
+              {/* <small>11 mins ago</small> */}
+              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" onClick={checkToast}></button>
+            </div>
+            <div class="toast-body">Login Successfull</div>
+          </div>)}
         
         <div className="layout-page">
           
@@ -566,6 +608,15 @@ function Home()
 
       <div className="layout-overlay layout-menu-toggle"></div>
     </div>
+    {AddLibrary("/assets/vendor/libs/jquery/jquery.js")}
+    {AddLibrary("/assets/vendor/libs/popper/popper.js")}
+    {AddLibrary("/assets/vendor/js/bootstrap.js")}
+    {AddLibrary("/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js")}
+    {AddLibrary("/assets/vendor/js/menu.js")}
+    {AddLibrary("/assets/vendor/libs/apex-charts/apexcharts.js")}
+    {AddLibrary("/assets/js/dashboards-analytics.js")}
+    {AddLibrary("/assets/js/main.js")}
+    
     </React.Fragment>
     )
 }
