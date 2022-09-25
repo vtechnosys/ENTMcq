@@ -6,20 +6,29 @@ import axios from 'axios';
 import Headerpanel from '../Headerpanel';
 import {useParams} from 'react-router-dom'
 import {Triangle} from 'react-loader-spinner';
-
+import TableRows from '../ui/TableRows';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import { queryByDisplayValue } from '@testing-library/react';
 
 
 function QuestionEdit(){
     const qid = useParams();
   const [subjects, setSubjects] = useState([]);
   const [subid,setSubid] = useState('');
+  
   const [title,setTitle] = useState('');
   const [qtitle,setQTitle] = useState('');
   const [explain,setExplain] = useState('');
   const [qstatus,setQstatus] = useState('');
   const [level,setLevel] = useState('');
   const [showProcess,setShowProcess] = useState(true);
+  const [error, setError] = useState(false)
+  const [rowsData, setRowsData] = useState([{ans:'',setans:false}]);
+  const [trial,setTrial]=useState('');
 
+  
   function fetchSubject()
     {
       axios.get('https://entmcq.vertextechnosys.com/api/subject')
@@ -41,6 +50,9 @@ function QuestionEdit(){
             //setExplain('welcome')
             setQstatus(data.status);
             setSubid(data.sub_id);
+            
+            setTrial(data.trial);
+            setRowsData(JSON.parse(data.answer_option));
             // console.log(explain);
             // console.log(qid)
         })
@@ -60,16 +72,20 @@ function QuestionEdit(){
   function handleClick()
   {
     const qusData = {
-        id:qid,
+      id:qid.qid,  
       title:title,
       qtitle:qtitle,
-      answer_option:'a',
+      answer_option:rowsData,
       explain:explain,
       doctor_id:'20',
       qmode:level,
       sub_id:subid,
+      trial:trial,
+      status:qstatus,
     }
-    axios.put('https://entmcq.vertextechnosys.com/api/question/'+qid,qusData)
+    console.log(qusData);
+    
+    axios.put('https://entmcq.vertextechnosys.com/api/question/'+qid.qid,qusData)
         .then((resp)=>{
           const data = resp.data;
           console.log(data)
@@ -80,6 +96,91 @@ function QuestionEdit(){
           }
         })
   }
+
+  const addTableRows = () => {
+
+    const rowsInput = {
+      ans: '',
+      setans:false
+
+    }
+    setRowsData([...rowsData, rowsInput])
+
+  }
+  const deleteTableRows = (index) => {
+    const rows = [...rowsData];
+    rows.splice(index, 1);
+    setRowsData(rows);
+  }
+
+  const handleChange = (index, evnt) => {
+
+    const { name, value } = evnt.target;
+    const rowsInput = [...rowsData];
+    rowsInput[index][name] = value;
+    console.log(value)
+    console.log(rowsInput);
+    setRowsData(rowsInput);
+
+
+
+  }
+  const handleChangesetevent = (index)=>{
+  // const {name, value } = index;
+    const rowsInput = [...rowsData];
+    
+    
+    
+    //const rows = [...rowsData];
+    //rows.splice(index, 1);
+    
+    //console.log(rowsInput.setans);
+   // console.log(index.ans);
+    var ft='';
+    var rowele='';
+    var kp='';
+
+    const newState = rowsInput.map((obj)=>{
+      ft=obj.ans;
+      
+      
+      rowele=rowsInput[index]['ans'];
+      
+    //  console.log(ft);
+    //  console.log(rowele);
+      
+      if(rowele === ft)
+      {
+        return {...obj,setans:true};
+        
+      }
+      else
+      {
+        return {...obj,setans:false};
+        //kp=rowsInput[index]['setans']=false;
+        
+        
+      }
+      return obj;  
+
+    });
+    setRowsData(newState)
+
+    console.log(rowsData);
+        
+
+    
+      //setRowsData(newState);
+       // console.log(ft);
+        //console.log(rows);
+        
+        
+    
+    //console.log(rowsInput);
+    //console.log(rowsInput);
+    
+  };
+
 
   
   function AddLibrary(urlOfTheLibrary) {
@@ -133,7 +234,7 @@ function QuestionEdit(){
               <h4 className="fw-bold py-3 mb-4"><span className="text-muted fw-light">Questions /</span> Edit Question</h4>
               
               <div className="row">
-                <div className="col-md-9">
+                <div className="col-md-12">
                   <div className="card mb-4">
                     <h5 className="card-header">Add Questions</h5>
                     <div className="card-body  demo-only-element row">
@@ -146,7 +247,7 @@ function QuestionEdit(){
                               onChange={subid => setSubid(subid.target.value)}
                               value={subid}
                             >
-                            <option value="">Select Subject Name</option>
+                            <option value="">Select Subject</option>
                             {
                               subjects.map((obj)=>{
                               return (
@@ -223,6 +324,41 @@ function QuestionEdit(){
                               checked={level == "easy"}
                               /> Easy
                           </div>
+                          <div className="mb-3">
+                          {/* <label htmlFor="exampleFormControlSelect1" className="form-label">Answers</label> */}
+
+                          {/* <select className="form-select" id="exampleFormControlSelect1" aria-label="Default select example"
+                            onChange={qstatus => setQstatus(qstatus.target.value)}
+                            value={qstatus}>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                          </select> */}
+                          <table className="table">
+                            <thead>
+                              <tr>
+                                <th>Add Answers</th>
+                                <th><button className="btn btn-outline-success" onClick={addTableRows} >+</button></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <TableRows rowsData={rowsData} deleteTableRows={deleteTableRows} handleChange={handleChange} handleChangesetevent={handleChangesetevent}/>
+                            </tbody>
+                          </table>
+                        </div>
+                        <label htmlFor="exampleFormControlSelect1" className="form-label" style={{ marginTop: 20, }}>Trial</label>
+                        <div className="col-sm-2 mb-3">
+
+                          <input type='radio' name='trial' id="exampleFormControlSelect1" aria-label="Default select example"
+                            onChange={trial => setTrial(trial.target.value)}
+                            value="trial" checked={trial == "trial"} /> Yes
+
+                        </div>
+                        <div className="col-sm-2 mb-3">
+
+                          <input type='radio' name='trial' id="exampleFormControlSelect1" aria-label="Default select example"
+                            onChange={trial => setTrial(trial.target.value)}
+                            value='No' checked={trial == "No"}/> No
+                        </div> 
                           <div className="mb-3">
                             <label htmlFor="exampleFormControlSelect1" className="form-label">Status</label>
                             <select className="form-select" id="exampleFormControlSelect1" aria-label="Default select example" 

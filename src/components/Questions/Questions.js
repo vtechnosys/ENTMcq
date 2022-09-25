@@ -25,34 +25,6 @@ function Questions() {
   const [rowsData, setRowsData] = useState([{ans:'',setans:false}]);
   const [trial,setTrial]=useState('');
 
-  const [userinfo, setUserInfo] = useState({
-    services:"",
-    response:"",
-  });
-  const handleChange1 = (e) => {
-    // Destructuring
-    const { value, checked } = e.target;
-    const { services } = userinfo;
-      
-    console.log(`${value} is ${checked}`);
-     
-    // Case 1 : The user checks the box
-    if (checked) {
-      setUserInfo({
-        services: value,
-        response: value,
-      });
-    }
-  
-    // Case 2  : The user unchecks the box
-    else {
-      setUserInfo({
-        services: services.filter((e) => e !== value),
-        response: services.filter((e) => e !== value),
-      });
-    }
-    console.log(userinfo.response);
-  };
 
 
   function fetchSubject() {
@@ -76,26 +48,30 @@ function Questions() {
   function handleClick() {
     const qusData = {
       title: title,
-      answer_option: 'a',
+      answer_option: rowsData,
       explanation: explain,
       doctor_id: '20',
       qmode: level,
       qtitle: qtitle,
       sub_id: subid,
-      trial:userinfo.response
+      trial:trial
     }
+    console.log(qusData);
     setShowProcess(true)
     axios.post('https://entmcq.vertextechnosys.com/api/question', qusData)
       .then((resp) => {
         const data = resp.data;
-        console.log(data)
-        setShowProcess(false)
+        console.log(resp)
+        if(data[0].status=="success")
+        //             alert("Subject added successfully");
+        //           else{
+        //             alert("Subject failed");
+        //           }
+        //           fetchSubjects();
+        // setShowProcess(false)
         window.location.href = "/viewQuestions";
       })
-      .catch((err) => {
-        setError(true)
-        setShowProcess(false);
-      })
+      
   }
   const noStyle = {
     display: 'none',
@@ -351,15 +327,20 @@ function Questions() {
                             </tbody>
                           </table>
                         </div>
-                        <div className="col-md-6 mb-3">
-                          <label htmlFor="exampleFormControlSelect1" className="form-label" >Trial</label>
-                          <FormGroup>
-                          <FormControlLabel control={<Checkbox/>} value="trial"  label="Yes" name="trial" id="flexCheckDefault" onChange={handleChange1}/></FormGroup>
-                          <FormGroup>
-                          <FormControlLabel control={<Checkbox/>} value="no"  name="trial" label="No" id="flexCheckDefault" onChange={handleChange1}/></FormGroup>
+                        <label htmlFor="exampleFormControlSelect1" className="form-label" style={{ marginTop: 20, }}>Trial</label>
+                        <div className="col-sm-2 mb-3">
+
+                          <input type='radio' name='trial' id="exampleFormControlSelect1" aria-label="Default select example"
+                            onChange={trial => setTrial(trial.target.value)}
+                            value="trial" /> Yes
 
                         </div>
+                        <div className="col-sm-2 mb-3">
 
+                          <input type='radio' name='trial' id="exampleFormControlSelect1" aria-label="Default select example"
+                            onChange={trial => setTrial(trial.target.value)}
+                            value='No' /> No
+                        </div>
                         <div className="mb-3">
                           <button className="btn btn-primary d-grid w-100" type="submit" style={{ backgroundColor: "#188ccc" }} onClick={handleClick}>Submit</button>
                         </div>

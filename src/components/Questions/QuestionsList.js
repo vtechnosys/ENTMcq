@@ -80,19 +80,19 @@ function QuestionsList() {
             }
           ]
         },
-        {
-          name: "Answers",
-          button: true,
-          maxWidth:'250px',
-          cell: (row) => (
-            <div>
-                                        <button class="dropdown-item" onClick={()=>addAnsws(row.id)}
-                                          ><i class="bx bx-plus-medical me-1"></i> Add Answers</button>
-                                        <button class="dropdown-item" onClick={()=>viewAnsws(row.id+"--"+row.answer_option)}
-                                          ><i class="bx bx-show me-1"></i> View Answers</button>
-                                      </div>
-          )
-        },
+        // {
+        //   name: "Answers",
+        //   button: true,
+        //   maxWidth:'250px',
+        //   cell: (row) => (
+        //     <div>
+        //                                 {/* <button class="dropdown-item" onClick={()=>addAnsws(row.id)}
+        //                                 {/* <button class="dropdown-item" onClick={()=>viewAnsws(row.id+"--"+row.answer_option)}
+        //                                   ><i class="bx bx-show me-1"></i> View Answers</button> */}
+        //                                   ><i class="bx bx-plus-medical me-1"></i> Add Answers</button> */}
+        //                               </div>
+        //   )
+        // },
         {
           name: "Actions",
           button: true,
@@ -103,8 +103,8 @@ function QuestionsList() {
                                           ><i class="bx bx-edit-alt me-1"></i> Edit</button>
                                         <button class="dropdown-item" onClick={()=>deleteOption(row.id)}
                                           ><i class="bx bx-trash me-1"></i> Delete</button>
-                                        <button class="dropdown-item" onClick={()=>setTrial(row.id)}
-                                          ><i class="bx bx-trash me-1"></i> Set As Trial</button>
+                                        {/* <button class="dropdown-item" onClick={()=>setTrial(row.id)}
+                                          ><i class="bx bx-trash me-1"></i> Set As Trial</button> */}
                                       </div>
           )
         }
@@ -145,7 +145,7 @@ function QuestionsList() {
               const data = res.data;
               if(data[0].status=="success"){
                 alert("Qustion Deleted successfully");
-                window.location.reload();
+                window.location.href='/viewQuestions';
                 
               }
                 
