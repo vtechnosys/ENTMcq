@@ -4,6 +4,9 @@ import axios from 'axios';
 import {useParams} from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import Headerpanel from '../Headerpanel';
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 function EditDoctor()
 {
@@ -16,39 +19,35 @@ function EditDoctor()
     const [password,setPassword] = useState('');
     const [subid,setSubid]=useState('');
     const [error,setError] = useState(false);
-    
+    const warn = { borderWidth: 1, borderColor: '#f44336' }
+    const nowarn = { borderWidth: 1, borderColor: '#d9dee3' }
+    const [isNameError,setNameerror]=useState(false);
+    const [isEmailError, setEmailError] = useState(false);
+    const [isPasswordError,setPasswordError] = useState(false);
+    const [isSubError,setSubError]=useState(false);
     
     function storeDoctor()
     {
-      if(sid==='' || name === '' || email === '' || password === '' || subid === '')
+      if(name=="")
       {
-        if(validate())
-        {
-          //alert(subid);
-          const subData = {
-            name:name,
-            email:email,
-            password:password,
-            subid:subid,
-          };
-          axios.post('https://entmcq.vertextechnosys.com/api/doctor',subData)
-                .then((res) =>{
-                  console.log(res);
-                  //alert("Subject added successfully");
-                  const data = res.data;
-                  if(data[0].status=="success"){
-                    alert("Doctor added successfully");
-                  }else{
-                    alert("Doctor failed");
-                  }
-                  //fetchDoctors();
-                })
-        }
-        else{
-          //alert("somefields are empty");
-          setError(true);
-        }
-        
+        toast.error('Enter Name');
+        setName();
+        setNameerror(true)
+      }else if(email=="")
+      {
+        toast.error('Enter Email');
+        setEmail();
+        setEmailError(true)
+      }else if(password=="")
+      {
+        toast.error('Enter Password');
+        setPassword();
+        setPasswordError(true)
+      }else if(subid=="")
+      {
+        toast.error('Select Subject');
+        setSubid();
+        setSubError(true)
       }
       else{
         const subData = {
@@ -65,34 +64,17 @@ function EditDoctor()
                 //alert("Subject added successfully");
                 const data = res.data;
                 if(data[0].status=="success"){
-                  alert("Doctor Updated successfully");
-                  window.location.href="/doctors"
+                  window.location.href = "/doctors";
                 }
                   
                 else{
-                  alert("Doctor failed");
+                  toast.error('Invalid Login Details');
                 }
                 //fetchDoctors();
               })
       }
     }
-    function validate()
-    {
-     
-      if(!name){
-        return false;
-      }
-      else if(!email){
-        return false;
-      }else if(!password)
-      {
-        return false;
-      }else if(!subid)
-      {
-        return false;
-      }
-      return true;
-    }
+    
 
     
     function fetchSubject()
@@ -188,13 +170,13 @@ function EditDoctor()
           
 
           <div class="container-xxl flex-grow-1 container-p-y">
-            <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Dashboard /</span> Subjects</h4>
+            <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Dashboard /</span> Doctor</h4>
 
             <div class="row" style={{justifyContent:'center'}}>
               
               <div class="col-md-6">
                 <div class="card mb-4">
-                  <h5 class="card-header">Edit Subjects</h5>
+                  <h5 class="card-header">Edit Doctor</h5>
                   <div class="card-body demo-vertical-spacing demo-only-element">
                     <div>
                       <input type="hidden" value={sid} />
@@ -206,7 +188,10 @@ function EditDoctor()
                           placeholder="Name"
                           aria-describedby="defaultFormControlHelp"
                           value={name}
-                          onChange={name => setName(name.target.value)}
+                          style={isNameError ? warn : nowarn}
+                          onChange={(name) => {setName(name.target.value)
+                          setNameerror(false)
+                          }}
                         />
                         
                       </div>
@@ -220,7 +205,10 @@ function EditDoctor()
                           placeholder="Email"
                           aria-describedby="defaultFormControlHelp"
                           value={email}
-                          onChange={email => setEmail(email.target.value)}
+                          style={isEmailError ? warn : nowarn}
+                          onChange={(email) => {setEmail(email.target.value)
+                          setEmailError(false)
+                          }}
                         />
                         
                       </div>
@@ -234,7 +222,10 @@ function EditDoctor()
                           placeholder="Password"
                           aria-describedby="defaultFormControlHelp"
                           value={password}
-                          onChange={password => setPassword(password.target.value)}
+                          style={isPasswordError ? warn : nowarn}
+                          onChange={(password) => {setPassword(password.target.value)
+                          setPasswordError(false)
+                          }}
                         />
                         
                       </div>
@@ -246,8 +237,11 @@ function EditDoctor()
                           class="form-select" 
                           id="exampleFormControlSelect1" 
                           aria-label="Default select example"
-                          onChange={subid => setSubid(subid.target.value)}
+                          onChange={(subid) => {setSubid(subid.target.value)
+                          setSubError(false)
+                          }}
                           value={subid}
+                          style={isSubError ? warn : nowarn}
                         >
                         <option value="">Select Subject Name</option>
                         {
@@ -297,7 +291,7 @@ function EditDoctor()
     
     <div class="layout-overlay layout-menu-toggle"></div>
   </div>
-  
+  <ToastContainer />
   {AddLibrary("/assets/vendor/libs/jquery/jquery.js")}
   {AddLibrary("/assets/vendor/libs/popper/popper.js")}
   {AddLibrary("/assets/vendor/js/bootstrap.js")}

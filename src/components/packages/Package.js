@@ -5,10 +5,13 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import Headerpanel from '../Headerpanel';
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 function Package(){
     const [error,setError] = useState(false);
     const [service,setServices]=useState([]);
-    const [questionbank,setQuestionBank]=useState([]);
+    // const [questionbank,setQuestionBank]=useState([]);
     const [packages,setPackage]=useState([]);
     const [service_include,setService]=useState('');
     const [package_name,setPackagename]=useState('');
@@ -17,7 +20,12 @@ function Package(){
     const [subjects,setSubject]=useState('');
     const [serid,setSerid] = useState('');
     const [questionb,setQuestionb]=useState('');
-
+    const [isPackageError,setPackageError]=useState(false);
+    const [isPriceError,setPriceError]=useState(false);
+    const [isDiscountError,setDiscountError]=useState(false);
+    const [isSubjectError,setSubjectError]=useState(false);
+    const warn = { borderWidth: 1, borderColor: '#f44336' }
+    const nowarn = { borderWidth: 1, borderColor: '#d9dee3' }
     const [userinfo, setUserInfo] = useState({
       services: [],
       response: [],
@@ -76,10 +84,29 @@ function Package(){
     const ft=userinfo.response;
     function storeSubject()
     {
-      if(package_name === '' || service_include === '' || pricing === '' || discount === '' || subjects === '')
+      if(package_name=="")
       {
-        if(validate())
-        {
+        toast.error('Enter Package Name');
+        setPackagename();
+        setPackageError(true)
+      }else if(pricing=="")
+      {
+        toast.error('Enter Pricing');
+      setPrice();
+      setPriceError(true)
+      }else if(discount=="")
+      {
+        toast.error('Enter Discount');
+      setDiscount();
+      setDiscountError(true)
+      }else if(service_include=="")
+      {
+        toast.error('Select Service');
+      setService();
+      setSubjectError(true)
+      }
+      else
+      {
           //alert("valid")
           const subData = {
             package_name:package_name,
@@ -87,7 +114,7 @@ function Package(){
             pricing:pricing,
             discount:discount,
             subjects:userinfo1.response,
-            question_bank_id:questionb
+            
           };
           console.log(subData);
           
@@ -97,17 +124,13 @@ function Package(){
                   //alert("Subject added successfully");
                   const data = res.data;
                   if(data[0].status=="success")
-                    alert("Package added successfully");
+                  window.location.href = "/packages";
                   else{
-                    alert("Package failed");
+                    toast.error('Invalid Login Details');
                   }
                   //featchSubject();
                 })
-        }
-        else{
-          //alert("somefields are empty");
-          setError(true);
-        }
+        
         
       }
     }
@@ -124,7 +147,7 @@ function Package(){
               setPrice(data.pricing);
               setDiscount(data.discount);
               //setSubjects(data.subjects);
-              setQuestionb(data.questionb);
+              
               //setSubjects(data);
             })
     }
@@ -155,14 +178,14 @@ function Package(){
         })
     }
 
-    function featchQuestionBank()
-    {
-        axios.get('https://entmcq.vertextechnosys.com/api/questionbank')
-        .then((res)=>{
-          const data = res.data;
-          setQuestionBank(data);
-        })
-    }
+    // function featchQuestionBank()
+    // {
+    //     axios.get('https://entmcq.vertextechnosys.com/api/questionbank')
+    //     .then((res)=>{
+    //       const data = res.data;
+    //       setQuestionBank(data);
+    //     })
+    // }
     
     
     function deleteOption(id)
@@ -194,9 +217,9 @@ function Package(){
     useEffect(()=>{
       featchPackage()
     },[])
-    useEffect(()=>{
-      featchQuestionBank()
-    },[])
+    // useEffect(()=>{
+    //   featchQuestionBank()
+    // },[])
     return (
       <React.Fragment>
         <div class="layout-wrapper layout-content-navbar">
@@ -235,12 +258,12 @@ function Package(){
 
               <div class="row">
                 
-                <div class="col-md-5">
+                <div class="col-md-12">
                   <div class="card mb-4">
                     <h5 class="card-header">Add Package</h5>
                     <div class="card-body demo-vertical-spacing demo-only-element">
                         
-                        <div>
+                        {/* <div>
                         <label for="defaultFormControlInput" class="form-label">Question Bank</label>
                             <select
                             class="form-select" 
@@ -259,7 +282,7 @@ function Package(){
                             }
                           
                           </select>
-                        </div>
+                        </div> */}
                           <div>
                           <input type="hidden" value="" />
                             <label for="defaultFormControlInput" class="form-label">Package Name</label>
@@ -270,8 +293,10 @@ function Package(){
                               placeholder=""
                               aria-describedby="defaultFormControlHelp"
                               value={package_name}
-                              style={{margin:0,width:100+'%'}}
-                              onChange={packagename => setPackagename(packagename.target.value)}
+                              style={isPackageError ? warn : nowarn}
+                              onChange={(packagename) => {setPackagename(packagename.target.value)
+                              setPackageError(false)
+                              }}
                             />
                           </div>
                           
@@ -286,7 +311,10 @@ function Package(){
                               placeholder=""
                               aria-describedby="defaultFormControlHelp"
                               value={pricing}
-                              onChange={pricing => setPrice(pricing.target.value)}
+                              onChange={(pricing) => {setPrice(pricing.target.value)
+                              setPriceError(false)
+                              }}
+                              style={isPriceError ? warn : nowarn}
                             />
                           </div>
                           <div>
@@ -299,7 +327,9 @@ function Package(){
                               placeholder=""
                               aria-describedby="defaultFormControlHelp"
                               value={discount}
-                              onChange={discount => setDiscount(discount.target.value)}
+                              onChange={(discount) => {setDiscount(discount.target.value)
+                              setDiscountError(false)
+                              }}
                             />
                           </div>
                           <div>
@@ -327,66 +357,6 @@ function Package(){
                 </div>
 
                 
-                <div class="col-md-7">
-                  <div class="card mb-4">
-                    <h5 class="card-header">Package List</h5>
-                <div class="card-body">
-                  <div class="table-responsive text-nowrap">
-                    <table class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th>ID</th>
-                          <th>Package Name</th>
-                          <th>Price</th>
-                          <th>Discount</th>
-                          
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                       
-                          {
-                            packages.map((obj)=>{
-                              return (
-
-                              
-                              <tr>
-                                <td>
-                                 {obj.id}
-                                </td>
-                                <td>{obj.package_name}</td>
-                                <td>{obj.pricing}</td>
-                                <td>{obj.discount}</td>
-                                <td>
-                              <div class="dropdown">
-                                <button
-                                  
-                                  class="btn p-0 dropdown-toggle hide-arrow"
-                                  data-bs-toggle="dropdown"
-                                >
-                                  <i class="bx bx-dots-vertical-rounded"></i>
-                                </button>
-                                <div class="dropdown-menu">
-                                <button class="dropdown-item" onClick={()=>editOption(obj.id)}
-                                    ><i class="bx bx-edit-alt me-1"></i> Edit</button>
-                                  <button class="dropdown-item" onClick={()=>deleteOption(obj.id)}
-                                    ><i class="bx bx-trash me-1"></i> Delete</button>
-                                </div>
-                              </div>
-                            </td>
-                              </tr>
-                              )
-                            })
-                          }
-                        
-                        
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                  </div>
-                </div>
-
                 
                 
               </div>
@@ -416,6 +386,7 @@ function Package(){
       
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
+    <ToastContainer />
     {AddLibrary("/assets/vendor/libs/jquery/jquery.js")}
     {AddLibrary("/assets/vendor/libs/popper/popper.js")}
     {AddLibrary("/assets/vendor/js/bootstrap.js")}

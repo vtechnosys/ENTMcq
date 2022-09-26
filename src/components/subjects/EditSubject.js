@@ -5,6 +5,8 @@ import {useParams} from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import Headerpanel from '../Headerpanel';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function EditSubject()
 {
   const {id} = useParams();
@@ -15,7 +17,11 @@ function EditSubject()
   const [sid,setSid] = useState('');
   const [subStauts,setSubStatus] = useState('active');
   const [error,setError] = useState(false);
-
+  const [isSubjectError,setSubjectError]=useState(false);
+  const [isDescError,setDescError]=useState(false);
+  const [isQuestionError,setQuestionError]=useState(false);
+  const warn = { borderWidth: 1, borderColor: '#f44336' }
+  const nowarn = { borderWidth: 1, borderColor: '#d9dee3' }
   const clms = [
     {
       name:'Id',
@@ -52,36 +58,24 @@ function EditSubject()
 
   function storeSubject()
   {
-    if(sid === '' || sname === '' || description === '')
+    if(sname=="")
     {
-      if(validate())
-      {
-        //alert("valid")
-        const subData = {
-          name:sname,
-          qbid:qbid,
-          description:description,
-        };
-        axios.post('https://entmcq.vertextechnosys.com/api/subject',subData)
-              .then((res) =>{
-                console.log(res);
-                //alert("Subject added successfully");
-                const data = res.data;
-                if(data[0].status=="success")
-                  alert("Subject added successfully");
-                else{
-                  alert("Subject failed");
-                }
-                //fetchSubjects();
-              })
-      }
-      else{
-        //alert("somefields are empty");
-        setError(true);
-      }
-      
+     toast.error('Enter Subject Name');
+     setSubjects();
+     setSubjectError(true)
+    }else if(description=="")
+    {
+     toast.error('Enter Description');
+     setDescription();
+     setDescError(true)
+    }else if(qbid=="")
+    {
+     toast.error('Select Question Bank');
+     setQbid();
+     setQuestionError(true)
     }
-    else{
+    else
+    {
       const subData = {
         id:sid,
         name:sname,
@@ -104,7 +98,7 @@ function EditSubject()
               }
                 
               else{
-                alert("Subject failed");
+                toast.error('Invalid Login Details');
               }
               //fetchSubjects();
             })
@@ -234,13 +228,18 @@ function EditSubject()
                             placeholder=""
                             aria-describedby="defaultFormControlHelp"
                             value={sname}
-                            onChange={sname => setSname(sname.target.value)}
+                            onChange={(sname) => {setSname(sname.target.value)
+                              setSubjectError(false)
+                              }}
+                              style={isSubjectError ? warn : nowarn}
                           />
                           
                         </div>
                         <div>
                           <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" onChange={desc => setDescription(desc.target.value)} value={description} >{description}</textarea>
+                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" onChange={(desc) => {setDescription(desc.target.value)
+                            setDescError(false)
+                            }} value={description} style={isDescError ? warn : nowarn}>{description}</textarea>
                           
                         </div>
 
@@ -300,7 +299,7 @@ function EditSubject()
     
     <div class="layout-overlay layout-menu-toggle"></div>
   </div>
-  
+  <ToastContainer />
   {AddLibrary("/assets/vendor/libs/jquery/jquery.js")}
   {AddLibrary("/assets/vendor/libs/popper/popper.js")}
   {AddLibrary("/assets/vendor/js/bootstrap.js")}

@@ -2,6 +2,7 @@ import React,{useState, useEffect} from 'react';
 import Header from '../Header';
 import axios from 'axios';
 import {useParams} from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 function ServiceEdit(){
     const {id} = useParams();
     const [error,setError] = useState(false);
@@ -9,34 +10,26 @@ function ServiceEdit(){
     const [service,setService]=useState([])
     const [sname,setSername] = useState('');
     const [description, setDescription] = useState('');
+    const [isSnameError,setSnameError]=useState(false);
+    const [isDescError,setDescError]=useState(false);
+    const warn = { borderWidth: 1, borderColor: '#f44336' }
+   const nowarn = { borderWidth: 1, borderColor: '#d9dee3' }
+
     function storeSubject()
     {
-        if(serid === ''|| sname === '' || description === '')
+        if(sname=="")
         {
-        if(validate())
+          toast.error('Enter Service Name');
+          setSername();
+          setSnameError(true)
+        }else if(description=="")
         {
-          //alert("valid")
-          const subData = {
-            service_name:sname,
-            description:description,
-          };
-          axios.post('https://entmcq.vertextechnosys.com/api/service',subData)
-                .then((res) =>{
-                  console.log(res);
-                  //alert("Subject added successfully");
-                  const data = res.data;
-                  if(data[0].status=="success"){
-                    alert("Service added successfully");
-                    window.location.href='/services'
-                  }
-                  else{
-                    alert("Service failed");
-                  }
-                  //fetchService();
-                })
+          toast.error('Enter Description');
+          setDescription();
+          setDescError(true)
         }
-      }
-      else{
+        else
+        {
         const subData = {
           id:serid,
           service_name:sname,
@@ -54,26 +47,17 @@ function ServiceEdit(){
                   setDescription('')
                   
                   setSerid('')
+                  window.location.href = "/service";
                 }
                   
                 else{
-                  alert("Service failed");
+                  toast.error('Invalid Login Details');
                 }
-                fetchService();
+                //fetchService();
               })
       }
     }
-    function validate()
-    {
-      
-      if(!sname){
-        return false;
-      }
-      else if(!description){
-        return false;
-      }
-      return true;
-    }
+    
     function fetchService()
     {
       axios.get('https://entmcq.vertextechnosys.com/api/service')
@@ -276,13 +260,17 @@ function ServiceEdit(){
                               placeholder=""
                               aria-describedby="defaultFormControlHelp"
                               value={sname}
-                              onChange={sname => setSername(sname.target.value)}
+                              onChange={(sname) => {setSername(sname.target.value)
+                              setSnameError(false)
+                              }}
+                              style={isSnameError ? warn : nowarn}
                             />
                             
                           </div>
                           <div>
                             <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" value={description} onChange={description => setDescription(description.target.value)} >{description}</textarea>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" value={description} onChange={(description) => {setDescription(description.target.value)
+                            setDescError(false)}} style={isDescError ? warn : nowarn}>{description}</textarea>
                             
                           </div>
 
@@ -386,6 +374,7 @@ function ServiceEdit(){
       
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
+    <ToastContainer />
     {AddLibrary("/assets/vendor/libs/jquery/jquery.js")}
     {AddLibrary("/assets/vendor/libs/popper/popper.js")}
     {AddLibrary("/assets/vendor/js/bootstrap.js")}

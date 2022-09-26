@@ -144,7 +144,7 @@ function CategoryList() {
                         <input type="text" class="form-control" placeholder="Search Admin" value={filterText} onChange={(e)=>{setFilterText(e.target.value)}}/>
                         <button class="btn btn-outline-primary" type="button" id="button-addon2" style={{margin:0}} onClick={handleClear}>X</button>
               </div>
-              <div class="row">
+              <div class="row mt-4">
                        <div class="col-md-12">
                   <div class="card mb-4">
                     <h5 class="card-header">View Category</h5>

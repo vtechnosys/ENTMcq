@@ -3,7 +3,9 @@ import Header from '../Header';
 import axios from 'axios';
 import DataTable from 'react-data-table-component';
 import Headerpanel from '../Headerpanel';
+import { ToastContainer, toast } from 'react-toastify';
 
+import 'react-toastify/dist/ReactToastify.css';
 function AddCategory()
 {
     
@@ -15,87 +17,64 @@ function AddCategory()
     const [sid,setSid]=useState('');
     const [selectedFile,setselectedFile]=useState('');
 
+    const [isNameError,setNameError]=useState(false);
+    const [isDescError,setDescError]=useState(false);
+    const [isFileError,setFileError]=useState(false);
+    const warn = { borderWidth: 1, borderColor: '#f44336' }
+    const nowarn = { borderWidth: 1, borderColor: '#d9dee3' }
+
     function onFileChange(e){
         setselectedFile(e.target.files[0]);
         };
 
     function storeSubject()
     {
-        if(sid === '' || name === '' || description === '')
-        {
-          if(validate())
-          {
+      if(name==""){
+        toast.error('Enter Name');
+        setSname();
+        setNameError(true)
+      }else if(description=="")
+      {
+        toast.error('Enter Description');
+        setDescription('');
+        setDescError(true)
+      }else if(selectedFile==""){
+        toast.error('Choose File');
+        setselectedFile('');
+        setFileError(true)
+      }else
+      {
             //alert("valid")
             const subData = {
               name:name,
               image:selectedFile,
               description:description,
             };
-            console.log(subData);
+            //console.log(subData);
             const config = {     
               headers: { 'content-type': 'multipart/form-data' }
-          }
+             } 
             axios.post('https://entmcq.vertextechnosys.com/api/category',subData,config)
                   .then((res) =>{
                     console.log(res);
                     //alert("Subject added successfully");
                     const data = res.data;
                     if(data.status=="success")
-                      alert("Category added successfully");
+                    window.location.href = "/category";
                     else{
-                      alert("Category failed");
+                      toast.error('Invalid Login Details');
+
                     }
                     
                   })
-          }
-          else{
-            //alert("somefields are empty");
-            setError(true);
-          }
           
-        }
-        else{
-          const subData = {
-            id:sid,
-            name:name,
-            description:description,
-            status:subStauts
-          };
-          console.log(subData);
-          axios.put('https://entmcq.vertextechnosys.com/api/category/'+sid,subData)
-                .then((res) =>{
-                  console.log(res);
-                  //alert("Subject added successfully");
-                  const data = res.data;
-                  if(data.status=="success"){
-                    alert("Category Updated successfully");
-                    setSname('');
-                    setDescription('')
-                    setSubStatus('')
-                    setSid('')
-                  }
-                    
-                  else{
-                    alert("Category failed");
-                  }
-                  //fetchSubjects();
-                })
+        
         }
       
       
     }
 
-    function validate()
-    {
-      if(!name){
-        return false;
-      }
-      else if(!description){
-        return false;
-      }
-      return true;
-    } 
-
+    
     function AddLibrary(urlOfTheLibrary) {
       const script = document.createElement('script');
       script.src = urlOfTheLibrary;
@@ -155,18 +134,23 @@ function AddCategory()
                               placeholder=""
                               aria-describedby="defaultFormControlHelp"
                               value={name}
-                              onChange={name => setSname(name.target.value)}
+                              onChange={(name) => {setSname(name.target.value)
+                              setNameError(false)
+                              }}
+                              style={isNameError ? warn : nowarn}
                             />
                             
                           </div>
                           <div>
                             <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" onChange={desc => setDescription(desc.target.value)} value={description} >{description}</textarea>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" onChange={(desc) => {setDescription(desc.target.value)
+                            setDescError(false)
+                            }} value={description} style={isDescError ? warn : nowarn}>{description}</textarea>
                             
                           </div>
                           <div>
                           <label for="exampleFormControlTextarea1" class="form-label">Image</label>
-                            <input type="file" onChange={onFileChange}/>
+                            <input type="file" onChange={onFileChange} style={isFileError ? warn : nowarn}/>
                           </div>
 
                           {sid !== '' ? (<div class="mb-3">
@@ -211,7 +195,7 @@ function AddCategory()
       
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
-    
+    <ToastContainer />
     {AddLibrary("/assets/vendor/libs/jquery/jquery.js")}
     {AddLibrary("/assets/vendor/libs/popper/popper.js")}
     {AddLibrary("/assets/vendor/js/bootstrap.js")}

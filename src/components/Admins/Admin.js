@@ -2,7 +2,9 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import Header from "../Header";
 import Headerpanel from "../Headerpanel";
+import { ToastContainer, toast } from 'react-toastify';
 
+import 'react-toastify/dist/ReactToastify.css';
 function Admin() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -10,11 +12,29 @@ function Admin() {
   const [sid, setSid] = useState('');
   const [admin, setAdmin] = useState([])
   const [error, setError] = useState(false);
-  const [nameError, setNameError] = useState(false);
+  const [isnameError, setNameError] = useState(false);
+  const [isemailError,setEmailError] = useState(false);
+  const [ispasswordError,setPasswordError]=useState(false);
+  const warn = { borderWidth: 1, borderColor: '#f44336' }
+   const nowarn = { borderWidth: 1, borderColor: '#d9dee3' }
+
   function storeAdmin() {
-    if (name === '' || email === '' || password === '') {
-      if (validate()) {
-        //alert("valid")
+    if(name==""){
+      toast.error('Enter Name');
+      setName();
+      setNameError(true)
+    }else if(email=="")
+    {
+      toast.error('Enter Email');
+      setEmail('');
+      setEmailError(true)
+    }else if(password==""){
+      toast.error('Enter Password');
+      setPassword('');
+      setPasswordError(true)
+    }
+    else
+    {
         const subData = {
           name: name,
           email: email,
@@ -26,58 +46,17 @@ function Admin() {
             //alert("Subject added successfully");
             const data = res.data;
             if (data[0].status == "success")
-              alert("Admin added successfully");
+            window.location.href = "/admins";
             else {
-              alert("Admin failed");
+              toast.error('Invalid Login Details');
             }
             //fetchAdmins();
           })
-      }
-      else {
-        //alert("somefields are empty");
-        setError(true);
-      }
-
-    }
-    else {
-      const subData = {
-        id: sid,
-        name: name,
-        email: email,
-        password: password
-
-      };
-      axios.put('https://entmcq.vertextechnosys.com/api/admin/' + sid, subData)
-        .then((res) => {
-          console.log(res);
-          //alert("Subject added successfully");
-          const data = res.data;
-          if (data[0].status == "success") {
-            alert("Admin Updated successfully");
-            setSid('');
-            setName('');
-            setEmail('');
-            setPassword('')
-          }
-
-          else {
-            alert("Admin failed");
-          }
-          //fetchAdmins();
-        })
-    }
+      
+        }
+    
   }
-  function validate() {
-    if (!name) {
-      return false;
-    }
-    else if (!email) {
-      return false;
-    } else if (!password) {
-      return false;
-    }
-    return true;
-  }
+  
 
 
   function editOption(id) {
@@ -123,6 +102,7 @@ function Admin() {
   }
   return (
     <React.Fragment>
+    
       <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
 
@@ -177,7 +157,10 @@ function Admin() {
                               placeholder="John Doe"
                               aria-describedby="defaultFormControlHelp"
                               value={name}
-                              onChange={uname => setName(uname.target.value)}
+                              onChange={(uname) => {setName(uname.target.value)
+                              setNameError(false)
+                              }}
+                              style={isnameError ? warn : nowarn}
                             />
 
                           </div>
@@ -190,7 +173,10 @@ function Admin() {
                               placeholder="abc@abc.com"
                               aria-describedby="defaultFormControlHelp"
                               value={email}
-                              onChange={em => setEmail(em.target.value)}
+                              onChange={(em) => {setEmail(em.target.value)
+                              setEmailError(false)
+                              }}
+                              style={isemailError ? warn : nowarn}
                             />
 
                           </div>
@@ -205,7 +191,10 @@ function Admin() {
                                 placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                                 aria-describedby="basic-default-password2"
                                 value={password}
-                                onChange={ps => setPassword(ps.target.value)}
+                                onChange={(ps) => {setPassword(ps.target.value)
+                                setPasswordError(false)
+                                }}
+                                style={ispasswordError ? warn : nowarn}
                               />
                               <span id="basic-default-password2" class="input-group-text cursor-pointer"
                               ><i class="bx bx-hide"></i
@@ -213,7 +202,7 @@ function Admin() {
                             </div>
                           </div>
 
-                          <div class="mb-3">
+                          <div class="mb-3 mt-4">
                             <button class="btn btn-primary d-grid w-100" type="submit" style={{ backgroundColor: '#188ccc' }} onClick={storeAdmin}>Store</button>
                           </div>
                         </form>
@@ -249,6 +238,7 @@ function Admin() {
 
         <div class="layout-overlay layout-menu-toggle"></div>
       </div>
+      <ToastContainer />
       {AddLibrary("/assets/vendor/libs/jquery/jquery.js")}
       {AddLibrary("/assets/vendor/libs/popper/popper.js")}
       {AddLibrary("/assets/vendor/js/bootstrap.js")}
@@ -257,7 +247,7 @@ function Admin() {
       {AddLibrary("/assets/js/dashboards-analytics.js")}
       {AddLibrary("/assets/vendor/libs/apex-charts/apexcharts.js")}
       {AddLibrary("/assets/js/main.js")}
-    </React.Fragment >
+    </React.Fragment>
   )
 }
 

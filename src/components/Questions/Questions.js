@@ -11,6 +11,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
 
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 function Questions() {
   const [subjects, setSubjects] = useState([]);
@@ -25,6 +28,14 @@ function Questions() {
   const [rowsData, setRowsData] = useState([{ans:'',setans:false}]);
   const [trial,setTrial]=useState('');
 
+   const [isQuestionError,setQuestionError]=useState(false);
+   const [isTitleError,setTitleError]=useState(false);
+   const [isSubjectError,setSubjectError]=useState(false);
+   const [isExplainError,setExplainError]=useState(false);
+   const [isLevelError,setLevelError]=useState(false);
+   const [isTrialError,setTrialError]=useState(false);
+   const warn = { borderWidth: 1, borderColor: '#f44336' }
+   const nowarn = { borderWidth: 1, borderColor: '#d9dee3' }
 
 
   function fetchSubject() {
@@ -45,8 +56,41 @@ function Questions() {
     setExplain(content);
   }
 
+  
   function handleClick() {
-    const qusData = {
+    if(qtitle==""){
+      toast.error('Enter Question Title');
+      setQTitle();
+      setQuestionError(true)
+    }else if(subid=="")
+    {
+      toast.error('Select Subject');
+      setSubid('');
+      setSubjectError(true)
+    }else if(title==""){
+      toast.error('Enter Question');
+      setTitle('');
+      setTitleError(true)
+    }else if(explain=="")
+    {
+      toast.error('Enter Explanation');
+      setExplain('');
+      setExplainError(true)
+    }else if(level=="")
+    {
+      toast.error('Choose Level');
+      setLevel('');
+      setLevelError(true)
+    }else if(trial=="")
+    {
+      toast.error('Choose Trial');
+      setTrial('');
+      setTrialError(true)
+    }
+    else
+    {
+      
+      const qusData = {
       title: title,
       answer_option: rowsData,
       explanation: explain,
@@ -55,22 +99,20 @@ function Questions() {
       qtitle: qtitle,
       sub_id: subid,
       trial:trial
-    }
-    console.log(qusData);
-    setShowProcess(true)
-    axios.post('https://entmcq.vertextechnosys.com/api/question', qusData)
+      }
+      console.log(qusData);
+      setShowProcess(true)
+      axios.post('https://entmcq.vertextechnosys.com/api/question', qusData)
       .then((resp) => {
         const data = resp.data;
         console.log(resp)
-        if(data[0].status=="success")
-        //             alert("Subject added successfully");
-        //           else{
-        //             alert("Subject failed");
-        //           }
-        //           fetchSubjects();
-        // setShowProcess(false)
-        window.location.href = "/viewQuestions";
+        if(data[0].status=="success"){
+          window.location.href = "/viewQuestions";
+        }else{
+          toast.error('Invalid Login Details');
+        }
       })
+    }
       
   }
   const noStyle = {
@@ -231,8 +273,10 @@ function Questions() {
                             class="form-control"
                             id="exampleFormControlSelect1"
                             aria-label="Default select example"
-                            style={{ width: 100 + '%' }}
-                            onChange={qtitle => setQTitle(qtitle.target.value)}
+                            style={isQuestionError ? warn : nowarn}
+                            onChange={(qtitle) => {setQTitle(qtitle.target.value)
+                            setQuestionError(false)
+                            }}
                             value={qtitle}
                           />
 
@@ -243,7 +287,10 @@ function Questions() {
                             class="form-select"
                             id="exampleFormControlSelect1"
                             aria-label="Default select example"
-                            onChange={subid => setSubid(subid.target.value)}
+                            style={isSubjectError ? warn : nowarn}
+                            onChange={(subid) => {setSubid(subid.target.value)
+                            setSubjectError(false)
+                            }}
                             value={subid}
                           >
                             <option value="">Select Subject Name</option>
@@ -261,7 +308,7 @@ function Questions() {
                         <div>
                           <label htmlFor="exampleFormControlTextarea1" className="form-label">Question</label>
 
-                          <SunEditor setOptions={{ height: 300, }} onChange={handleTitleChange} />
+                          <SunEditor setOptions={{ height: 300, }} onChange={handleTitleChange} style={isTitleError ? warn : nowarn}/>
                         </div>
                         {/* <div>
                             <label htmlFor="defaultFormControlInput" className="form-label">Answer Option</label>
@@ -284,27 +331,27 @@ function Questions() {
                                 onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
                                 onChange={newContent => {}}
                             /> */}
-                          <SunEditor setOptions={{ height: 300, }} onChange={handleExplainChnage} />
+                          <SunEditor setOptions={{ height: 300, }} onChange={handleExplainChnage} style={isExplainError ? warn : nowarn}/>
                         </div>
                         <label htmlFor="exampleFormControlSelect1" className="form-label" style={{ marginTop: 20, }}>Difficulty level</label>
                         <div className="col-sm-2 mb-3">
 
                           <input type='radio' name='level' id="exampleFormControlSelect1" aria-label="Default select example"
                             onChange={level => setLevel(level.target.value)}
-                            value="hard" /> Hard
+                            value="hard" style={isLevelError ? warn : nowarn}/> Hard
 
                         </div>
                         <div className="col-sm-2 mb-3">
 
                           <input type='radio' name='level' id="exampleFormControlSelect1" aria-label="Default select example"
                             onChange={level => setLevel(level.target.value)}
-                            value='moderate' /> Moderate
+                            value='moderate' style={isLevelError ? warn : nowarn} /> Moderate
                         </div>
                         <div className="col-sm-2 mb-3">
 
                           <input type='radio' name='level' id="exampleFormControlSelect1"
                             onChange={level => setLevel(level.target.value)}
-                            value='easy' /> Easy
+                            value='easy' style={isLevelError ? warn : nowarn}/> Easy
                         </div>
                         <div className="mb-3">
                           {/* <label htmlFor="exampleFormControlSelect1" className="form-label">Answers</label> */}
@@ -332,14 +379,14 @@ function Questions() {
 
                           <input type='radio' name='trial' id="exampleFormControlSelect1" aria-label="Default select example"
                             onChange={trial => setTrial(trial.target.value)}
-                            value="trial" /> Yes
+                            value="trial" style={isTrialError ? warn : nowarn}/> Yes
 
                         </div>
                         <div className="col-sm-2 mb-3">
 
                           <input type='radio' name='trial' id="exampleFormControlSelect1" aria-label="Default select example"
                             onChange={trial => setTrial(trial.target.value)}
-                            value='No' /> No
+                            value='No' style={isTrialError ? warn : nowarn} /> No
                         </div>
                         <div className="mb-3">
                           <button className="btn btn-primary d-grid w-100" type="submit" style={{ backgroundColor: "#188ccc" }} onClick={handleClick}>Submit</button>
@@ -370,6 +417,7 @@ function Questions() {
 
         <div className="layout-overlay layout-menu-toggle"></div>
       </div>
+      <ToastContainer />
       {AddLibrary("/assets/vendor/libs/jquery/jquery.js")}
       {AddLibrary("/assets/vendor/libs/popper/popper.js")}
       {AddLibrary("/assets/vendor/js/bootstrap.js")}

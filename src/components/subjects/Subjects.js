@@ -3,7 +3,9 @@ import Header from '../Header';
 import axios from 'axios';
 import DataTable from 'react-data-table-component';
 import Headerpanel from '../Headerpanel';
+import { ToastContainer, toast } from 'react-toastify';
 
+import 'react-toastify/dist/ReactToastify.css';
 function Subjects()
 {
     const [subjects,setSubjects]=useState([])
@@ -14,6 +16,11 @@ function Subjects()
     const [subStauts,setSubStatus] = useState('active');
     const [error,setError] = useState(false);
 
+    const [isSubjectError,setSubjectError]=useState(false);
+    const [isDescError,setDescError]=useState(false);
+    const [isQuestionError,setQuestionError]=useState(false);
+    const warn = { borderWidth: 1, borderColor: '#f44336' }
+    const nowarn = { borderWidth: 1, borderColor: '#d9dee3' }
     const clms = [
       {
         name:'Id',
@@ -50,17 +57,31 @@ function Subjects()
 
     function storeSubject()
     {
-      if(sid === '' || sname === '' || description === '')
-      {
-        if(validate())
-        {
+     if(sname=="")
+     {
+      toast.error('Enter Subject Name');
+      setSubjects();
+      setSubjectError(true)
+     }else if(description=="")
+     {
+      toast.error('Enter Description');
+      setDescription();
+      setDescError(true)
+     }else if(qbid=="")
+     {
+      toast.error('Select Question Bank');
+      setQbid();
+      setQuestionError(true)
+     }
+     else
+     {
           //alert("valid")
           const subData = {
             name:sname,
             qbid:qbid,
-            description:description,
+            description:description
           };
-          console.log(subData);
+         // console.log(subData);
           axios.post('https://entmcq.vertextechnosys.com/api/subject',subData)
                 .then((res) =>{
                   console.log(res);
@@ -71,44 +92,15 @@ function Subjects()
                     window.location.href="/view_subjects"
                   }
                   else{
-                    alert("Subject failed");
+                    toast.error('Invalid Login Details');
                   }
                   //fetchSubjects();
                 })
         }
-        else{
-          //alert("somefields are empty");
-          setError(true);
-        }
         
-      }
-      else{
-        const subData = {
-          id:sid,
-          name:sname,
-          description:description,
-          qbid:qbid,
-          status:subStauts
-        };
-        axios.put('https://entmcq.vertextechnosys.com/api/subject/'+sid,subData)
-              .then((res) =>{
-                console.log(res);
-                //alert("Subject added successfully");
-                const data = res.data;
-                if(data[0].status=="success"){
-                  alert("Subject Updated successfully");
-                  setSname('');
-                  setDescription('')
-                  setSubStatus('')
-                  setSid('')
-                }
-                  
-                else{
-                  alert("Subject failed");
-                }
-                //fetchSubjects();
-              })
-      }
+        
+      
+      
       
       
     }
@@ -233,13 +225,19 @@ function Subjects()
                               placeholder=""
                               aria-describedby="defaultFormControlHelp"
                               value={sname}
-                              onChange={sname => setSname(sname.target.value)}
+                              onChange={(sname) => {setSname(sname.target.value)
+                              setSubjectError(false)
+                              }}
+                              style={isSubjectError ? warn : nowarn}
                             />
                             
                           </div>
                           <div>
                             <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" onChange={desc => setDescription(desc.target.value)} value={description} >{description}</textarea>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" 
+                            onChange={(desc) => {setDescription(desc.target.value)
+                            setDescError(false)
+                            }} value={description} style={isDescError ? warn : nowarn}>{description}</textarea>
                             
                           </div>
 
@@ -252,8 +250,10 @@ function Subjects()
                           </div>):"" }
                           <div className="mb-3">
                             <label htmlFor="exampleFormControlSelect1" className="form-label">Question Bank</label>
-                            <select className="form-select" id="exampleFormControlSelect1" aria-label="Default select example" onChange={qbid => setQbid(qbid.target.value)}
-                          value={qbid} >
+                            <select className="form-select" id="exampleFormControlSelect1" aria-label="Default select example" onChange={(qbid) => {setQbid(qbid.target.value)
+                            setQuestionError(false)
+                            }}
+                          value={qbid} style={isQuestionError ? warn : nowarn} >
                             <option value="">Select Question Bank</option>
                             {
                               subjects.map((obj)=>{
@@ -299,7 +299,7 @@ function Subjects()
       
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
-    
+    <ToastContainer />
     {AddLibrary("assets/vendor/libs/jquery/jquery.js")}
     {AddLibrary("assets/vendor/libs/popper/popper.js")}
     {AddLibrary("assets/vendor/js/bootstrap.js")}

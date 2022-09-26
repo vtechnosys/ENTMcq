@@ -180,7 +180,7 @@ function QBList() {
 
             <div class="container-xxl flex-grow-1 container-p-y">
               <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Dashboard /</span> Qustion Bank</h4>
-              <a href="/addCategory" class="btn btn-danger col-sm-2"><i class="bx bx-plus me-1"></i> Add new</a>
+              <a href="/addQuetionBank" class="btn btn-danger col-sm-2"><i class="bx bx-plus me-1"></i> Add new</a>
               <select
               class="form-select col-sm-3" 
               id="exampleFormControlSelect1" 
@@ -201,7 +201,7 @@ function QBList() {
                         <input type="text" class="form-control" placeholder="Search Admin" value={filterText} onChange={(e)=>{setFilterText(e.target.value)}}/>
                         <button class="btn btn-outline-primary" type="button" id="button-addon2" style={{margin:0}} onClick={handleClear}>X</button>
               </div>
-              <div class="row">
+              <div class="row mt-4">
                        <div class="col-md-12">
                   <div class="card mb-4">
                     <h5 class="card-header">View Question Bank</h5>

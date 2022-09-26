@@ -20,35 +20,69 @@ function ViewPackages() {
         },
         {
           name:'Pname',
-          selector: row=>row.service_name,
+          selector: row=>row.package_name,
           sortable:true,
           wrap:true,
           maxWidth:'400px',
           cell:row=>(
-            <div dangerouslySetInnerHTML={{__html: row.service_name}}/>
+            <div dangerouslySetInnerHTML={{__html: row.package_name}}/>
           )
         },
-        
         {
-          name:'Status',
-          selector: row=>row.status,
+          name:'Pricing',
+          selector: row=>row.pricing,
           sortable:true,
-          maxWidth:'150px',
-          conditionalCellStyles:[
-            {
-                when: row=>row.status === 'active',
-                style:{
-                    color:'#696cff'
-                }
-            },
-            {
-                when: row=>row.status === 'inactive',
-                style:{
-                    color:'#ffab00'
-                }
-            }
-          ]
+          wrap:true,
+          maxWidth:'400px',
+          cell:row=>(
+            <div dangerouslySetInnerHTML={{__html: row.pricing}}/>
+          )
         },
+        {
+          name:'Discount',
+          selector: row=>row.discount,
+          sortable:true,
+          wrap:true,
+          maxWidth:'400px',
+          cell:row=>(
+            <div dangerouslySetInnerHTML={{__html: row.discount}}/>
+          )
+        },
+        {
+          name: "Actions",
+          button: true,
+          maxWidth:'200px',
+          cell: (row) => (
+            <div>
+                                        <button class="dropdown-item" onClick={()=>editOption(row.id)}
+                                          ><i class="bx bx-edit-alt me-1"></i> Edit</button>
+                                        <button class="dropdown-item" onClick={()=>deleteOption(row.id)}
+                                          ><i class="bx bx-trash me-1"></i> Delete</button>
+                                        {/* <button class="dropdown-item" onClick={()=>setTrial(row.id)}
+                                          ><i class="bx bx-trash me-1"></i> Set As Trial</button> */}
+                                      </div>
+          )
+        }
+        // {
+        //   name:'Pricing',
+        //   selector: row=>row.pricing,
+        //   sortable:true,
+        //   maxWidth:'150px',
+        //   conditionalCellStyles:[
+        //     {
+        //         when: row=>row.status === 'active',
+        //         style:{
+        //             color:'#696cff'
+        //         }
+        //     },
+        //     {
+        //         when: row=>row.status === 'inactive',
+        //         style:{
+        //             color:'#ffab00'
+        //         }
+        //     }
+        //   ]
+        // },
         
         // {
         //   name: "Actions",
@@ -66,14 +100,14 @@ function ViewPackages() {
       ]
     function fetchService()
     {
-      axios.get('https://entmcq.vertextechnosys.com/api/service')
+      axios.get('https://entmcq.vertextechnosys.com/api/package')
             .then((res)=>{
               const data = res.data;
               setService(data);
             })
     }
     function editOption(id){
-        window.location.href='/service/'+id;
+        window.location.href='/package/'+id;
         //setSerid(id)
         //alert(id);
         // axios.get('https://entmcq.vertextechnosys.com/api/service/'+id)
@@ -89,18 +123,18 @@ function ViewPackages() {
   
       function deleteOption(id)
       {
-        axios.delete('https://entmcq.vertextechnosys.com/api/service/'+id)
+        axios.delete('https://entmcq.vertextechnosys.com/api/package/'+id)
               .then((res) =>{
                 console.log(res);
                 //alert("Subject added successfully");
                 const data = res.data;
                 if(data[0].status=="success"){
-                  alert("Service Deleted successfully");
+                  alert("Package Deleted successfully");
                   
                 }
                   
                 else{
-                  alert("Service Delete failed");
+                  alert("Package Delete failed");
                 }
                 fetchService();
               })
@@ -133,9 +167,9 @@ function ViewPackages() {
 
             <div class="container-xxl flex-grow-1 container-p-y">
               <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Dashboard /</span> packages Details</h4>
-              <a href="/service" class="btn btn-danger col-sm-2"><i class="bx bx-plus me-1"></i> Add new</a>
+              <a href="/package" class="btn btn-danger col-sm-2"><i class="bx bx-plus me-1"></i> Add new</a>
               
-              <div class="row">
+              <div class="row mt-4">
                        <div class="col-md-12">
                   <div class="card mb-4">
                     <h5 class="card-header">View Packages</h5>

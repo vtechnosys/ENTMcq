@@ -135,7 +135,7 @@ function ViewServices() {
               <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Dashboard /</span> Services Details</h4>
               <a href="/service" class="btn btn-danger col-sm-2"><i class="bx bx-plus me-1"></i> Add new</a>
               
-              <div class="row">
+              <div class="row mt-4">
                        <div class="col-md-12">
                   <div class="card mb-4">
                     <h5 class="card-header">View Services</h5>

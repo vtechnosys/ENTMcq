@@ -4,7 +4,9 @@ import axios from 'axios';
 import DataTable from 'react-data-table-component';
 import Headerpanel from '../Headerpanel';
 import { useParams } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
+import 'react-toastify/dist/ReactToastify.css';
 function EditQB()
 {
     const id = useParams();
@@ -16,25 +18,39 @@ function EditQB()
     const [no_question, setNoquestion] = useState('');
     const [error,setError] = useState(false);
     const [sid,setSid]=useState('');
-
+    const [isCateError,setCateError]=useState(false);
+    const [isQnameError,setQnameError]=useState(false);
+    const [isNoQError,setNoQError]=useState(false);
+    const warn = { borderWidth: 1, borderColor: '#f44336' }
+    const nowarn = { borderWidth: 1, borderColor: '#d9dee3' }
+   
    
     function Addquestionbank()
       {
+        if(qname=="")
+        {
+          toast.error('Enter Question Name');
+          setQname('');
+          setQnameError(true)
+        }else if(no_question==""){
+          toast.error('Enter No Question');
+          setNoquestion('');
+          setNoQError(true)
+        }
+        else if(cateid==""){
+          toast.error('Enter Category Name');
+          setCateid();
+          setCateError(true)
+        }
+        else  
+        {
         const subData = {
             qname:qname,
             no_of_question:no_question,
             cate_id:cateid
           };
           console.log(subData);
-        if(sid!='' || qname != '' || no_question != '' || cateid != '')
-        {
-          if(validate())
-          {
-
-          
-        //alert('working');
-        
-        axios.put('https://entmcq.vertextechnosys.com/api/questionbank/'+sid,subData)
+          axios.put('https://entmcq.vertextechnosys.com/api/questionbank/'+sid,subData)
               .then((res) =>{
                 console.log(res);
                 //alert("Subject added successfully");
@@ -44,7 +60,7 @@ function EditQB()
                   window.location.href='/quetionbank';
                 }
                 else{
-                  alert("Question Bank failed");
+                  toast.error('Invalid Login Details');
                 }
                 
               })
@@ -52,26 +68,11 @@ function EditQB()
               //   console.log(res);
               // })
             }
-            else{
-                setError(true)
-            }
-          }
-          else{
-            setError(true)
-        }
+            
           
       }
 
-    function validate()
-    {
-        if(!qname){
-            return false;
-          }
-          else if(!no_question){
-            return false;
-          }
-          return true;
-    } 
+    
     function fetchCategory()
     {
       axios.get('https://entmcq.vertextechnosys.com/api/category')
@@ -158,7 +159,7 @@ function EditQB()
                 
                 <div class="col-md-6">
                   <div class="card mb-4">
-                    <h5 class="card-header">Add Bank</h5>
+                    <h5 class="card-header">Edit Bank</h5>
                     <div class="card-body demo-vertical-spacing demo-only-element">
                     <div>
                             <input type="hidden" value={sid} />
@@ -170,7 +171,10 @@ function EditQB()
                               placeholder=""
                               aria-describedby="defaultFormControlHelp"
                               value={qname}
-                              onChange={qname => setQname(qname.target.value)}
+                              onChange={(qname) => {setQname(qname.target.value)
+                              setQnameError(false)
+                              }}
+                              style={isQnameError ? warn : nowarn}
                             />
                           </div>
                           <div>
@@ -183,12 +187,15 @@ function EditQB()
                               aria-describedby="defaultFormControlHelp"
                               value={no_question}
                               onChange={no_question => setNoquestion(no_question.target.value)}
+                              style={isNoQError ? warn : nowarn}
                               />
                           </div>
                           <div className="mb-3">
                             <label htmlFor="exampleFormControlSelect1" className="form-label">Category Name</label>
-                            <select className="form-select" id="exampleFormControlSelect1" aria-label="Default select example" onChange={cateid => setCateid(cateid.target.value)}
-                          value={cateid} >
+                            <select className="form-select" id="exampleFormControlSelect1" aria-label="Default select example" onChange={(cateid) => {setCateid(cateid.target.value)
+                            setCateError(false)
+                            }}
+                          value={cateid} style={isCateError ? warn : nowarn}>
                             <option value="">Select Category Name</option>
                             {
                               category.map((obj)=>{
@@ -235,7 +242,7 @@ function EditQB()
       
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
-    
+    <ToastContainer />
     {AddLibrary("/assets/vendor/libs/jquery/jquery.js")}
     {AddLibrary("/assets/vendor/libs/popper/popper.js")}
     {AddLibrary("/assets/vendor/js/bootstrap.js")}

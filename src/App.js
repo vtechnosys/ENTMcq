@@ -34,6 +34,7 @@ import QBList from './components/QuestionBank/QBList';
 import EditQB from './components/QuestionBank/EditQB';
 import ServiceEdit from './components/services/ServiceEdit';
 import ViewServices from './components/services/ViewServices';
+import Editpackages from './components/packages/Editpackages';
 import Login from './components/Login';
 import { BrowserRouter,Routes,Route } from 'react-router-dom';
 
@@ -77,6 +78,8 @@ function App() {
           <Route path='/addQuetionBank' element={<AddQb/>} />
           <Route path='/quetionbank' element={<QBList/>} />
           <Route path='/quetionbank/:id' element={<EditQB/>} />
+          <Route path='/package/:id' element={<Editpackages/>} />
+
           
           
         </Routes>

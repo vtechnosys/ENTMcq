@@ -2,7 +2,9 @@ import Header from '../Header';
 import axios from "axios";
 import React,{useState, useEffect} from 'react';
 import Headerpanel from '../Headerpanel';
+import { ToastContainer, toast } from 'react-toastify';
 
+import 'react-toastify/dist/ReactToastify.css';
 function Doctor()
 {
     const [doctor,setDoctor]=useState([]);
@@ -13,16 +15,38 @@ function Doctor()
     const [password,setPassword] = useState('');
     const [subid,setSubid]=useState('');
     const [error,setError] = useState(false);
-    
+    const warn = { borderWidth: 1, borderColor: '#f44336' }
+    const nowarn = { borderWidth: 1, borderColor: '#d9dee3' }
+    const [isNameError,setNameerror]=useState(false);
+    const [isEmailError, setEmailError] = useState(false);
+    const [isPasswordError,setPasswordError] = useState(false);
+    const [isSubError,setSubError]=useState(false);
     
     function storeDoctor()
     {
-      if(sid==='' || name === '' || email === '' || password === '' || subid === '')
+      
+      if(name=="")
       {
-        if(validate())
-        {
-          //alert(subid);
-          const subData = {
+        toast.error('Enter Name');
+        setName();
+        setNameerror(true)
+      }else if(email=="")
+      {
+        toast.error('Enter Email');
+        setEmail();
+        setEmailError(true)
+      }else if(password=="")
+      {
+        toast.error('Enter Password');
+        setPassword();
+        setPasswordError(true)
+      }else if(subid=="")
+      {
+        toast.error('Select Subject');
+        setSubid();
+        setSubError(true)
+      }else{
+         const subData = {
             name:name,
             email:email,
             password:password,
@@ -34,65 +58,50 @@ function Doctor()
                   //alert("Subject added successfully");
                   const data = res.data;
                   if(data[0].status=="success"){
-                    alert("Doctor added successfully");
+                    window.location.href = "/doctors";
                   }else{
-                    alert("Doctor failed");
+                    toast.error('Invalid Login Details');
                   }
-                  fetchDoctors();
+                  
                 })
         }
-        else{
-          //alert("somefields are empty");
-          setError(true);
-        }
+        
         
       }
-      else{
-        const subData = {
-          id:sid,
-          name:name,
-          email:email,
-          password:password,
-          subid:subid,
+      
+      //   const subData = {
+      //     id:sid,
+      //     name:name,
+      //     email:email,
+      //     password:password,
+      //     subid:subid,
           
-        };
-        axios.put('https://entmcq.vertextechnosys.com/api/doctor/'+sid,subData)
-              .then((res) =>{
-                console.log(res);
-                //alert("Subject added successfully");
-                const data = res.data;
-                if(data[0].status=="success"){
-                  alert("Doctor Updated successfully");
-                  setName('');
-                  setEmail('');
-                  setPassword('');
-                  setSubid('')
-                }
+      //   };
+      //   axios.put('https://entmcq.vertextechnosys.com/api/doctor/'+sid,subData)
+      //         .then((res) =>{
+      //           console.log(res);
+      //           //alert("Subject added successfully");
+      //           const data = res.data;
+      //           if(data[0].status=="success"){
+      //             alert("Doctor Updated successfully");
+      //             setName('');
+      //             setEmail('');
+      //             setPassword('');
+      //             setSubid('')
+      //           }
                   
-                else{
-                  alert("Doctor failed");
-                }
-                fetchDoctors();
-              })
-      }
-    }
-    function validate()
-    {
+      //           else{
+      //             alert("Doctor failed");
+      //           }
+      //           fetchDoctors();
+      //         })
+      // }
+    
+    // function validate()
+    // {
      
-      if(!name){
-        return false;
-      }
-      else if(!email){
-        return false;
-      }else if(!password)
-      {
-        return false;
-      }else if(!subid)
-      {
-        return false;
-      }
-      return true;
-    }
+      
+    // }
 
     function fetchDoctors()
     {
@@ -153,7 +162,9 @@ function Doctor()
       script.async = true;
       document.body.appendChild(script);
     }
-    
+    useEffect(() => {
+    fetchSubject();
+  }, []);
     
 return (
   <React.Fragment>
@@ -207,7 +218,10 @@ return (
                           placeholder="Name"
                           aria-describedby="defaultFormControlHelp"
                           value={name}
-                          onChange={name => setName(name.target.value)}
+                          onChange={(name) => {setName(name.target.value)
+                          setNameerror(false);
+                          }}
+                          style={isNameError ? warn : nowarn}
                         />
                         
                       </div>
@@ -221,7 +235,10 @@ return (
                           placeholder="Email"
                           aria-describedby="defaultFormControlHelp"
                           value={email}
-                          onChange={email => setEmail(email.target.value)}
+                          style={isEmailError ? warn : nowarn}
+                          onChange={(email) => {setEmail(email.target.value)
+                          setEmailError(false)
+                          }}
                         />
                         
                       </div>
@@ -235,7 +252,10 @@ return (
                           placeholder="Password"
                           aria-describedby="defaultFormControlHelp"
                           value={password}
-                          onChange={password => setPassword(password.target.value)}
+                          style={isPasswordError ? warn : nowarn}
+                          onChange={(password) => {setPassword(password.target.value)
+                          setPasswordError(false)
+                          }}
                         />
                         
                       </div>
@@ -247,8 +267,11 @@ return (
                           class="form-select" 
                           id="exampleFormControlSelect1" 
                           aria-label="Default select example"
-                          onChange={subid => setSubid(subid.target.value)}
+                          onChange={(subid) => {setSubid(subid.target.value)
+                          setSubError(false)
+                          }}
                           value={subid}
+                          style={isSubError ? warn : nowarn}
                         >
                         <option value="">Select Subject Name</option>
                         {
@@ -303,6 +326,7 @@ return (
   
   <div class="layout-overlay layout-menu-toggle"></div>
 </div>
+<ToastContainer />
 {AddLibrary("/assets/vendor/libs/jquery/jquery.js")}
   {AddLibrary("/assets/vendor/libs/popper/popper.js")}
   {AddLibrary("/assets/vendor/js/bootstrap.js")}
