@@ -85,7 +85,7 @@ function AdminList() {
               //alert("Subject added successfully");
               const data = res.data;
               if(data[0].status=="success"){
-                alert("Admin Deleted successfully");
+                // alert("Admin Deleted successfully");
                 window.location.href="/admins";
                 
               }

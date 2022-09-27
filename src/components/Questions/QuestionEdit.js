@@ -129,11 +129,14 @@ function QuestionEdit(){
     axios.put('https://entmcq.vertextechnosys.com/api/question/'+qid.qid,qusData)
         .then((resp)=>{
           const data = resp.data;
-          console.log(data)
+          // console.log(data)
           if(data.status=='success')
           {
-            alert('updated');
             window.location.href='/viewQuestions';
+          }
+          else
+          {
+            toast.error('Invalid Details');
           }
         })
       }
@@ -273,13 +276,28 @@ function QuestionEdit(){
           <div className="content-wrapper">
 
             <div className="container-xxl flex-grow-1 container-p-y">
-              <h4 className="fw-bold py-3 mb-4"><span className="text-muted fw-light">Questions /</span> Edit Question</h4>
+              <h4 className="fw-bold py-3 mb-4"><span className="text-muted fw-light">Dashboard /</span> Question</h4>
               
               <div className="row">
                 <div className="col-md-12">
                   <div className="card mb-4">
                     <h5 className="card-header">Edit Questions</h5>
                     <div className="card-body  demo-only-element row">
+                    <div className="col-md-6 mb-3">
+                            <label htmlFor="exampleFormControlSelect1" className="form-label" >Question Title</label>
+                            <input type='text'
+                              class="form-control" 
+                              id="exampleFormControlSelect1" 
+                              aria-label="Default select example"
+                              style={isTitleError ? warn : nowarn}
+                              onChange={(qtitle) => {setQTitle(qtitle.target.value)
+                              setQuestionError(false)
+                              }}
+                              value={qtitle}
+
+                            />
+                            
+                        </div>
                         <div className="col-md-6 mb-3">
                             <label htmlFor="exampleFormControlSelect1" className="form-label">Subject</label>
                             <select
@@ -302,21 +320,6 @@ function QuestionEdit(){
                             }
                             
                             </select>
-                        </div>
-                        <div className="col-md-6 mb-3">
-                            <label htmlFor="exampleFormControlSelect1" className="form-label" >Question Title</label>
-                            <input type='text'
-                              class="form-control" 
-                              id="exampleFormControlSelect1" 
-                              aria-label="Default select example"
-                              style={isTitleError ? warn : nowarn}
-                              onChange={(qtitle) => {setQTitle(qtitle.target.value)
-                              setQuestionError(false)
-                              }}
-                              value={qtitle}
-
-                            />
-                            
                         </div>
                         <div>
                             <label htmlFor="exampleFormControlTextarea1" className="form-label">Question</label>
@@ -421,7 +424,7 @@ function QuestionEdit(){
                           </div>
 
                       <div className="mb-3">
-                        <button className="btn btn-primary d-grid w-100" type="submit" style={{backgroundColor: "#188ccc"}} onClick={handleClick}>Submit</button>
+                        <button className="btn btn-primary d-grid w-100" type="submit" style={{backgroundColor: "#188ccc"}} onClick={handleClick}>Update</button>
                       </div>
                     </div>
                   </div>

@@ -18,7 +18,7 @@ function Package(){
     const [service_include,setService]=useState('');
     const [package_name,setPackagename]=useState('');
     const [pricing,setPrice]=useState('');
-    const [discount,setDiscount]=useState('0');
+    const [discount,setDiscount]=useState('');
     const [subjects,setSubject]=useState('');
     const [sid,setSid] = useState('');
     const [serid,setSerid] = useState('');
@@ -85,7 +85,7 @@ function Package(){
         });
       }
     };
-    const ft=userinfo.response;
+    
     function storeSubject()
     {
       if(package_name=="")
@@ -96,41 +96,39 @@ function Package(){
       }else if(pricing=="")
       {
         toast.error('Enter Pricing');
-      setPrice();
-      setPriceError(true)
+        setPrice();
+        setPriceError(true)
       }else if(discount=="")
       {
         toast.error('Enter Discount');
-      setDiscount();
-      setDiscountError(true)
-      }else if(service_include=="")
-      {
-        toast.error('Select Service');
-      setService();
-      setSubjectError(true)
+        setDiscount();
+        setDiscountError(true)
       }
       else
       {
           //alert("valid")
           const subData = {
+            id:id.id,
             package_name:package_name,
-            service_include:ft,
+            service_include:userinfo.response,
             pricing:pricing,
             discount:discount,
-            subjects:userinfo1.response,
-            
+            subjects:userinfo1.response
           };
           console.log(subData);
           
-          axios.post('https://entmcq.vertextechnosys.com/api/package',subData)
-                .then((res) =>{
-                  console.log(res);
+          axios.put('https://entmcq.vertextechnosys.com/api/package/'+id.id,subData)
+                .then((resp) =>{
+                  //console.log(res);
                   //alert("Subject added successfully");
-                  const data = res.data;
-                  if(data[0].status=="success")
-                  window.location.href = "/package";
-                  else{
-                    toast.error('Invalid Login Details');
+                  const data = resp.data;
+                  if(data.status=="success")
+                  {
+                    window.location.href = '/packages';
+                  }
+                  else
+                  {
+                    toast.error('Invalid Details');
                   }
                   //featchSubject();
                 })
@@ -155,22 +153,18 @@ function Package(){
               //setSubjects(data);
             })
     }
-    function validate()
-    {
-      if(!package_name){
-        return false;
-      }
-      else if(!pricing){
-        return false;
-      }
-      return true;
-    }
+    
     function featchPackage()
     {
-        axios.get('https://entmcq.vertextechnosys.com/api/package')
+        axios.get('https://entmcq.vertextechnosys.com/api/package/'+id.id)
         .then((res)=>{
           const data = res.data;
-          setPackage(data);
+          console.log(data);
+          setPackagename(data.package_name);
+          setPrice(data.pricing);
+          setDiscount(data.discount);    
+          setServices(data.userinfo.response);
+              
         })
     }
     function featchService()
@@ -215,29 +209,19 @@ function Package(){
       script.async = true;
       document.body.appendChild(script);
     }
-    useEffect(()=>{
-        featchService()
-      },[])
-    useEffect(()=>{
-      featchPackage()
-    },[])
+    
     // useEffect(()=>{
     //   featchQuestionBank()
     // },[])
 
-    function fetchPackage()
-    {
-        axios.get('https://entmcq.vertextechnosys.com/api/package/'+id)
-        .then((res)=>{
-            const data = res.data;
-            setPackagename(data.package_name);
-            setServices(''+data.userinfo.response);
-            setPrice(data.pricing);
-            setDiscount(data.discount);
-            
-        })
-
-    }
+    
+    useEffect(()=>{
+      featchService();
+      featchPackage();
+    },[])
+  // useEffect(()=>{
+  //   featchPackage()
+  // },[])
     return (
       <React.Fragment>
         <div class="layout-wrapper layout-content-navbar">
@@ -368,7 +352,7 @@ function Package(){
                           
                           
                       <div class="mb-3">
-                        <button class="btn btn-primary d-grid w-100" type="button" style={{backgroundColor: '#188ccc'}} onClick={storeSubject}>Store</button>
+                        <button class="btn btn-primary d-grid w-100" type="button" style={{backgroundColor: '#188ccc'}} onClick={storeSubject}>Update</button>
                       </div>
                     </div>
                   </div>

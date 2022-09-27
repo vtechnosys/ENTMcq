@@ -5,13 +5,13 @@ import DataTable from 'react-data-table-component';
 import Headerpanel from '../Headerpanel';
 import { useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-
 import 'react-toastify/dist/ReactToastify.css';
 function EditCategory()
 {
     const id = useParams();
     const [subjects,setSubjects]=useState([]);
     const [name,setSname] = useState('');
+    const [img,setImg] = useState('');
     const [description, setDescription] = useState('');
     const [subStauts,setSubStatus] = useState('active');
     const [error,setError] = useState(false);
@@ -43,28 +43,33 @@ function EditCategory()
       else
       {
         const subData = {
-          id:sid,
+          id:id,
           name:name,
           description:description,
           status:subStauts
+          
         };
-        console.log(subData);
+        //console.log(subData);
+        // const config = {     
+        //   headers: { 'content-type': 'multipart/form-data' }
+        //  }
         axios.put('https://entmcq.vertextechnosys.com/api/category/'+sid,subData)
               .then((res) =>{
                 console.log(res);
                 //alert("Subject added successfully");
                 const data = res.data;
                 if(data.status=="success"){
-                  alert("Category Updated successfully");
+                  // alert("Category Updated successfully");
                   setSname('');
                   setDescription('')
                   setSubStatus('')
+                  setselectedFile('')
                   setSid('')
                   window.location.href = "/category";
                 }
                   
                 else{
-                  toast.error('Invalid Login Details');
+                  toast.error('Invalid Details');
                 }
                 //fetchSubjects();
               })
@@ -81,9 +86,10 @@ function EditCategory()
                 const data = res.data;
                 console.log(data);
                 setSname(data.name);
-                setDescription(data.description)
-                setSubStatus(data.status)
-                setSid(data.id)
+                setDescription(data.description);
+                setImg(data.image);
+                setSubStatus(data.status);
+                setSid(data.id);
                 
                 //setSubjects(data);
               })
@@ -167,7 +173,7 @@ function EditCategory()
                             
                           </div>
                           <div>
-                          <label for="exampleFormControlTextarea1" class="form-label">Image</label>
+                          <img src={`/assets/img/${img}`} height="80px" width="80px"/><br/><br/>                          <label for="exampleFormControlTextarea1" class="form-label">Image</label>
                             <input type="file" onChange={onFileChange}/>
                           </div>
 
@@ -180,7 +186,7 @@ function EditCategory()
                           </div>):"" }
 
                       <div class="mb-3">
-                        <button class="btn btn-primary d-grid w-100" type="submit" style={{backgroundColor: '#188ccc'}} onClick={storeSubject}>Store</button>
+                        <button class="btn btn-primary d-grid w-100" type="submit" style={{backgroundColor: '#188ccc'}} onClick={storeSubject}>Update</button>
                       </div>
                     </div>
                   </div>

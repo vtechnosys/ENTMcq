@@ -3,6 +3,8 @@ import axios from 'axios';
 import Header from '../Header';
 import DataTable from 'react-data-table-component';
 import Headerpanel from '../Headerpanel';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function SubjectList() {
     const [subjects,setSubjects]=useState([])
     const [qblist,setQblist] = useState([]);
@@ -102,12 +104,12 @@ function SubjectList() {
               //alert("Subject added successfully");
               const data = res.data;
               if(data[0].status=="success"){
-                alert("Subject Deleted successfully");
                 
+                window.location.href="/view_subjects"
               }
                 
               else{
-                alert("Subject Delete failed");
+                toast.error('Invalid Login Details');
               }
               fetchSubjects();
             })
@@ -178,7 +180,7 @@ function SubjectList() {
               aria-label="Default select example"
               onChange={handleChange}
               style={{width:25+"%",display:'inline-block',marginLeft:20,}}>
-                <option value="">Select quesiton Bank Name</option>
+                <option value="">Select Subject</option>
               {
                 
                   qblist.map((obj)=>{
@@ -189,7 +191,7 @@ function SubjectList() {
               }
               </select>
               <div class=" col-sm-3 input-group" style={{width:30+"%",float:'right'}}>
-                        <input type="text" class="form-control" placeholder="Search Admin" value={filterText} onChange={(e)=>{setFilterText(e.target.value)}}/>
+                        <input type="text" class="form-control" placeholder="Search Subject" value={filterText} onChange={(e)=>{setFilterText(e.target.value)}}/>
                         <button class="btn btn-outline-primary" type="button" id="button-addon2" style={{margin:0}} onClick={handleClear}>X</button>
               </div>
               <div class="row mt-4">

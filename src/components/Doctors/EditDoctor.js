@@ -5,7 +5,7 @@ import {useParams} from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import Headerpanel from '../Headerpanel';
 import { ToastContainer, toast } from 'react-toastify';
-
+import { isEmail } from "../../validators/Validations";
 import 'react-toastify/dist/ReactToastify.css';
 
 function EditDoctor()
@@ -33,7 +33,7 @@ function EditDoctor()
         toast.error('Enter Name');
         setName();
         setNameerror(true)
-      }else if(email=="")
+      }else if(!isEmail(email))
       {
         toast.error('Enter Email');
         setEmail();
@@ -102,26 +102,6 @@ function EditDoctor()
               //setQuiz(data);
             })
     }
-
-    function deleteOption(id)
-    {
-      axios.delete('https://entmcq.vertextechnosys.com/api/doctor/'+id)
-            .then((res) =>{
-              console.log(res);
-              //alert("Subject added successfully");
-              const data = res.data;
-              if(data[0].status=="success"){
-                alert("Doctor Deleted successfully");
-                
-              }
-                
-              else{
-                alert("Doctor Delete failed");
-              }
-        //fetchDoctors();
-            })
-    }
-
   useEffect(()=>{
     editOption(id);
     fetchSubject();
@@ -257,7 +237,7 @@ function EditDoctor()
                       </div>
                       
                   <div class="mb-3">
-                    <button class="btn btn-primary d-grid w-100" type="button" style={{backgroundColor: '#188ccc'}} onClick={storeDoctor}>Store</button>
+                    <button class="btn btn-primary d-grid w-100" type="button" style={{backgroundColor: '#188ccc'}} onClick={storeDoctor}>Update</button>
                     
                   </div>
                 </div>

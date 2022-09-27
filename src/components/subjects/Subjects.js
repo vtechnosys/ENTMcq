@@ -9,6 +9,8 @@ import 'react-toastify/dist/ReactToastify.css';
 function Subjects()
 {
     const [subjects,setSubjects]=useState([])
+
+    const [questionbank,setQuestionbank]=useState([]);
     const [qbid,setQbid] = useState('')
     const [sname,setSname] = useState('');
     const [description, setDescription] = useState('');
@@ -88,7 +90,7 @@ function Subjects()
                   //alert("Subject added successfully");
                   const data = res.data;
                   if(data[0].status=="success"){
-                    alert("Subject added successfully");
+                    //alert("Subject added successfully");
                     window.location.href="/view_subjects"
                   }
                   else{
@@ -97,27 +99,7 @@ function Subjects()
                   //fetchSubjects();
                 })
         }
-        
-        
-      
-      
-      
-      
     }
-
-    function validate()
-    {
-      if(!sname){
-        return false;
-      }
-      else if(!description){
-        return false;
-      }
-      return true;
-    }
-
-    
-
     function editOption(id){
       setSid(id);
       //alert(id)
@@ -157,7 +139,7 @@ function Subjects()
         axios.get('https://entmcq.vertextechnosys.com/api/questionbank')
               .then((res)=>{
                 const data = res.data;
-                setSubjects(data);
+                setQuestionbank(data);
               })
       }
     
@@ -256,7 +238,7 @@ function Subjects()
                           value={qbid} style={isQuestionError ? warn : nowarn} >
                             <option value="">Select Question Bank</option>
                             {
-                              subjects.map((obj)=>{
+                              questionbank.map((obj)=>{
                               return(
                                 <option value={obj.qid}>{obj.qname}</option>
                                 )
@@ -266,7 +248,7 @@ function Subjects()
                           </div>
 
                       <div class="mb-3">
-                        <button class="btn btn-primary d-grid w-100" type="submit" style={{backgroundColor: '#188ccc'}} onClick={storeSubject}>Store</button>
+                        <button class="btn btn-primary d-grid w-100" type="button" style={{backgroundColor: '#188ccc'}} onClick={storeSubject}>Store</button>
                       </div>
                     </div>
                   </div>

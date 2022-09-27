@@ -35,7 +35,7 @@ function User () {
               //alert("Subject added successfully");
               const data = res.data;
               if(data[0].status=="success"){
-                alert("User Deleted successfully");
+                window.location.href='/user';
                 
               }
                 
@@ -116,19 +116,10 @@ function User () {
                                   }
                               </td>
                               <td>
-                                <div class="dropdown">
-                                  <button
-                                    type="button"
-                                    class="btn p-0 dropdown-toggle hide-arrow"
-                                    data-bs-toggle="dropdown"
-                                  >
-                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                  </button>
-                                  <div class="dropdown-menu">
                                   <button class="dropdown-item" onClick={()=>deleteOption(obj.id)}
                                         ><i class="bx bx-trash me-1"></i> Delete</button>
-                                  </div>
-                                </div>
+                                
+                                
                               </td>
                             </tr>)
                             })

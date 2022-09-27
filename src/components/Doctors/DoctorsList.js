@@ -3,6 +3,9 @@ import axios from 'axios';
 import Header from '../Header';
 import DataTable from 'react-data-table-component';
 import Headerpanel from '../Headerpanel';
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 function DoctorsList() {
     const [doctor,setDoctor]=useState([]);
     var cnt =0;
@@ -93,12 +96,12 @@ function DoctorsList() {
               //alert("Subject added successfully");
               const data = res.data;
               if(data[0].status=="success"){
-                alert("Doctor Deleted successfully");
+                // alert("Doctor Deleted successfully");
                 window.location.href="/doctors";
               }
                 
               else{
-                alert("Doctor Delete failed");
+                toast.error('Invalid Login Details');
               }
               //fetchSubjects();
             })
@@ -153,7 +156,7 @@ function DoctorsList() {
               <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Dashboard /</span> Doctors Details</h4>
               <a href="/addDoctor" class="btn btn-danger col-sm-2"><i class="bx bx-plus me-1"></i> Add new</a>
               <div class=" col-sm-3 input-group" style={{width:30+"%",float:'right'}}>
-                        <input type="text" class="form-control" placeholder="Search Admin" value={filterText} onChange={(e)=>{setFilterText(e.target.value)}}/>
+                        <input type="text" class="form-control" placeholder="Search Doctor" value={filterText} onChange={(e)=>{setFilterText(e.target.value)}}/>
                         <button class="btn btn-outline-primary" type="button" id="button-addon2" style={{margin:0}} onClick={handleClear}>X</button>
               </div>
               <div class="row mt-4">

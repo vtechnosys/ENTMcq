@@ -166,7 +166,7 @@ function ViewPackages() {
             
 
             <div class="container-xxl flex-grow-1 container-p-y">
-              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Dashboard /</span> packages Details</h4>
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Dashboard /</span> Packages Details</h4>
               <a href="/package" class="btn btn-danger col-sm-2"><i class="bx bx-plus me-1"></i> Add new</a>
               
               <div class="row mt-4">

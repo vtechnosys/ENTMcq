@@ -3,6 +3,8 @@ import axios from 'axios';
 import Header from '../Header';
 import DataTable from 'react-data-table-component';
 import Headerpanel from '../Headerpanel';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function QBList() {
     const [subjects,setSubjects]=useState([])
     const [catlist,setCatList] = useState([]);
@@ -112,14 +114,14 @@ function QBList() {
               //alert("Subject added successfully");
               const data = res.data;
               if(data[0].status=="success"){
-                alert("Bank Deleted successfully");
+                window.location.href='/quetionbank';
                 
               }
                 
               else{
-                alert("Bank Delete failed");
+                toast.error('Invalid Details');
               }
-              fetchSubjects();
+              //fetchSubjects();
             })
     }
 
@@ -198,7 +200,7 @@ function QBList() {
               }
               </select>
               <div class=" col-sm-3 input-group" style={{width:30+"%",float:'right'}}>
-                        <input type="text" class="form-control" placeholder="Search Admin" value={filterText} onChange={(e)=>{setFilterText(e.target.value)}}/>
+                        <input type="text" class="form-control" placeholder="Search Question Bank" value={filterText} onChange={(e)=>{setFilterText(e.target.value)}}/>
                         <button class="btn btn-outline-primary" type="button" id="button-addon2" style={{margin:0}} onClick={handleClear}>X</button>
               </div>
               <div class="row mt-4">

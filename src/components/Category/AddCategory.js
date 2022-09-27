@@ -62,7 +62,7 @@ function AddCategory()
                     if(data.status=="success")
                     window.location.href = "/category";
                     else{
-                      toast.error('Invalid Login Details');
+                      toast.error('Invalid Details');
 
                     }
                     

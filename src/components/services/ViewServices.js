@@ -3,6 +3,8 @@ import axios from 'axios';
 import Header from '../Header';
 import DataTable from 'react-data-table-component';
 import Headerpanel from '../Headerpanel';
+import {useParams} from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 function ViewServices() {
     const [service,setService]=useState([])
     var cnt =0;
@@ -95,12 +97,12 @@ function ViewServices() {
                 //alert("Subject added successfully");
                 const data = res.data;
                 if(data[0].status=="success"){
-                  alert("Service Deleted successfully");
+                  window.location.href = "/services";
                   
                 }
                   
                 else{
-                  alert("Service Delete failed");
+                  toast.error('Invalid Details');
                 }
                 fetchService();
               })

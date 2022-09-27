@@ -3,7 +3,7 @@ import axios from "axios";
 import React,{useState, useEffect} from 'react';
 import Headerpanel from '../Headerpanel';
 import { ToastContainer, toast } from 'react-toastify';
-
+import { isEmail } from "../../validators/Validations";
 import 'react-toastify/dist/ReactToastify.css';
 function Doctor()
 {
@@ -30,7 +30,7 @@ function Doctor()
         toast.error('Enter Name');
         setName();
         setNameerror(true)
-      }else if(email=="")
+      }else if(!isEmail(email))
       {
         toast.error('Enter Email');
         setEmail();
@@ -202,9 +202,9 @@ return (
         <div class="container-xxl flex-grow-1 container-p-y">
           <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Dashboard /</span> Doctor</h4>
 
-          <div class="row">
+          <div class="row" style={{justifyContent:'center'}}>
             
-            <div class="col-md-5">
+            <div class="col-md-6">
               <div class="card mb-4">
                 <h5 class="card-header">Add Doctor</h5>
                 <div class="card-body demo-vertical-spacing demo-only-element">

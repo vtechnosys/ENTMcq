@@ -89,7 +89,7 @@ function EditSubject()
               //alert("Subject added successfully");
               const data = res.data;
               if(data[0].status=="success"){
-                alert("Subject Updated successfully");
+                // alert("Subject Updated successfully");
                 setSname('');
                 setDescription('')
                 setSubStatus('')
@@ -144,12 +144,12 @@ function EditSubject()
             //alert("Subject added successfully");
             const data = res.data;
             if(data[0].status=="success"){
-              alert("Subject Deleted successfully");
-              
+              // alert("Subject Deleted successfully");
+              window.location.href="/view_subjects"
             }
               
             else{
-              alert("Subject Delete failed");
+              toast.error('Invalid Login Details');
             }
             //fetchSubjects();
           })
@@ -266,7 +266,7 @@ function EditSubject()
                           </div>
 
                     <div class="mb-3">
-                      <button class="btn btn-primary d-grid w-100" type="submit" style={{backgroundColor: '#188ccc'}} onClick={storeSubject}>Store</button>
+                      <button class="btn btn-primary d-grid w-100" type="button" style={{backgroundColor: '#188ccc'}} onClick={storeSubject}>Update</button>
                     </div>
                   </div>
                 </div>

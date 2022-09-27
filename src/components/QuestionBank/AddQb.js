@@ -53,11 +53,11 @@ function AddQb()
                 //alert("Subject added successfully");
                 const data = res.data;
                 if(data[0].status=="success"){
-                  alert("Question Bank added successfully");
+                  // alert("Question Bank added successfully");
                   window.location.href='/quetionbank';
                 }
                 else{
-                  toast.error('Invalid Login Details');
+                  toast.error('Invalid Details');
                 }
                 
               })

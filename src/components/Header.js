@@ -122,13 +122,13 @@ function Header()
               <ul className="menu-sub">
                 <li className="menu-item">
                   <a href="/admins" className="menu-link">
-                    <div data-i18n="Without menu">View Admins</div>
+                    <div data-i18n="Without menu">View All</div>
                   </a>
                 </li>
 
                 <li className="menu-item">
                   <a href="/addAdmin" className="menu-link">
-                    <div data-i18n="Without menu">Add Admins</div>
+                    <div data-i18n="Without menu">Add New</div>
                   </a>
                 </li>
                 
@@ -176,7 +176,7 @@ function Header()
 
                 <li className="menu-item">
                   <a href="/addCategory" className="menu-link">
-                    <div data-i18n="Without menu">Add Category</div>
+                    <div data-i18n="Without menu">Add New</div>
                   </a>
                 </li>
                 
@@ -197,7 +197,7 @@ function Header()
 
                 <li className="menu-item">
                   <a href="/addQuetionBank" className="menu-link">
-                    <div data-i18n="Without menu">Add Bank</div>
+                    <div data-i18n="Without menu">Add New</div>
                   </a>
                 </li>
                 
@@ -212,13 +212,13 @@ function Header()
               <ul className="menu-sub">
                 <li className="menu-item">
                   <a href="/view_subjects" className="menu-link">
-                    <div data-i18n="Without menu">View Subjects</div>
+                    <div data-i18n="Without menu">View All</div>
                   </a>
                 </li>
 
                 <li className="menu-item">
                   <a href="/subjects" className="menu-link">
-                    <div data-i18n="Without menu">Add Subjects</div>
+                    <div data-i18n="Without menu">Add New</div>
                   </a>
                 </li>
                 
@@ -240,7 +240,7 @@ function Header()
 
                 <li className="menu-item">
                   <a href="/questions" className="menu-link">
-                    <div data-i18n="Without menu">Add Question</div>
+                    <div data-i18n="Without menu">Add New</div>
                   </a>
                 </li>
                 
@@ -262,7 +262,7 @@ function Header()
 
                 <li className="menu-item">
                   <a href="/service" className="menu-link">
-                    <div data-i18n="Without menu">Add</div>
+                    <div data-i18n="Without menu">Add New</div>
                   </a>
                 </li>
                 
@@ -284,7 +284,7 @@ function Header()
 
                 <li className="menu-item">
                   <a href="/package" className="menu-link">
-                    <div data-i18n="Without menu">Add</div>
+                    <div data-i18n="Without menu">Add New</div>
                   </a>
                 </li>
                 

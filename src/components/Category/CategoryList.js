@@ -3,6 +3,8 @@ import axios from 'axios';
 import Header from '../Header';
 import DataTable from 'react-data-table-component';
 import Headerpanel from '../Headerpanel';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function CategoryList() {
     const [subjects,setSubjects]=useState([])
     const clms = [
@@ -17,13 +19,25 @@ function CategoryList() {
           )
         },
         {
-          name:'Subject',
+          name:'Category Name',
           selector: row=>row.name,
           sortable:true,
           wrap:true,
           maxWidth:'200px',
           cell:row=>(
             <div>{row.name}</div>
+          )
+        },
+        {
+          name:'Category Image',
+          selector: row=>row.image,
+          
+          sortable:true,
+          wrap:true,
+          maxWidth:'200px',
+          
+          cell:row=>(
+            <div><img src={`assets/img/${row.image}`} height="50px" width="50px"/></div>
           )
         },
         {
@@ -82,14 +96,14 @@ function CategoryList() {
               //alert("Subject added successfully");
               const data = res.data;
               if(data[0].status=="success"){
-                alert("Category Deleted successfully");
-                
+                // alert("Category Deleted successfully");
+                window.location.href = "/category";
               }
                 
-              else{
-                alert("Category Delete failed");
+              else{ 
+                toast.error('Invalid Details');
               }
-              fetchSubjects();
+              // fetchSubjects();
             })
     }
 
@@ -141,7 +155,7 @@ function CategoryList() {
               <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Dashboard /</span> Category</h4>
               <a href="/addCategory" class="btn btn-danger col-sm-2"><i class="bx bx-plus me-1"></i> Add new</a>
               <div class=" col-sm-3 input-group" style={{width:30+"%",float:'right'}}>
-                        <input type="text" class="form-control" placeholder="Search Admin" value={filterText} onChange={(e)=>{setFilterText(e.target.value)}}/>
+                        <input type="text" class="form-control" placeholder="Search Category" value={filterText} onChange={(e)=>{setFilterText(e.target.value)}}/>
                         <button class="btn btn-outline-primary" type="button" id="button-addon2" style={{margin:0}} onClick={handleClear}>X</button>
               </div>
               <div class="row mt-4">

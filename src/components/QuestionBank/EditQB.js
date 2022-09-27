@@ -56,11 +56,11 @@ function EditQB()
                 //alert("Subject added successfully");
                 const data = res.data;
                 if(data.status=="success"){
-                  alert("Question Bank updated successfully");
+                  
                   window.location.href='/quetionbank';
                 }
                 else{
-                  toast.error('Invalid Login Details');
+                  toast.error('Invalid Details');
                 }
                 
               })
@@ -209,7 +209,7 @@ function EditQB()
                           
                           
                           <div class="mb-3">
-                            <button class="btn btn-primary d-grid w-100" type="button" style={{backgroundColor: '#188ccc'}} onClick={Addquestionbank}>Store</button>
+                            <button class="btn btn-primary d-grid w-100" type="button" style={{backgroundColor: '#188ccc'}} onClick={Addquestionbank}>Update</button>
                           </div>
                     </div>
                   </div>

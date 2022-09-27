@@ -6,6 +6,9 @@ import {useParams} from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 import Headerpanel from '../Headerpanel';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function EditAdmin()
 {
   const {id} = useParams();
@@ -15,6 +18,11 @@ function EditAdmin()
   const [sid,setSid]=useState('');
   const [admin,setAdmin] = useState([])
   const [error,setError] = useState(false);
+  const [isnameError, setNameError] = useState(false);
+  const [isemailError,setEmailError] = useState(false);
+  const [ispasswordError,setPasswordError]=useState(false);
+  const warn = { borderWidth: 1, borderColor: '#f44336' }
+   const nowarn = { borderWidth: 1, borderColor: '#d9dee3' }
 
   const clms = [
     {
@@ -52,36 +60,22 @@ function EditAdmin()
 
   function storeAdmin()
     {
-      if(name === '' || email === '' || password === '')
+      if(name==""){
+        toast.error('Enter Name');
+        setName();
+        setNameError(true)
+      }else if(email=="")
       {
-        if(validate())
-        {
-          //alert("valid")
-          const subData = {
-            name:name,
-            email:email,
-            password:password
-          };
-          axios.post('https://entmcq.vertextechnosys.com/api/admin',subData)
-                .then((res) =>{
-                  console.log(res);
-                  //alert("Subject added successfully");
-                  const data = res.data;
-                  if(data[0].status=="success")
-                    alert("Admin added successfully");
-                  else{
-                    alert("Admin failed");
-                  }
-                  fetchAdmins();
-                })
-        }
-        else{
-          //alert("somefields are empty");
-          setError(true);
-        }
-        
+        toast.error('Enter Email');
+        setEmail('');
+        setEmailError(true)
+      }else if(password==""){
+        toast.error('Enter Password');
+        setPassword('');
+        setPasswordError(true)
       }
-      else{
+      else
+      {
         const subData = {
           id:sid,
           name:name,
@@ -95,17 +89,18 @@ function EditAdmin()
                 //alert("Subject added successfully");
                 const data = res.data;
                 if(data[0].status=="success"){
-                  alert("Admin Updated successfully");
+                  // alert("Admin Updated successfully");
                   setSid('');
                   setName('');
                   setEmail('');
                   setPassword('')
+                  window.location.href = "/admins";
                 }
                   
                 else{
-                  alert("Admin failed");
+                  toast.error('Invalid Login Details');
                 }
-                fetchAdmins();
+                
               })
       }
     }   
@@ -265,7 +260,7 @@ function EditAdmin()
                       </div>
 
                       <div class="mb-3">
-                        <button class="btn btn-primary d-grid w-100" type="submit" style={{backgroundColor: '#188ccc'}} onClick={storeAdmin}>Store</button>
+                        <button class="btn btn-primary d-grid w-100" type="button" style={{backgroundColor: '#188ccc'}} onClick={storeAdmin}>Update</button>
                       </div>
                     </div>
                 </div>
@@ -298,7 +293,7 @@ function EditAdmin()
     
     <div class="layout-overlay layout-menu-toggle"></div>
   </div>
-  
+  <ToastContainer />
   {AddLibrary("/assets/vendor/libs/jquery/jquery.js")}
   {AddLibrary("/assets/vendor/libs/popper/popper.js")}
   {AddLibrary("/assets/vendor/js/bootstrap.js")}

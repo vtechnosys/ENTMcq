@@ -99,13 +99,7 @@ function Package(){
         toast.error('Enter Discount');
       setDiscount();
       setDiscountError(true)
-      }else if(service_include=="")
-      {
-        toast.error('Select Service');
-      setService();
-      setSubjectError(true)
-      }
-      else
+      }else 
       {
           //alert("valid")
           const subData = {

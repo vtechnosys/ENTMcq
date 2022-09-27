@@ -2,9 +2,10 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import Header from "../Header";
 import Headerpanel from "../Headerpanel";
+import { isEmail } from "../../validators/Validations";
 import { ToastContainer, toast } from 'react-toastify';
-
 import 'react-toastify/dist/ReactToastify.css';
+
 function Admin() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -23,7 +24,7 @@ function Admin() {
       toast.error('Enter Name');
       setName();
       setNameError(true)
-    }else if(email=="")
+    }else if(!isEmail(email))
     {
       toast.error('Enter Email');
       setEmail('');
@@ -138,14 +139,14 @@ function Admin() {
               <div class="container-xxl flex-grow-1 container-p-y">
                 <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Dashboard /</span> Admin's</h4>
 
-                <div class="row">
+                <div class="row" style={{justifyContent:'center'}}>
 
-                  <div class="col-md-5">
+                  <div class="col-md-6">
                     <div class="card mb-4">
                       <h5 class="card-header">Add Admin's</h5>
                       <div class="card-body demo-vertical-spacing demo-only-element">
 
-                        <form method="post" onSubmit={storeAdmin}>
+                        <form method="post">
                           <div>
                             <input type="hidden" value={sid} />
 
@@ -203,7 +204,7 @@ function Admin() {
                           </div>
 
                           <div class="mb-3 mt-4">
-                            <button class="btn btn-primary d-grid w-100" type="submit" style={{ backgroundColor: '#188ccc' }} onClick={storeAdmin}>Store</button>
+                            <button class="btn btn-primary d-grid w-100" type="button" style={{ backgroundColor: '#188ccc' }} onClick={storeAdmin}>Store</button>
                           </div>
                         </form>
 
