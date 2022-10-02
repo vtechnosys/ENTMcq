@@ -5,7 +5,9 @@ import DataTable from 'react-data-table-component';
 import Headerpanel from '../Headerpanel';
 import { ToastContainer, toast } from 'react-toastify';
 import { Triangle } from 'react-loader-spinner';
-
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import 'react-toastify/dist/ReactToastify.css';
 function AddQb() {
 
@@ -33,6 +35,7 @@ function AddQb() {
   const [category, setCategory] = useState([]);
   const [packages, setPackages] = useState([]);
   const [datavalue, setDatavalue] = useState([]);
+  const [getqval,setGetQvalue]=useState([]);
   const [cateid, setCateid] = useState('');
   const [qname, setQname] = useState('mock');
   const [tm, setTm] = useState('10');
@@ -45,6 +48,7 @@ function AddQb() {
   const warn = { borderWidth: 1, borderColor: '#f44336' }
   const nowarn = { borderWidth: 1, borderColor: '#d9dee3' }
   const [showProcess, setShowProcess] = useState(false);
+  const [rowsData, setRowsData] = useState([{id:'',qtitle:'',select:false}]);
   const noStyle = {
     display: 'none',
   }
@@ -52,8 +56,12 @@ function AddQb() {
   const yesStyle = {
     display: 'block',
   }
-
-
+  const [userinfo, setUserInfo] = useState({
+    services: [],
+    response: [],
+  });
+const lengtharr=rowsData.length;
+  
   function Addquestionbank() {
     if (qname == "") {
       toast.error('Enter Question Name');
@@ -68,9 +76,9 @@ function AddQb() {
     else {
       const subData = {
         qname: qname,
-        subs: datavalue,
+        subs: rowsData,
         cate_id: cateid,
-        no_of_question: '',
+        no_of_question: lengtharr,
         tm: tm,
         fdate: fromDate,
         tdate: toDate
@@ -141,10 +149,121 @@ function AddQb() {
     script.async = true;
     document.body.appendChild(script);
   }
+  const handleChange = (e) => {
+    //const {value}=e.target;
+    var qtype=qname;
+    var ptype=e.target.value;
+    setCateid(ptype);
+    axios.get("https://entmcq.vertextechnosys.com/api/getquestion?qtype="+qtype+"&ptype="+ptype+"")
+    
+      .then((res) => {
+        const data = res.data;
+        var cdata = [];
+        data.map((obj) => {
+          cdata.push({
+            id: obj.id,
+            qtitle: obj.qtitle,
+            select: false
+          })
+        })
+        setRowsData(cdata);
+        setGetQvalue(data);
+        
+      })
+    
+  };
+  const handleChangeq = (e) => {
+    //const {value}=e.target;
+    var ptype=cateid;
+    var qtype=e.target.value;
+    setQname(qtype);
+    axios.get("https://entmcq.vertextechnosys.com/api/getquestion?qtype="+qtype+"&ptype="+ptype+"")
+    
+      .then((res) => {
+        const data = res.data;
+        var cdata = [];
+        data.map((obj) => {
+          cdata.push({
+            id: obj.id,
+            qtitle: obj.qtitle,
+            select: false
+          })
+        })
+        setRowsData(cdata);
+        setGetQvalue(data);
+        
+      })
+    
+  };
+  const handleChangequestion = (e) => {
+    // Destructuring
+    const { value, checked } = e.target;
+    const { services } = userinfo;
+
+    var ft='';
+    var qid="";
+    // Case 1 : The user checks the box
+    if (checked) {
+      setUserInfo({
+        services: [...services, value],
+        response: [...services, value],
+      });
+    qid=value;
+
+      const newState = rowsData.map((obj)=>{
+        ft=obj.id;
+         if(qid==ft)
+         {
+           return {...obj,select:true};
+        }
+        
+      });
+      console.log(newState);
+    }
+    else {
+      setUserInfo({
+        services: services.filter((e) => e !== value),
+        response: services.filter((e) => e !== value),
+      });
+    }
+
+  
+  };
+ //console.log(userinfo.response);
+  const handleChangesetevent = (index)=>{
+    // const {name, value } = index;
+      const rowsInput = [...rowsData];
+      
+      var ft='';
+      var rowele='';
+      var kp='';
+  
+      const newState = rowsInput.map((obj)=>{
+        ft=obj.qtitle;
+        
+        
+        rowele=rowsInput[index]['qtitle'];
+        
+        if(rowele === ft)
+        {
+          return {...obj,setans:true};
+              
+        }
+        
+        return obj;  
+  
+      });
+      setRowsData(newState)
+  
+      console.log(rowsData);
+          
+    };
+
+
   useEffect(() => {
     fetchCategory();
     fetchPackages();
-
+    
   }, [])
   return (
     <React.Fragment>
@@ -191,7 +310,7 @@ function AddQb() {
 
                 <div class="row" style={{ justifyContent: 'center' }}>
 
-                  <div class="col-md-6">
+                  <div class="col-md-9">
                     <div class="card mb-4">
                       <h5 class="card-header">Add Bank</h5>
                       <div class="card-body demo-vertical-spacing demo-only-element">
@@ -211,10 +330,7 @@ function AddQb() {
                             }}
                             style={isQnameError ? warn : nowarn}
                           /> */}
-                          <select className="form-select" id="exampleFormControlSelect1" aria-label="Default select example" onChange={(qname) => {
-                            setQname(qname.target.value)
-                            setQnameError(false)
-                          }}
+                          <select className="form-select" id="exampleFormControlSelect1" aria-label="Default select example" onChange={(e)=>{handleChangeq(e)}}
                             value={qname} style={isQnameError ? warn : nowarn}>
                             <option key="mock" value="Mock">Mock</option>
                             <option key="quick" value="Quick">Quick</option>
@@ -235,10 +351,7 @@ function AddQb() {
                         </div> */}
                         <div className="mb-3">
                           <label htmlFor="exampleFormControlSelect1" className="form-label">Package</label>
-                          <select className="form-select" id="exampleFormControlSelect1" aria-label="Default select example" onChange={(cateid) => {
-                            setCateid(cateid.target.value)
-                            setCateError(false)
-                          }}
+                          <select className="form-select" id="exampleFormControlSelect1" aria-label="Default select example" onChange={(e)=>{handleChange(e)}}
                             value={cateid} style={isCateError ? warn : nowarn}>
                             <option value="">Select package</option>
                             {
@@ -286,28 +399,21 @@ function AddQb() {
                             <table class="table table-bordered">
                               <thead>
                                 <tr>
-                                  <th>Name</th>
-                                  <th>No. Of Questions</th>
+                                  <th>Question Title</th>
+                                  <th>Select</th>
                                 </tr>
                               </thead>
                               <tbody>
                                 {
-                                  datavalue.map((obj) => {
+                                  getqval.map((obj) => {
                                     return (
                                       <tr>
-                                        <td>{obj.cname}</td>
-                                        <td><input
-                                          type="text"
-                                          class="form-control"
-                                          id="defaultFormControlInput"
-                                          placeholder=""
-                                          aria-describedby="defaultFormControlHelp"
-                                          value={obj.n}
-                                          onChange={(n) => {
-                                            handleNQuestions(obj.id, n.target.value)
+                                        <td>{obj.qtitle}</td>
+                                        <td><FormGroup>
 
-                                          }}
-                                        /></td>
+      <FormControlLabel control={<Checkbox />} value={obj.id} name="services" id="flexCheckDefault" onChange={handleChangequestion} />
+  
+</FormGroup></td>
                                       </tr>
                                     )
                                   })
