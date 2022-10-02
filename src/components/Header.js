@@ -91,7 +91,7 @@ function Header()
         <aside id="layout-menu" className="layout-menu menu-vertical menu bg-menu-theme">
           <div className="app-brand demo">
             <a href="index.html" className="app-brand-link">
-                <img src="/assets/img/icons/entmcq.png" className="app-brand-logo demo" style={{height:50,width:70}}/>
+                <img src="/assets/img/icons/entmcq.png" className="app-brand-logo demo" style={{height:60,width:60}}/>
                 {/* <span className="app-brand-text demo menu-text fw-bolder ms-2" style={{textTransform: 'capitalize',fontSize:20}}>ENT-MCQ</span> */}
             </a>
 
@@ -203,7 +203,7 @@ function Header()
                 
               </ul>
             </li>
-            <li className="menu-item">
+            {/* <li className="menu-item">
               <a href="javascript:void(0);" className="menu-link menu-toggle">
                 <i className="menu-icon tf-icons bx bx-layout"></i>
                 <div data-i18n="Layouts">Subject</div>
@@ -223,7 +223,7 @@ function Header()
                 </li>
                 
               </ul>
-            </li>
+            </li> */}
 
             <li className="menu-item">
               <a href="javascript:void(0);" className="menu-link menu-toggle">

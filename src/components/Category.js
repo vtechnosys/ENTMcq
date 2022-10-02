@@ -15,7 +15,7 @@ function Category(){
     const [selectedFile,setselectedFile]=useState('');
     
     function onFileChange(e){
-    setselectedFile(e.target.files);
+    setselectedFile(e.target.files[0]);
     };
 
     // formData="";
@@ -34,7 +34,10 @@ function storeSubject()
             description:description,
           };
           console.log(subData);
-          axios.post('https://entmcq.vertextechnosys.com/api/category',subData)
+          const config = {     
+            headers: { 'content-type': 'multipart/form-data' }
+        }
+          axios.post('https://entmcq.vertextechnosys.com/api/category',subData,config)
                 .then((res) =>{
                   console.log(res);
                   //alert("Subject added successfully");

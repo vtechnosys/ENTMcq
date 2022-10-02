@@ -53,10 +53,17 @@ function User () {
             setUser(res.data)
           });
   }
+  function AddLibrary(urlOfTheLibrary) {
+    const script = document.createElement('script');
+    script.src = urlOfTheLibrary;
+    script.async = true;
+    document.body.appendChild(script);
+  }
   useEffect(()=>{
     fetchUsers();
   },[]);
     return (
+      <React.Fragment>
         <div class="layout-wrapper layout-content-navbar">
       <div class="layout-container">
         
@@ -162,6 +169,16 @@ function User () {
       
       <div class="layout-overlay layout-menu-toggle"></div>
     </div>
+    {AddLibrary("/assets/vendor/libs/jquery/jquery.js")}
+    {AddLibrary("/assets/vendor/libs/popper/popper.js")}
+    {AddLibrary("/assets/vendor/js/bootstrap.js")}
+    {AddLibrary("/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js")}
+    {AddLibrary("/assets/vendor/js/menu.js")}
+    
+    {AddLibrary("/assets/vendor/libs/apex-charts/apexcharts.js")}
+    {AddLibrary("/assets/js/main.js")}
+    {AddLibrary("/assets/js/dashboards-analytics.js")}
+    </React.Fragment>
     );
 }
 

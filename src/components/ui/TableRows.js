@@ -11,7 +11,7 @@ function TableRows({ rowsData, deleteTableRows, handleChange,handleChangeseteven
                     </td>
                     <td><button className="btn btn-outline-danger" onClick={() => (deleteTableRows(index))}>x</button> 
                     {setans === true ?
-                    (<button className="btn" onClick={() => (handleChangesetevent(index))}  ><i className="bx bx-check" style={{color:'#66c732',fontWeight:'bold'}}></i></button>):(<button className="btn" onClick={() => (handleChangesetevent(index))}  ><i className="bx bx-check" style={{color:'hsl(9deg 10% 80%)',fontWeight:'bold'}}></i></button>)
+                    (<button className="btn" onClick={() => (handleChangesetevent(index))}  ><i className="bx bx-check" style={{color:'#48ce00',fontWeight:'bold',fontSize:20,}}></i></button>):(<button className="btn" onClick={() => (handleChangesetevent(index))}  ><i className="bx bx-check" style={{color:'hsl(9deg 10% 80%)',fontWeight:'bold'}}></i></button>)
                     }
                     </td>
                 </tr>

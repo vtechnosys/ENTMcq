@@ -6,9 +6,6 @@ import axios from 'axios';
 import Headerpanel from '../Headerpanel';
 import { Triangle } from 'react-loader-spinner';
 import TableRows from '../ui/TableRows';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -26,7 +23,10 @@ function Questions() {
   const [showProcess, setShowProcess] = useState(true);
   const [error, setError] = useState(false)
   const [rowsData, setRowsData] = useState([{ans:'',setans:false}]);
-  const [trial,setTrial]=useState('');
+  const [trial,setTrial]=useState('No');
+  const [mock,setMock]=useState('No');
+  const [quick,setQuick]=useState('No');
+
 
    const [isQuestionError,setQuestionError]=useState(false);
    const [isTitleError,setTitleError]=useState(false);
@@ -34,13 +34,14 @@ function Questions() {
    const [isExplainError,setExplainError]=useState(false);
    const [isLevelError,setLevelError]=useState(false);
    const [isTrialError,setTrialError]=useState(false);
+
    const warn = { borderWidth: 1, borderColor: '#f44336' }
    const nowarn = { borderWidth: 1, borderColor: '#d9dee3' }
 
 
   function fetchSubject() {
     setShowProcess(true)
-    axios.get('https://entmcq.vertextechnosys.com/api/subject')
+    axios.get('https://entmcq.vertextechnosys.com/api/fetchCategory')
       .then((res) => {
         const data = res.data;
         setSubjects(data);
@@ -98,7 +99,9 @@ function Questions() {
       qmode: level,
       qtitle: qtitle,
       sub_id: subid,
-      trial:trial
+      trial:trial,
+      mock:mock,
+      quick:quick
       }
       console.log(qusData);
       setShowProcess(true)
@@ -157,13 +160,6 @@ function Questions() {
   // const {name, value } = index;
     const rowsInput = [...rowsData];
     
-    
-    
-    //const rows = [...rowsData];
-    //rows.splice(index, 1);
-    
-    //console.log(rowsInput.setans);
-   // console.log(index.ans);
     var ft='';
     var rowele='';
     var kp='';
@@ -174,9 +170,6 @@ function Questions() {
       
       rowele=rowsInput[index]['ans'];
       
-    //  console.log(ft);
-    //  console.log(rowele);
-      
       if(rowele === ft)
       {
         return {...obj,setans:true};
@@ -185,9 +178,6 @@ function Questions() {
       else
       {
         return {...obj,setans:false};
-        //kp=rowsInput[index]['setans']=false;
-        
-        
       }
       return obj;  
 
@@ -196,17 +186,6 @@ function Questions() {
 
     console.log(rowsData);
         
-
-    
-      //setRowsData(newState);
-       // console.log(ft);
-        //console.log(rows);
-        
-        
-    
-    //console.log(rowsInput);
-    //console.log(rowsInput);
-    
   };
   function AddLibrary(urlOfTheLibrary) {
     const script = document.createElement('script');
@@ -282,7 +261,7 @@ function Questions() {
 
                         </div>
                         <div className="col-md-6 mb-3">
-                          <label htmlFor="exampleFormControlSelect1" className="form-label">Subject</label>
+                          <label htmlFor="exampleFormControlSelect1" className="form-label">Category</label>
                           <select
                             class="form-select"
                             id="exampleFormControlSelect1"
@@ -293,7 +272,7 @@ function Questions() {
                             }}
                             value={subid}
                           >
-                            <option value="">Select Subject Name</option>
+                            <option value="">Select Category</option>
                             {
                               subjects.map((obj) => {
                                 return (
@@ -310,27 +289,10 @@ function Questions() {
 
                           <SunEditor setOptions={{ height: 300, }} onChange={handleTitleChange} style={isTitleError ? warn : nowarn}/>
                         </div>
-                        {/* <div>
-                            <label htmlFor="defaultFormControlInput" className="form-label">Answer Option</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              id="defaultFormControlInput"
-                              placeholder="Answer Option A,B,..."
-                              aria-describedby="defaultFormControlHelp"
-                            />
-                            
-                        </div> */}
+                        
                         <div>
                           <label htmlFor="exampleFormControlTextarea1" className="form-label">Exaplaination</label>
-                          {/* <JoditEditor
-                                ref={editor}
-                                value={content}
-                                config={config}
-                                tabIndex={1} // tabIndex of textarea
-                                onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-                                onChange={newContent => {}}
-                            /> */}
+                          
                           <SunEditor setOptions={{ height: 300, }} onChange={handleExplainChnage} style={isExplainError ? warn : nowarn}/>
                         </div>
                         <label htmlFor="exampleFormControlSelect1" className="form-label" style={{ marginTop: 20, }}>Difficulty level</label>
@@ -354,14 +316,7 @@ function Questions() {
                             value='easy' style={isLevelError ? warn : nowarn}/> Easy
                         </div>
                         <div className="mb-3">
-                          {/* <label htmlFor="exampleFormControlSelect1" className="form-label">Answers</label> */}
-
-                          {/* <select className="form-select" id="exampleFormControlSelect1" aria-label="Default select example"
-                            onChange={qstatus => setQstatus(qstatus.target.value)}
-                            value={qstatus}>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
-                          </select> */}
+                          
                           <table className="table">
                             <thead>
                               <tr>
@@ -379,15 +334,46 @@ function Questions() {
 
                           <input type='radio' name='trial' id="exampleFormControlSelect1" aria-label="Default select example"
                             onChange={trial => setTrial(trial.target.value)}
-                            value="trial" style={isTrialError ? warn : nowarn}/> Yes
+                            value="trial" checked={trial === "trial"}/> Yes
 
                         </div>
                         <div className="col-sm-2 mb-3">
 
                           <input type='radio' name='trial' id="exampleFormControlSelect1" aria-label="Default select example"
                             onChange={trial => setTrial(trial.target.value)}
-                            value='No' style={isTrialError ? warn : nowarn} /> No
+                            value='No' checked={trial === "No"} /> No
                         </div>
+
+                        <label htmlFor="exampleFormControlSelect1" className="form-label" style={{ marginTop: 20, }}>Mock</label>
+                        <div className="col-sm-2 mb-3">
+
+                          <input type='radio' name='mock' id="exampleFormControlSelect1" aria-label="Default select example"
+                            onChange={mock => setMock(mock.target.value)}
+                            value="mock" checked={mock === "mock"}/> Yes
+
+                        </div>
+                        <div className="col-sm-2 mb-3">
+
+                          <input type='radio' name='mock' id="exampleFormControlSelect1" aria-label="Default select example"
+                            onChange={mock => setMock(mock.target.value)}
+                            value='No' checked={mock === "No"}/> No
+                        </div>
+
+                        <label htmlFor="exampleFormControlSelect1" className="form-label" style={{ marginTop: 20, }}>Quick</label>
+                        <div className="col-sm-2 mb-3">
+
+                          <input type='radio' name='quick' id="exampleFormControlSelect1" aria-label="Default select example"
+                            onChange={quick => setQuick(quick.target.value)}
+                            value="quick" checked={quick === "quick"}/> Yes
+
+                        </div>
+                        <div className="col-sm-2 mb-3">
+
+                          <input type='radio' name='quick' id="exampleFormControlSelect1" aria-label="Default select example"
+                            onChange={quick => setQuick(quick.target.value)}
+                            value='No' checked={quick === "No"}/> No
+                        </div>
+                        
                         <div className="mb-3">
                           <button className="btn btn-primary d-grid w-100" type="submit" style={{ backgroundColor: "#188ccc" }} onClick={handleClick}>Submit</button>
                         </div>

@@ -6,6 +6,7 @@ import Headerpanel from '../Headerpanel';
 import { useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Triangle } from 'react-loader-spinner';
 function EditCategory()
 {
     const id = useParams();
@@ -23,7 +24,14 @@ function EditCategory()
     const [isFileError,setFileError]=useState(false);
     const warn = { borderWidth: 1, borderColor: '#f44336' }
     const nowarn = { borderWidth: 1, borderColor: '#d9dee3' }
+    const [showProcess, setShowProcess] = useState(false);
+    const noStyle = {
+        display: 'none',
+    }
 
+    const yesStyle = {
+        display: 'block',
+    }
     function onFileChange(e){
         setselectedFile(e.target.files[0]);
         };
@@ -53,6 +61,7 @@ function EditCategory()
         // const config = {     
         //   headers: { 'content-type': 'multipart/form-data' }
         //  }
+        setShowProcess(true);
         axios.put('https://entmcq.vertextechnosys.com/api/category/'+sid,subData)
               .then((res) =>{
                 console.log(res);
@@ -80,7 +89,8 @@ function EditCategory()
     
     function editOption(id){
         setSid(id);
-        console.log(id)
+        // console.log(id)
+        setShowProcess(true);
         axios.get('https://entmcq.vertextechnosys.com/api/category/'+id.id)
               .then((res)=>{
                 const data = res.data;
@@ -90,7 +100,7 @@ function EditCategory()
                 setImg(data.image);
                 setSubStatus(data.status);
                 setSid(data.id);
-                
+                setShowProcess(false);
                 //setSubjects(data);
               })
       }
@@ -108,7 +118,19 @@ function EditCategory()
 
     return (
       <React.Fragment>
-        <div class="layout-wrapper layout-content-navbar">
+
+        {showProcess && (<div style={{ marginTop: 20 + "%", justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
+        <Triangle
+          height="80%"
+          width="80"
+          color="#4fa94d"
+          ariaLabel="triangle-loading"
+          wrapperStyle={{ justifyContent: 'center', alignContent: 'center' }}
+          visible={showProcess}
+        />
+      </div>)}
+
+      <div className="layout-wrapper layout-content-navbar" style={showProcess ? noStyle : yesStyle}>
       <div class="layout-container">
         
 
@@ -173,7 +195,7 @@ function EditCategory()
                             
                           </div>
                           <div>
-                          <img src={`/assets/img/${img}`} height="80px" width="80px"/><br/><br/>                          <label for="exampleFormControlTextarea1" class="form-label">Image</label>
+                          <img src={`https://entmcq.vertextechnosys.com/image/${img}`} height="80px" width="80px"/><br/><br/>                          <label for="exampleFormControlTextarea1" class="form-label">Image</label>
                             <input type="file" onChange={onFileChange}/>
                           </div>
 

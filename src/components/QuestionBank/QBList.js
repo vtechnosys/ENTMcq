@@ -5,9 +5,18 @@ import DataTable from 'react-data-table-component';
 import Headerpanel from '../Headerpanel';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Triangle } from 'react-loader-spinner';
 function QBList() {
     const [subjects,setSubjects]=useState([])
     const [catlist,setCatList] = useState([]);
+    const [showProcess, setShowProcess] = useState(false);
+    const noStyle = {
+        display: 'none',
+    }
+
+    const yesStyle = {
+        display: 'block',
+    }
     const clms = [
         {
           name:'Id',
@@ -29,18 +38,9 @@ function QBList() {
             <div>{row.qname}</div>
           )
         },
-        {
-            name:'No. of Qus.',
-            selector: row=>row.no_of_question,
-            sortable:true,
-            wrap:true,
-            maxWidth:'200px',
-            cell:row=>(
-              <div>{row.no_of_question}</div>
-            )
-          },
+        
           {
-            name:'Category',
+            name:'Package',
             selector: row=>row.cname,
             sortable:true,
             wrap:true,
@@ -50,24 +50,17 @@ function QBList() {
             )
           },
         {
-          name:'Status',
-          selector: row=>row.status,
+          name:'Total Qs.',
+          selector: row=>row.sub_id,
           sortable:true,
           maxWidth:'150px',
-          conditionalCellStyles:[
-            {
-                when: row=>row.status === 'active',
-                style:{
-                    color:'#696cff'
-                }
-            },
-            {
-                when: row=>row.status === 'inactive',
-                style:{
-                    color:'#ffab00'
-                }
-            }
-          ]
+          cell:((row)=>{
+            var total = 0
+            JSON.parse(row.sub_id).map((obj)=>{
+              total += parseInt(obj.n);
+            })
+            return (<div>{total}</div>)
+          })
         },
         {
           name: "Actions",
@@ -85,19 +78,23 @@ function QBList() {
       ]
       function fetchSubjects()
       {
+        setShowProcess(true)
         axios.get('https://entmcq.vertextechnosys.com/api/questionbank')
               .then((res)=>{
                 const data = res.data;
                 setSubjects(data);
+                setShowProcess(false)
               })
       }
 
       function fetchCatList()
       {
-        axios.get('https://entmcq.vertextechnosys.com/api/category')
+        setShowProcess(true)
+        axios.get('https://entmcq.vertextechnosys.com/api/packages')
               .then((res)=>{
                 const data = res.data;
                 setCatList(data);
+                setShowProcess(false)
               })
       }
     
@@ -167,7 +164,18 @@ function QBList() {
       },[])   
     return (
         <React.Fragment>
-        <div class="layout-wrapper layout-content-navbar">
+        {showProcess && (<div style={{ marginTop: 20 + "%", justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
+        <Triangle
+          height="80%"
+          width="80"
+          color="#4fa94d"
+          ariaLabel="triangle-loading"
+          wrapperStyle={{ justifyContent: 'center', alignContent: 'center' }}
+          visible={showProcess}
+        />
+      </div>)}
+
+      <div className="layout-wrapper layout-content-navbar" style={showProcess ? noStyle : yesStyle}>
       <div class="layout-container">
       <Header/>
         <div class="layout-page">
@@ -189,18 +197,18 @@ function QBList() {
               aria-label="Default select example"
               onChange={handleChange}
               style={{width:25+"%",display:'inline-block',marginLeft:20,}}>
-                <option value="">Select quesiton Bank Name</option>
+                <option value="">Select Package</option>
               {
                 
                   catlist.map((obj)=>{
                     return (
-                      <option value={obj.name}>{obj.name}</option>
+                      <option value={obj.name}>{obj.package_name}</option>
                       )
                     })
               }
               </select>
               <div class=" col-sm-3 input-group" style={{width:30+"%",float:'right'}}>
-                        <input type="text" class="form-control" placeholder="Search Question Bank" value={filterText} onChange={(e)=>{setFilterText(e.target.value)}}/>
+                        <input type="text" class="form-control" placeholder="Search package" value={filterText} onChange={(e)=>{setFilterText(e.target.value)}}/>
                         <button class="btn btn-outline-primary" type="button" id="button-addon2" style={{margin:0}} onClick={handleClear}>X</button>
               </div>
               <div class="row mt-4">

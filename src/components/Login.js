@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { isEmail } from "../validators/Validations";
 import { ToastContainer, toast } from 'react-toastify';
+import { Triangle } from 'react-loader-spinner';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -13,7 +14,14 @@ function Login() {
     const [isPasswordError, setPasswordError] = useState(false);
     const warn = { borderWidth: 1, borderColor: '#f44336' }
     const nowarn = { borderWidth: 1, borderColor: '#d9dee3' }
+    const [showProcess, setShowProcess] = useState(false);
+    const noStyle = {
+        display: 'none',
+    }
 
+    const yesStyle = {
+        display: 'block',
+    }
     function handleSubmit() {
         console.log(username);
         console.log(password);
@@ -27,9 +35,10 @@ function Login() {
             setPasswordError(true)
         }
         else {
-            const Login ={
-                uname:username,
-                pass:password
+            setShowProcess(true);
+            const Login = {
+                uname: username,
+                pass: password
             };
             axios.post('https://entmcq.vertextechnosys.com/api/logincheck', Login)
                 .then((res) => {
@@ -43,7 +52,7 @@ function Login() {
                         localStorage.setItem("type", JSON.stringify(type));
                         localStorage.setItem('toast', true);
                         //alert(name);
-
+                        setShowProcess(false)
                         toast('Login Successfull');
                         window.location.href = '/';
                     } else if (data[0].status == "success" && data[0].type == 'doctor') {
@@ -51,11 +60,12 @@ function Login() {
                         // storing input name
                         localStorage.setItem("type", JSON.stringify(type));
                         //alert(name);
-
+                        setShowProcess(false)
                         toast('Login Successfull');
                         window.location.href = '/';
                     }
                     else {
+                        setShowProcess(false)
                         toast.error('Invalid Login Details');
                     }
                     //fetchSubjects();
@@ -78,7 +88,17 @@ function Login() {
     return (
         <React.Fragment>
             {AddCC('/assets/vendor/css/pages/page-auth.css')}
-            <div class="container-xxl">
+            {showProcess && (<div style={{ marginTop: 20 + "%", justifyContent: 'center', alignContent: 'center', alignItems: 'center' }}>
+                <Triangle
+                    height="80%"
+                    width="80"
+                    color="#4fa94d"
+                    ariaLabel="triangle-loading"
+                    wrapperStyle={{ justifyContent: 'center', alignContent: 'center' }}
+                    visible={showProcess}
+                />
+            </div>)}
+            <div class="container-xxl" style={showProcess ? noStyle : yesStyle}>
                 <div class="authentication-wrapper authentication-basic container-p-y">
                     <div class="authentication-inner">
                         <div class="card">

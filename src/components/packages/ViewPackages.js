@@ -19,7 +19,7 @@ function ViewPackages() {
           )
         },
         {
-          name:'Pname',
+          name:'Package Name',
           selector: row=>row.package_name,
           sortable:true,
           wrap:true,
@@ -39,13 +39,23 @@ function ViewPackages() {
           )
         },
         {
-          name:'Discount',
+          name:'No. Q.',
           selector: row=>row.discount,
           sortable:true,
           wrap:true,
           maxWidth:'400px',
           cell:row=>(
             <div dangerouslySetInnerHTML={{__html: row.discount}}/>
+          )
+        },
+        {
+          name:'Duration',
+          selector: row=>row.duration,
+          sortable:true,
+          wrap:true,
+          maxWidth:'400px',
+          cell:row=>(
+            <div dangerouslySetInnerHTML={{__html: row.duration}}/>
           )
         },
         {

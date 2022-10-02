@@ -7,9 +7,7 @@ function Home()
     const [tst,setTst] = useState(() => {
       // getting stored value
       const saved = localStorage.getItem("toast");
-      //const initialValue = JSON.parse(saved);
-      //localStorage.removeItem('toast');
-      console.log(saved);
+      
       return saved || false;
       
     });
